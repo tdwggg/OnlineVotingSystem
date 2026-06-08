@@ -1,10 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Browse Candidates - iVotePH</title>
+    <title>My Ballot - iVotePH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
@@ -47,16 +47,14 @@
             padding: 20px;
             transition: 0.3s;
             z-index: 1050;
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('PUP.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
         }
 
         .sidebar.open {
             left: 0;
         }
 
-        .sidebar-toggle {
+        .sidebarToggle {
             margin-right: 0.65rem;
             min-width: 42px;
             padding: 0.65rem 0.85rem;
@@ -75,7 +73,7 @@
             transition: margin-left 0.3s ease;
         }
 
-        .close-btn {
+        .closeBtn {
             cursor: pointer;
             float: right;
             color: white;
@@ -83,6 +81,12 @@
 
         .sidebar h5 {
             color: white;
+        }
+
+        .ballotCard {
+            border: none;
+            border-radius: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
         }
 
         @media(max-width:991px) {
@@ -122,7 +126,7 @@
                 align-items: flex-start;
             }
 
-            .sidebar-toggle {
+            .sidebarToggle {
                 order: 1;
             }
 
@@ -141,19 +145,15 @@
 <body>
     <nav class="navbar navbar-expand-lg topNavbar px-4">
         <div class="container-fluid d-flex align-items-center gap-3">
-
-            <button class="btn btn-light sidebar-toggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-
-            <a class="navbar-brand logoText mb-0" href="#">
+            <a class="navbar-brand logoText mb-0" href="index.html">
                 i<span>V</span>OTE PH
             </a>
-
             <div class="flex-grow-1 mx-4">
                 <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
             </div>
-
             <ul class="navbar-nav align-items-center gap-3">
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-primary" href="index.html">
@@ -170,30 +170,36 @@
                     </a>
                 </li>
             </ul>
-
         </div>
     </nav>
 
     <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="close-btn" onclick="toggleSidebar()">&times;</span></h5>
+        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
         <div class="d-grid gap-3 mt-4">
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">About</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='browsecandi.html'">Browse Candidates</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='electioninfo.html'">Election Info</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='myballot.html'">My Ballot</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Start Voting</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='login.html'">Login</button>
         </div>
     </div>
 
     <main class="flex-grow-1 p-4">
-        <h1>My Ballot</h1>
-        <p class="text-muted">This page now shares the same navbar and sidebar UI as the rest of the site.</p>
+        <div class="card ballotCard">
+            <div class="card-body">
+                <h1>My Ballot</h1>
+                <p class="text-muted">This page now shares the same navbar and sidebar UI as the rest of the site.</p>
+                <div class="alert alert-secondary" role="alert">
+                    Your ballot is ready. Select the candidates to add them to your ballot and submit when you are ready.
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById("sidebar").classList.toggle("open");
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

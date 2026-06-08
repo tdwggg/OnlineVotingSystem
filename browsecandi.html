@@ -47,16 +47,14 @@
             padding: 20px;
             transition: 0.3s;
             z-index: 1050;
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('PUP.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
         }
 
         .sidebar.open {
             left: 0;
         }
 
-        .sidebar-toggle {
+        .sidebarToggle {
             margin-right: 0.65rem;
             min-width: 42px;
             padding: 0.65rem 0.85rem;
@@ -75,7 +73,7 @@
             transition: margin-left 0.3s ease;
         }
 
-        .close-btn {
+        .closeBtn {
             cursor: pointer;
             float: right;
             color: white;
@@ -83,6 +81,66 @@
 
         .sidebar h5 {
             color: white;
+        }
+
+        .candidateCard {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            transition: all 0.3s ease;
+            border: none;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .candidateCard:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .candidateImageWrapper {
+            position: relative;
+            overflow: hidden;
+            height: 320px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .candidateImg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: top center;
+            transition: transform 0.3s ease;
+            display: block;
+        }
+
+        .candidateCard .card-body {
+            padding: 1.25rem;
+            flex-grow: 1;
+        }
+
+        .candidateParty {
+            font-size: 0.85rem;
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .candidateName {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            line-height: 1.3;
+            font-size: 1rem;
+        }
+
+        .profileLink {
+            color: #0d47d9;
+            text-decoration: none;
+            font-weight: 600;
         }
 
         @media(max-width:991px) {
@@ -122,7 +180,7 @@
                 align-items: flex-start;
             }
 
-            .sidebar-toggle {
+            .sidebarToggle {
                 order: 1;
             }
 
@@ -141,19 +199,15 @@
 <body>
     <nav class="navbar navbar-expand-lg topNavbar px-4">
         <div class="container-fluid d-flex align-items-center gap-3">
-
-            <button class="btn btn-light sidebar-toggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
+            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-
-            <a class="navbar-brand logoText mb-0" href="#">
+            <a class="navbar-brand logoText mb-0" href="index.html">
                 i<span>V</span>OTE PH
             </a>
-
             <div class="flex-grow-1 mx-4">
                 <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
             </div>
-
             <ul class="navbar-nav align-items-center gap-3">
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-primary" href="index.html">
@@ -170,30 +224,338 @@
                     </a>
                 </li>
             </ul>
-
         </div>
     </nav>
 
     <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="close-btn" onclick="toggleSidebar()">&times;</span></h5>
+        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
         <div class="d-grid gap-3 mt-4">
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">About</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='browsecandi.html'">Browse Candidates</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='electioninfo.html'">Election Info</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='myballot.html'">My Ballot</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Start Voting</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='login.html'">Login</button>
         </div>
     </div>
 
-    <main class="flex-grow-1 p-4">
-        <h1>Browse Candidates</h1>
-        <p class="text-muted">This page now shares the same navbar and sidebar UI as the rest of the site.</p>
+    <main class="container pb-5">
+        <h1 class="text-center mb-4">Browse Candidates</h1>
+        <div class="row g-4" id="candidateGrid">
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+1" alt="Candidate 1">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 1</h3>
+                        <div class="text-muted mb-3">Position: President</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+2" alt="Candidate 2">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 2</h3>
+                        <div class="text-muted mb-3">Position: Vice President</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+3" alt="Candidate 3">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 3</h3>
+                        <div class="text-muted mb-3">Position: Secretary</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+4" alt="Candidate 4">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 4</h3>
+                        <div class="text-muted mb-3">Position: Treasurer</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+5" alt="Candidate 5">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 5</h3>
+                        <div class="text-muted mb-3">Position: Auditor</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+6" alt="Candidate 6">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 6</h3>
+                        <div class="text-muted mb-3">Position: Auditor</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+7" alt="Candidate 7">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 7</h3>
+                        <div class="text-muted mb-3">Position: Councillor</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+8" alt="Candidate 8">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 8</h3>
+                        <div class="text-muted mb-3">Position: Councillor</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+9" alt="Candidate 9">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 9</h3>
+                        <div class="text-muted mb-3">Position: Representative</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+10" alt="Candidate 10">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 10</h3>
+                        <div class="text-muted mb-3">Position: Representative</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+11" alt="Candidate 11">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 11</h3>
+                        <div class="text-muted mb-3">Position: Board Member</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+12" alt="Candidate 12">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 12</h3>
+                        <div class="text-muted mb-3">Position: Board Member</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+13" alt="Candidate 13">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 13</h3>
+                        <div class="text-muted mb-3">Position: Chief Officer</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+14" alt="Candidate 14">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 14</h3>
+                        <div class="text-muted mb-3">Position: Chief Officer</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+15" alt="Candidate 15">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 15</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+16" alt="Candidate 16">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 16</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+17" alt="Candidate 17">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 17</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+18" alt="Candidate 18">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 18</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+19" alt="Candidate 19">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 19</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+20" alt="Candidate 20">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 20</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+21" alt="Candidate 21">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 21</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 col-sm-6 col-lg-3">
+                <div class="candidateCard">
+                    <div class="candidateImageWrapper">
+                        <img class="candidateImg" src="https://via.placeholder.com/400x320?text=Candidate+22" alt="Candidate 22">
+                    </div>
+                    <div class="card-body">
+                        <div class="candidateParty">Party: Sample Party</div>
+                        <h3 class="candidateName">Candidate 22</h3>
+                        <div class="text-muted mb-3">Position: Delegate</div>
+                        <p class="text-muted">Add a short description or slogan here.</p>
+                        <a href="#" class="profileLink">View details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
 
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById("sidebar").classList.toggle("open");
         }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

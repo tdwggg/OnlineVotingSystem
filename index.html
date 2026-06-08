@@ -1,11 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iVotePH Dashboard(Still fixing the frames and href of each button-Rejalde)</title>
-
+    <title>iVotePH Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
 
@@ -35,6 +34,8 @@
             border-radius: 14px;
             height: 48px;
             border: 1px solid #dee2e6;
+            width: 100%;
+            max-width: 100%;
         }
 
         .sidebar {
@@ -46,29 +47,17 @@
             padding: 20px;
             transition: 0.3s;
             z-index: 1050;
-            background:
-                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-                url('PUP.jpg') center/cover no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
         }
 
         .sidebar.open {
             left: 0;
         }
 
-        .sidebar-toggle {
+        .sidebarToggle {
             margin-right: 0.65rem;
             min-width: 42px;
             padding: 0.65rem 0.85rem;
-        }
-
-        .searchInput {
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .navbar-nav .nav-link {
-            white-space: nowrap;
-            transition: background-color 0.2s ease;
         }
 
         .navbar-brand.logoText {
@@ -84,11 +73,7 @@
             transition: margin-left 0.3s ease;
         }
 
-        .sidebar.open~main {
-            margin-left: 0;
-        }
-
-        .close-btn {
+        .closeBtn {
             cursor: pointer;
             float: right;
             color: white;
@@ -96,23 +81,6 @@
 
         .sidebar h5 {
             color: white;
-        }
-
-
-        .menuItem {
-            color: #1e293b;
-            text-decoration: none;
-            padding: 14px 18px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-        }
-
-        .menuItem.active {
-            background: #0d47d9;
-            color: #fff;
         }
 
         .dashboardCard {
@@ -145,6 +113,13 @@
             padding: 24px;
             text-align: center;
             cursor: pointer;
+            transition: all 0.25s ease;
+            background: #fff;
+        }
+
+        .quickAction:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(13, 71, 217, 0.08);
         }
 
         .quickAction i {
@@ -174,57 +149,75 @@
             width: 100%;
         }
 
-        .candidateTab {
-            color: #64748b;
-            font-weight: 600;
-            padding-bottom: 10px;
-            cursor: pointer;
+        .positionSection {
+            margin-top: 2rem;
         }
 
-        .candidateTab.active {
-            color: #0d47d9;
-            border-bottom: 3px solid #0d47d9;
+        .positionHeader {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
         }
 
-        .candidateCard {
-            border: 1px solid #edf1f7;
-            border-radius: 18px;
-            padding: 20px;
-        }
-
-        .candidateAvatar {
-            width: 64px;
-            height: 64px;
-            background: #edf3ff;
-            border-radius: 50%;
-        }
-
-        .candidateBadge {
-            background: #edf3ff;
-            color: #0d47d9;
-            font-size: 11px;
+        .positionTitle {
+            font-size: 1.4rem;
             font-weight: 700;
-            padding: 4px 10px;
-            border-radius: 20px;
-            display: inline-block;
+            color: #0d47d9;
         }
 
-        .profileLink {
+        .viewAllLink {
             color: #0d47d9;
             text-decoration: none;
             font-weight: 600;
         }
 
-        .stepIcon {
+        .positionCard {
+            background: #fff;
+            border: 1px solid #e9ecef;
+            border-radius: 18px;
+            padding: 20px;
+            height: 100%;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .positionCard:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(13, 71, 217, 0.08);
+        }
+
+        .positionIcon {
             width: 60px;
             height: 60px;
+            border-radius: 14px;
             background: #edf3ff;
-            border-radius: 50%;
             color: #0d47d9;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.4rem;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+
+        .positionName {
+            font-weight: 700;
+            color: #1e293b;
+            margin-bottom: 4px;
+        }
+
+        .positionAction {
+            color: #64748b;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 0.5rem;
         }
 
         @media(max-width:991px) {
@@ -264,7 +257,7 @@
                 align-items: flex-start;
             }
 
-            .sidebar-toggle {
+            .sidebarToggle {
                 order: 1;
             }
 
@@ -277,58 +270,30 @@
                 margin-left: 0;
             }
         }
-
-        #electionDay {
-            font-size: 3rem;
-            font-weight: bold;
-            color: #333;
-            text-align: center;
-            padding: 2rem;
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-        }
-
-        .label {
-            font-size: 1.2rem;
-            color: #777;
-            margin-top: .5rem;
-        }
     </style>
 </head>
 
 <body>
-
     <nav class="navbar navbar-expand-lg topNavbar px-4">
         <div class="container-fluid d-flex align-items-center gap-3">
-
-            <button class="btn btn-light sidebar-toggle" type="button" onclick="toggleSidebar()"
-                aria-label="Toggle sidebar">
+            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-
-            <a class="navbar-brand logoText mb-0" href="#">
+            <a class="navbar-brand logoText mb-0" href="index.html">
                 i<span>V</span>OTE PH
             </a>
-
             <div class="flex-grow-1 mx-4">
-                <input type="text" class="form-control searchInput"
-                    placeholder="Search candidates, positions, or topics...">
+                <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
             </div>
-
             <ul class="navbar-nav align-items-center gap-3">
                 <li class="nav-item">
                     <a class="nav-link fw-semibold text-primary" href="index.html">
                         <i class="fa-solid fa-house me-2"></i>Home
                     </a>
                 </li>
-
-
-
                 <li class="nav-item">
                     <a class="nav-link" href="about.html">About</a>
                 </li>
-
                 <li class="nav-item">
                     <a class="nav-link" href="#">
                         <i class="fa-solid fa-user-circle me-2"></i>
@@ -336,67 +301,38 @@
                     </a>
                 </li>
             </ul>
-
         </div>
     </nav>
 
     <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="close-btn" onclick="toggleSidebar()">&times;</span></h5>
+        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
-
         <div class="d-grid gap-3 mt-4">
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">
-                About
-            </button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='shop.html'">
-                Shop
-            </button>
-            <button class="btn btn-primary rounded-pill" onclick="scrollToForm()">
-                Create Event
-            </button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='Task.html'">
-                Officers Task
-            </button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='profile.html'">My Profile</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Voting</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='browsecandi.html'">Results</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">Learn More</button>
         </div>
     </div>
 
     <main class="flex-grow-1 p-4">
-
         <div class="row g-4">
-
             <div class="col-xl-5">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
-
                         <div class="d-flex gap-4 align-items-center">
-
                             <div class="shieldCircle">
                                 <i class="fa-solid fa-shield-halved"></i>
                             </div>
-
                             <div>
-                                <h2 class="fw-bold">
-                                    Welcome back,<br>
-                                    Juan Dela Cruz!
-                                </h2>
-
-                                <p class="text-muted">
-                                    Your vote is your voice. Make it count.
-                                </p>
-
+                                <h2 class="fw-bold">Welcome back,<br>Juan Dela Cruz!</h2>
+                                <p class="text-muted">Your vote is your voice. Make it count.</p>
                                 <div class="statusBox">
-                                    <div class="fw-bold text-primary">
-                                        Voter Status: Verified
-                                    </div>
-
-                                    <small>
-                                        You are eligible to vote in the 2025 National and Local Elections.
-                                    </small>
+                                    <div class="fw-bold text-primary">Voter Status: Verified</div>
+                                    <small>You are eligible to vote in the 2025 National and Local Elections.</small>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -404,43 +340,33 @@
             <div class="col-xl-3">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
-
-                        <h4 class="fw-bold mb-4">
-                            Quick Actions
-                        </h4>
-
+                        <h4 class="fw-bold mb-4">Quick Actions</h4>
                         <div class="row g-3">
-
                             <div class="col-6">
-                                <div id="quickActionStartVoting" class="quickAction" role="button">
+                                <div id="quickActionStartVoting" class="quickAction" role="button" onclick="window.location.href='login.html'">
                                     <i class="fa-solid fa-box"></i>
                                     <div>Start Voting</div>
                                 </div>
                             </div>
-
                             <div class="col-6">
-                                <div class="quickAction">
+                                <div class="quickAction" role="button" onclick="window.location.href='myballot.html'">
                                     <i class="fa-solid fa-file"></i>
                                     <div>My Ballot</div>
                                 </div>
                             </div>
-
                             <div class="col-6">
-                                <div class="quickAction">
+                                <div class="quickAction" role="button" onclick="window.location.href='browsecandi.html'">
                                     <i class="fa-solid fa-users"></i>
                                     <div>Browse Candidates</div>
                                 </div>
                             </div>
-
                             <div class="col-6">
-                                <div class="quickAction">
+                                <div class="quickAction" role="button" onclick="window.location.href='electioninfo.html'">
                                     <i class="fa-solid fa-circle-info"></i>
                                     <div>Election Info</div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -448,83 +374,109 @@
             <div class="col-xl-4">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
-
-                        <div id="electionDay">
+                        <div id="electionDay" class="countdownBox">
                             <div class="label">Loading…</div>
                         </div>
-
-                        <button id="startVotingButton" class="primaryButton" type="button">
-                            Start Voting →
-                        </button>
-
-                        <div id="dashboardSection">
-                            Dashboard Content
-                        </div>
-
-                        <div id="votingSection" class="d-none">
-                            Voting Content Goes Here
-                        </div>
-
+                        <button id="startVotingButton" class="primaryButton mt-4" type="button">Start Voting →</button>
                     </div>
                 </div>
             </div>
-
         </div>
 
+        <section class="positionSection">
+            <div class="positionHeader">
+                <h3 class="positionTitle">Browse Candidates by Position</h3>
+                <a href="browsecandi.html" class="viewAllLink">View All Candidates <i class="fa-solid fa-arrow-right ms-2"></i></a>
+            </div>
+            <div class="row g-3">
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-landmark"></i></div>
+                        <div class="positionName">President</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-user-tie"></i></div>
+                        <div class="positionName">Vice President</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-users"></i></div>
+                        <div class="positionName">Senator</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-people-group"></i></div>
+                        <div class="positionName">Partylist</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-flag"></i></div>
+                        <div class="positionName">Governor</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-building"></i></div>
+                        <div class="positionName">Mayor</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+                <div class="col-lg col-md-4 col-6">
+                    <div class="positionCard" onclick="window.location.href='browsecandi.html'">
+                        <div class="positionIcon"><i class="fa-solid fa-house-user"></i></div>
+                        <div class="positionName">Brgy. Captain</div>
+                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    </div>
     <script>
-        /**SideBar**/
         function toggleSidebar() {
             document.getElementById("sidebar").classList.toggle("open");
         }
-        /**Start Voting**/
-        document
-            .getElementById("startVotingButton")
-            .addEventListener("click", function () {
-                window.location.href = "login.html";
-            });
 
-        const quickActionStartVoting = document.getElementById("quickActionStartVoting");
-        if (quickActionStartVoting) {
-            quickActionStartVoting.addEventListener("click", function () {
+        const startVotingButton = document.getElementById("startVotingButton");
+        if (startVotingButton) {
+            startVotingButton.addEventListener("click", function () {
                 window.location.href = "login.html";
             });
         }
 
-        /**ELECTION LIVE COUNTDOWN **/
-        const countdownElement = document.getElementById('electionDay');
-        const electionDate = new Date('2028-05-08T00:00:00');
+        const countdownElement = document.getElementById("electionDay");
+        const electionDate = new Date("2028-05-08T00:00:00");
 
         function getCountdown(target) {
-            const targetMs =
-                target instanceof Date ? target.getTime()
-                    : typeof target === 'number' ? target
-                        : new Date(target).getTime();
-
+            const targetMs = target instanceof Date ? target.getTime() : typeof target === "number" ? target : new Date(target).getTime();
             const now = Date.now();
             const distance = targetMs - now;
-
             if (distance <= 0) {
                 return { days: 0, hours: 0, minutes: 0, seconds: 0, totalMs: 0, isExpired: true };
             }
-
             const seconds = Math.floor((distance / 1000) % 60);
             const minutes = Math.floor((distance / (1000 * 60)) % 60);
             const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-
             return { days, hours, minutes, seconds, totalMs: distance, isExpired: false };
         }
 
         function pad(value) {
-            return String(value).padStart(2, '0');
+            return String(value).padStart(2, "0");
         }
 
         function renderCountdown(countdown) {
             if (!countdownElement) return;
-
             if (countdown.isExpired) {
                 countdownElement.innerHTML = `
       <div class="label">Election is live now!</div>
@@ -532,7 +484,6 @@
     `;
                 return;
             }
-
             countdownElement.innerHTML = `
     <div class="label">Election starts in</div>
     <div class="fw-bold" style="font-size:2.5rem;">${countdown.days}d ${pad(countdown.hours)}h ${pad(countdown.minutes)}m ${pad(countdown.seconds)}s</div>
