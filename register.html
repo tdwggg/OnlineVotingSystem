@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Register</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="login-page">
+
+  <video class="login-video-bg" autoplay muted loop playsinline>
+    <source src="flag.mp4" type="video/mp4" />
+  </video>
+
+  <div class="container vh-100 d-flex justify-content-center align-items-center">
+
+    <div class="login-card">
+      <h1 class="text-center mb-5">Register</h1>
+
+      <form onsubmit="return false;">
+        <div class="mb-4">
+          <label>Full Name</label>
+          <input type="text" class="form-control custom-input" placeholder="Enter your full name" />
+        </div>
+
+        <div class="mb-4">
+          <label>Precinct Number</label>
+          <input type="text" class="form-control custom-input" placeholder="Enter Precinct Number" />
+        </div>
+
+        <div class="mb-4">
+          <label>Password</label>
+          <input type="password" class="form-control custom-input" placeholder="Create Password" />
+        </div>
+
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" />
+          <label class="form-check-label">I agree to the terms and conditions</label>
+        </div>
+
+        <button class="btn btn-light w-100 btn-lg fw-bold" type="button" onclick="location.href='dashboard.html'">
+          Create Account
+        </button>
+
+        <p class="text-center mt-4">
+          Already have an account?
+          <a href="login.html">Login</a>
+        </p>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+
