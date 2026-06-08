@@ -37,12 +37,67 @@
             border: 1px solid #dee2e6;
         }
 
-        .sideBar {
-            width: 240px;
-            min-height: calc(100vh - 80px);
-            background: #fff;
-            border-right: 1px solid #e9ecef;
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -320px;
+            width: 300px;
+            height: 100%;
+            padding: 20px;
+            transition: 0.3s;
+            z-index: 1050;
+            background:
+                linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+                url('PUP.jpg') center/cover no-repeat;
         }
+
+        .sidebar.open {
+            left: 0;
+        }
+
+        .sidebar-toggle {
+            margin-right: 0.65rem;
+            min-width: 42px;
+            padding: 0.65rem 0.85rem;
+        }
+
+        .searchInput {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .navbar-nav .nav-link {
+            white-space: nowrap;
+            transition: background-color 0.2s ease;
+        }
+
+        .navbar-brand.logoText {
+            margin-bottom: 0;
+        }
+
+        .navbar .container-fluid {
+            flex-wrap: wrap;
+        }
+
+        main {
+            margin-left: 0;
+            transition: margin-left 0.3s ease;
+        }
+
+        .sidebar.open~main {
+            margin-left: 0;
+        }
+
+        .close-btn {
+            cursor: pointer;
+            float: right;
+            color: white;
+        }
+
+        .sidebar h5 {
+            color: white;
+        }
+
 
         .menuItem {
             color: #1e293b;
@@ -173,8 +228,53 @@
         }
 
         @media(max-width:991px) {
-            .sideBar {
-                display: none;
+            .sidebar {
+                left: -320px;
+                width: 100%;
+                max-width: 320px;
+            }
+
+            .sidebar.open {
+                left: 0;
+            }
+
+            .navbar-nav {
+                width: 100%;
+                justify-content: flex-start;
+                flex-wrap: wrap;
+                flex-direction: column;
+                gap: 0.5rem;
+                margin-top: 0.75rem;
+            }
+
+            .navbar-nav .nav-link {
+                width: 100%;
+                padding: 0.75rem 1rem;
+                border-radius: 12px;
+                background: #ffffffcc;
+            }
+
+            .flex-grow-1 {
+                width: 100%;
+                min-width: 0;
+                margin: 0.75rem 0 0;
+            }
+
+            .navbar .container-fluid {
+                align-items: flex-start;
+            }
+
+            .sidebar-toggle {
+                order: 1;
+            }
+
+            .navbar-brand {
+                order: 2;
+                margin-bottom: 0.5rem;
+            }
+
+            main {
+                margin-left: 0;
             }
         }
 
@@ -200,9 +300,14 @@
 <body>
 
     <nav class="navbar navbar-expand-lg topNavbar px-4">
-        <div class="container-fluid">
+        <div class="container-fluid d-flex align-items-center gap-3">
 
-            <a class="navbar-brand logoText" href="#">
+            <button class="btn btn-light sidebar-toggle" type="button" onclick="toggleSidebar()"
+                aria-label="Toggle sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <a class="navbar-brand logoText mb-0" href="#">
                 i<span>V</span>OTE PH
             </a>
 
@@ -235,166 +340,145 @@
         </div>
     </nav>
 
-    <div class="d-flex">
+    <div class="sidebar" id="sidebar">
+        <h5>Menu <span class="close-btn" onclick="toggleSidebar()">&times;</span></h5>
+        <hr>
 
-        <aside class="sideBar p-3">
+        <div class="d-grid gap-3 mt-4">
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">
+                About
+            </button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='shop.html'">
+                Shop
+            </button>
+            <button class="btn btn-primary rounded-pill" onclick="scrollToForm()">
+                Create Event
+            </button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='Task.html'">
+                Officers Task
+            </button>
+        </div>
+    </div>
 
-            <div class="d-flex flex-column gap-2">
+    <main class="flex-grow-1 p-4">
 
-                <a href="#" class="menuItem active">
-                    <i class="fa-solid fa-house"></i>
-                    Home
-                </a>
+        <div class="row g-4">
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-check"></i>
-                    Your Vote
-                </a>
+            <div class="col-xl-5">
+                <div class="card dashboardCard h-100">
+                    <div class="card-body">
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-clipboard"></i>
-                    My Ballot
-                </a>
+                        <div class="d-flex gap-4 align-items-center">
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-users"></i>
-                    Public Servants
-                </a>
+                            <div class="shieldCircle">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-calendar"></i>
-                    Elections Count
-                </a>
+                            <div>
+                                <h2 class="fw-bold">
+                                    Welcome back,<br>
+                                    Juan Dela Cruz!
+                                </h2>
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-circle-question"></i>
-                    Help Center
-                </a>
+                                <p class="text-muted">
+                                    Your vote is your voice. Make it count.
+                                </p>
 
-                <a href="#" class="menuItem">
-                    <i class="fa-solid fa-gear"></i>
-                    Settings
-                </a>
+                                <div class="statusBox">
+                                    <div class="fw-bold text-primary">
+                                        Voter Status: Verified
+                                    </div>
 
+                                    <small>
+                                        You are eligible to vote in the 2025 National and Local Elections.
+                                    </small>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
 
-        </aside>
+            <div class="col-xl-3">
+                <div class="card dashboardCard h-100">
+                    <div class="card-body">
 
-        <main class="flex-grow-1 p-4">
+                        <h4 class="fw-bold mb-4">
+                            Quick Actions
+                        </h4>
 
-            <div class="row g-4">
+                        <div class="row g-3">
 
-                <div class="col-xl-5">
-                    <div class="card dashboardCard h-100">
-                        <div class="card-body">
-
-                            <div class="d-flex gap-4 align-items-center">
-
-                                <div class="shieldCircle">
-                                    <i class="fa-solid fa-shield-halved"></i>
+                            <div class="col-6">
+                                <div id="quickActionStartVoting" class="quickAction" role="button">
+                                    <i class="fa-solid fa-box"></i>
+                                    <div>Start Voting</div>
                                 </div>
+                            </div>
 
-                                <div>
-                                    <h2 class="fw-bold">
-                                        Welcome back,<br>
-                                        Juan Dela Cruz!
-                                    </h2>
-
-                                    <p class="text-muted">
-                                        Your vote is your voice. Make it count.
-                                    </p>
-
-                                    <div class="statusBox">
-                                        <div class="fw-bold text-primary">
-                                            Voter Status: Verified
-                                        </div>
-
-                                        <small>
-                                            You are eligible to vote in the 2025 National and Local Elections.
-                                        </small>
-                                    </div>
+                            <div class="col-6">
+                                <div class="quickAction">
+                                    <i class="fa-solid fa-file"></i>
+                                    <div>My Ballot</div>
                                 </div>
+                            </div>
 
+                            <div class="col-6">
+                                <div class="quickAction">
+                                    <i class="fa-solid fa-users"></i>
+                                    <div>Browse Candidates</div>
+                                </div>
+                            </div>
+
+                            <div class="col-6">
+                                <div class="quickAction">
+                                    <i class="fa-solid fa-circle-info"></i>
+                                    <div>Election Info</div>
+                                </div>
                             </div>
 
                         </div>
+
                     </div>
                 </div>
-
-                <div class="col-xl-3">
-                    <div class="card dashboardCard h-100">
-                        <div class="card-body">
-
-                            <h4 class="fw-bold mb-4">
-                                Quick Actions
-                            </h4>
-
-                            <div class="row g-3">
-
-                                <div class="col-6">
-                                    <div id="quickActionStartVoting" class="quickAction" role="button">
-                                        <i class="fa-solid fa-box"></i>
-                                        <div>Start Voting</div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="quickAction">
-                                        <i class="fa-solid fa-file"></i>
-                                        <div>My Ballot</div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="quickAction">
-                                        <i class="fa-solid fa-users"></i>
-                                        <div>Browse Candidates</div>
-                                    </div>
-                                </div>
-
-                                <div class="col-6">
-                                    <div class="quickAction">
-                                        <i class="fa-solid fa-circle-info"></i>
-                                        <div>Election Info</div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-xl-4">
-                    <div class="card dashboardCard h-100">
-                        <div class="card-body">
-
-                            <div id="electionDay">
-                                <div class="label">Loading…</div>
-                            </div>
-
-                            <button id="startVotingButton" class="primaryButton" type="button">
-                                Start Voting →
-                            </button>
-
-                            <div id="dashboardSection">
-                                Dashboard Content
-                            </div>
-
-                            <div id="votingSection" class="d-none">
-                                Voting Content Goes Here
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
-        </main>
+            <div class="col-xl-4">
+                <div class="card dashboardCard h-100">
+                    <div class="card-body">
+
+                        <div id="electionDay">
+                            <div class="label">Loading…</div>
+                        </div>
+
+                        <button id="startVotingButton" class="primaryButton" type="button">
+                            Start Voting →
+                        </button>
+
+                        <div id="dashboardSection">
+                            Dashboard Content
+                        </div>
+
+                        <div id="votingSection" class="d-none">
+                            Voting Content Goes Here
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
 
     </div>
     <script>
+        /**SideBar**/
+        function toggleSidebar() {
+            document.getElementById("sidebar").classList.toggle("open");
+        }
         /**Start Voting**/
         document
             .getElementById("startVotingButton")
@@ -411,7 +495,7 @@
 
         /**ELECTION LIVE COUNTDOWN **/
         const countdownElement = document.getElementById('electionDay');
-        const electionDate = new Date('2026-08-30T08:00:00');
+        const electionDate = new Date('2028-05-08T00:00:00');
 
         function getCountdown(target) {
             const targetMs =
