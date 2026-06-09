@@ -207,13 +207,14 @@ body {
   }
 }
 </style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="registerContainer">
   <div class="registerCard">
     <div class="logoSection">
-      <div class="logoText">i<span>V</span>OTE PH</div>
+      <div class="logoText authLogo"><img src="logo.png" alt="iVotePH" class="authLogoImg"></div>
     </div>
 
     <h1>Register</h1>
@@ -440,141 +441,4 @@ document.getElementById("registerForm").addEventListener("submit", function(e) {
 </html>
 
 
-</style>
 
-</head>
-
-
-
-
-
-<script>
-
-document.getElementById("registerForm")
-.addEventListener("submit",function(e){
-
-e.preventDefault();
-
-const fullname =
-document.getElementById("fullname").value.trim();
-
-const birthdate =
-document.getElementById("birthdate").value.trim();
-
-const sex =
-document.getElementById("sex").value.trim();
-
-const mobile =
-document.getElementById("mobile").value.trim();
-
-const precinct =
-document.getElementById("precinct").value.trim();
-
-const region =
-document.getElementById("region").value.trim();
-
-const province =
-document.getElementById("province").value.trim();
-
-const city =
-document.getElementById("city").value.trim();
-
-const barangay =
-document.getElementById("barangay").value.trim();
-
-const address =
-document.getElementById("address").value.trim();
-
-const password =
-document.getElementById("password").value.trim();
-
-const confirmPassword =
-document.getElementById("confirm-password").value.trim();
-
-const agree =
-document.getElementById("agree").checked;
-
-if(fullname===""){
-alert("Please enter your full name.");
-return;
-}
-
-if(birthdate===""){
-alert("Please enter your birthdate.");
-return;
-}
-
-if(sex===""){
-alert("Please select your sex.");
-return;
-}
-
-if(mobile===""){
-alert("Please enter your mobile number.");
-return;
-}
-
-if(!/^\d{10}$/.test(mobile)){
-alert("Please enter a valid 10-digit mobile number.");
-return;
-}
-
-if(precinct===""){
-alert("Please enter your precinct number.");
-return;
-}
-
-if(region===""){
-alert("Please select your region.");
-return;
-}
-
-if(province===""){
-alert("Please select your province.");
-return;
-}
-
-if(city===""){
-alert("Please select your city/municipality.");
-return;
-}
-
-if(barangay===""){
-alert("Please select your barangay.");
-return;
-}
-
-if(address===""){
-alert("Please enter your specific address.");
-return;
-}
-
-if(password.length<6){
-alert("Password must be at least 6 characters.");
-return;
-}
-
-if(password!==confirmPassword){
-alert("Passwords do not match.");
-return;
-}
-
-if(!agree){
-alert("Please agree to the terms and conditions.");
-return;
-}
-
-alert("Registration Successful!");
-
-sessionStorage.setItem("isLoggedIn", "true");
-
-window.location.href="index.html";
-
-});
-
-</script>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-</body>
-</html>
