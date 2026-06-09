@@ -466,3 +466,445 @@ body {
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
 }
+
+/* Merged eGovPH-inspired Bootstrap theme */
+:root {
+  --gov-blue: #0646a8;
+  --gov-blue-dark: #073b82;
+  --gov-blue-soft: #eaf2ff;
+  --gov-red: #d8202a;
+  --gov-yellow: #f7c948;
+  --ink: #172033;
+  --muted: #667085;
+  --line: #dce5f2;
+  --surface: #ffffff;
+  --page: #f4f7fb;
+  --shadow: 0 14px 34px rgba(11, 36, 71, 0.1);
+  --bs-primary: var(--gov-blue);
+  --bs-primary-rgb: 6, 70, 168;
+  --bs-danger: var(--gov-red);
+  --bs-danger-rgb: 216, 32, 42;
+  --bs-body-color: var(--ink);
+  --bs-body-bg: var(--page);
+  --bs-border-color: var(--line);
+  --bs-link-color: var(--gov-blue);
+  --bs-link-hover-color: var(--gov-blue-dark);
+  --bs-border-radius: 0.5rem;
+  --bs-border-radius-lg: 0.5rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--ink);
+  background:
+    linear-gradient(180deg, rgba(244, 248, 255, 0.96), rgba(247, 249, 252, 0.98)),
+    url("flag-bg.png") center top / cover fixed no-repeat;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+}
+
+.videoBg {
+  opacity: 0.08;
+  filter: saturate(0.9);
+}
+
+.videoOverlay {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(244, 247, 251, 0.96)),
+    radial-gradient(circle at top left, rgba(6, 70, 168, 0.16), transparent 34%);
+}
+
+.topNavbar {
+  min-height: 78px;
+  height: auto !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+  border-bottom: 1px solid var(--line) !important;
+  box-shadow: 0 10px 28px rgba(11, 36, 71, 0.08);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar .container-fluid {
+  gap: 0.85rem !important;
+}
+
+.logoText,
+.navbar-brand.logoText {
+  color: var(--gov-blue) !important;
+  font-size: clamp(1.35rem, 2vw, 1.85rem) !important;
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  white-space: nowrap;
+}
+
+.logoText span,
+.navbar-brand.logoText span {
+  color: var(--gov-red) !important;
+}
+
+.brandLogoLink,
+.navbar-brand.brandLogoLink {
+  width: auto;
+  min-height: 50px;
+  padding: 0.35rem 0.75rem !important;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--gov-blue-dark), var(--gov-blue));
+  box-shadow: 0 10px 22px rgba(6, 70, 168, 0.16);
+}
+
+.brandLogo {
+  display: block;
+  width: clamp(132px, 16vw, 188px);
+  max-width: 100%;
+  height: 42px;
+  object-fit: contain;
+}
+
+.authLogo {
+  display: flex;
+  justify-content: center;
+}
+
+.authLogoImg {
+  display: block;
+  width: min(220px, 72vw);
+  max-height: 190px;
+  object-fit: contain;
+}
+
+.sidebar .logo img {
+  width: min(180px, 82%);
+  max-height: 150px;
+  object-fit: contain;
+}
+
+.sidebarToggle,
+.btn-light.sidebarToggle {
+  border: 1px solid var(--line);
+  background: var(--surface);
+  color: var(--gov-blue);
+  border-radius: 10px;
+  min-width: 44px;
+  min-height: 44px;
+}
+
+.searchInput,
+.form-control.searchInput {
+  height: 46px;
+  border-radius: 10px;
+  border-color: var(--line);
+  background: #f8fbff;
+  color: var(--ink);
+}
+
+.searchInput:focus,
+.form-control:focus,
+.form-select:focus,
+.formInput:focus,
+.formSelect:focus {
+  border-color: var(--gov-blue);
+  box-shadow: 0 0 0 4px rgba(6, 70, 168, 0.12);
+}
+
+.navbar-nav .nav-link {
+  color: #344054;
+  border-radius: 10px;
+  padding: 0.65rem 0.8rem;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.fw-semibold {
+  background: var(--gov-blue-soft);
+  color: var(--gov-blue) !important;
+}
+
+.sidebar {
+  background: linear-gradient(180deg, var(--gov-blue-dark), #082b5f) !important;
+  box-shadow: 18px 0 44px rgba(11, 36, 71, 0.22);
+}
+
+.sidebar h5 {
+  font-weight: 800;
+}
+
+.sidebar hr {
+  border-color: rgba(255, 255, 255, 0.24);
+}
+
+.sidebar .btn-primary {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #fff;
+  border-radius: 10px !important;
+  text-align: left;
+  padding: 0.85rem 1rem;
+}
+
+.sidebar .btn-primary:hover {
+  background: #fff;
+  color: var(--gov-blue);
+}
+
+main {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(1rem, 2.2vw, 2rem) !important;
+}
+
+main > h1,
+.positionTitle,
+.card h1,
+.dashboardCard h2,
+.actionCard h1,
+.ballotCard h1 {
+  color: var(--ink) !important;
+  letter-spacing: 0;
+}
+
+main > h1 {
+  font-weight: 800;
+  margin: 1.25rem 0 1.5rem;
+}
+
+.dashboardCard,
+.actionCard,
+.ballotCard,
+.bottomNavCard,
+.candidateCard,
+.positionCard,
+.quickAction,
+.countdownBox,
+.statusBox,
+.loginCard,
+.registerCard {
+  border: 1px solid rgba(220, 229, 242, 0.92) !important;
+  border-radius: 8px !important;
+  box-shadow: var(--shadow) !important;
+  background: rgba(255, 255, 255, 0.96) !important;
+}
+
+.dashboardCard .card-body,
+.actionCard .card-body,
+.ballotCard .card-body {
+  padding: clamp(1.25rem, 2vw, 1.75rem);
+}
+
+.shieldCircle,
+.positionIcon,
+.quickAction i {
+  color: var(--gov-blue) !important;
+}
+
+.shieldCircle,
+.positionIcon {
+  background: var(--gov-blue-soft) !important;
+  border-radius: 8px !important;
+}
+
+.statusBox,
+.countdownBox {
+  background: linear-gradient(180deg, #f7fbff, #eef5ff) !important;
+}
+
+.statusBox {
+  border-left: 4px solid #22a06b;
+}
+
+.countdownBox .fw-bold {
+  color: var(--gov-blue);
+}
+
+.quickAction,
+.navActionItem,
+.positionCard,
+.candidateCard {
+  transform: translateY(0);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.quickAction:hover,
+.navActionItem:hover,
+.positionCard:hover,
+.candidateCard:hover {
+  transform: translateY(-3px) !important;
+  border-color: rgba(6, 70, 168, 0.35) !important;
+  box-shadow: 0 18px 34px rgba(6, 70, 168, 0.14) !important;
+}
+
+.primaryButton,
+.btn-primary,
+.loginBtn,
+.registerBtn {
+  background: var(--gov-blue) !important;
+  border-color: var(--gov-blue) !important;
+  border-radius: 10px !important;
+  font-weight: 700;
+  box-shadow: 0 10px 22px rgba(6, 70, 168, 0.18);
+}
+
+.primaryButton:hover,
+.btn-primary:hover,
+.loginBtn:hover,
+.registerBtn:hover {
+  background: var(--gov-blue-dark) !important;
+  border-color: var(--gov-blue-dark) !important;
+}
+
+.viewAllLink,
+.profileLink,
+.forgotPasswordLink a,
+.registerLink a,
+.loginLink a {
+  color: var(--gov-blue) !important;
+}
+
+.candidateImageWrapper {
+  background: linear-gradient(135deg, var(--gov-blue-soft), #fff7e0) !important;
+  height: 220px !important;
+}
+
+.candidateParty {
+  display: inline-flex;
+  width: fit-content;
+  padding: 0.25rem 0.55rem;
+  border-radius: 999px;
+  background: var(--gov-blue-soft);
+  color: var(--gov-blue) !important;
+  font-weight: 700 !important;
+}
+
+.candidateName,
+.positionName {
+  color: var(--ink) !important;
+  font-weight: 800 !important;
+}
+
+.bottomNavSection {
+  margin-top: 2rem !important;
+}
+
+.navActionItem {
+  border-radius: 8px !important;
+}
+
+.loginContainer,
+.registerContainer {
+  width: 100%;
+}
+
+body:has(.loginContainer),
+body:has(.registerContainer) {
+  background:
+    linear-gradient(135deg, rgba(234, 242, 255, 0.95), rgba(255, 255, 255, 0.98)),
+    url("flag-bg.png") center / cover fixed no-repeat;
+}
+
+.loginCard,
+.registerCard {
+  position: relative;
+  overflow: hidden;
+}
+
+.loginCard::before,
+.registerCard::before {
+  content: "";
+  display: block;
+  height: 6px;
+  background: linear-gradient(90deg, var(--gov-blue), var(--gov-red), var(--gov-yellow));
+  position: absolute;
+  inset: 0 0 auto;
+}
+
+.loginCard h1,
+.registerCard h1,
+.formSectionTitle {
+  color: var(--gov-blue) !important;
+}
+
+.formInput,
+.formSelect {
+  border-radius: 10px !important;
+  border-color: var(--line) !important;
+  background: #fbfdff;
+  min-height: 46px;
+}
+
+.addressSection {
+  background: #f8fbff !important;
+  border-left-color: var(--gov-blue) !important;
+}
+
+.formCheckbox {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+}
+
+.formCheckbox input {
+  margin-top: 0.2rem;
+  flex: 0 0 auto;
+}
+
+@media (max-width: 991px) {
+  .topNavbar {
+    padding: 0.85rem 1rem !important;
+  }
+
+  .navbar-nav .nav-link {
+    background: #f8fbff !important;
+  }
+
+  .flex-grow-1.mx-4 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+  }
+
+  .d-flex.gap-4.align-items-center {
+    align-items: flex-start !important;
+    flex-direction: column;
+  }
+
+  .shieldCircle {
+    width: 72px !important;
+    height: 72px !important;
+    font-size: 2rem !important;
+  }
+
+  .positionHeader {
+    align-items: flex-start !important;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 575px) {
+  main {
+    padding: 1rem !important;
+  }
+
+  .brandLogoLink,
+  .navbar-brand.brandLogoLink {
+    min-height: 44px;
+    padding: 0.3rem 0.55rem !important;
+  }
+
+  .brandLogo {
+    width: 118px;
+    height: 34px;
+  }
+
+  .quickAction,
+  .navActionItem {
+    min-height: 98px;
+  }
+
+  .candidateImageWrapper {
+    height: 180px !important;
+  }
+}
+
