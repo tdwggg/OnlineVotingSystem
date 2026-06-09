@@ -3,206 +3,450 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>iVote PH Register</title>
-
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
 <style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Poppins,sans-serif;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins', 'Segoe UI', sans-serif;
 }
 
-.login-page{
-position:relative;
-min-height:100vh;
-overflow:hidden;
-background:#000;
+body {
+  background: #ffffff;
+  padding: 40px 20px;
 }
 
-.login-video-bg{
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-object-fit:cover;
-z-index:0;
+.registerContainer {
+  max-width: 700px;
+  margin: 0 auto;
 }
 
-.login-page::after{
-content:"";
-position:fixed;
-top:0;
-left:0;
-width:100%;
-height:100%;
-background:rgba(0,0,0,.45);
-z-index:1;
+.registerCard {
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  padding: 40px;
 }
 
-.login-container{
-position:relative;
-z-index:2;
+.registerCard h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1f4788;
+  margin-bottom: 10px;
+  text-align: center;
 }
 
-.login-card{
-padding:50px;
-border-radius:30px;
-background:rgba(255,255,255,.12);
-backdrop-filter:blur(20px);
-border:1px solid rgba(255,255,255,.2);
-color:white;
-box-shadow:0 8px 30px rgba(0,0,0,.3);
+.registerSubtitle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 0.95rem;
 }
 
-.login-card h1{
-font-size:2.5rem;
-font-weight:700;
+.formSection {
+  margin-bottom: 30px;
 }
 
-.custom-input{
-background:transparent;
-border:none;
-border-bottom:2px solid white;
-border-radius:0;
-color:white;
+.formSectionTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #1f4788;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 2px solid #e0e0e0;
 }
 
-.custom-input:focus{
-background:transparent;
-box-shadow:none;
-border-color:white;
-color:white;
+.formGroup {
+  margin-bottom: 18px;
 }
 
-.custom-input::placeholder{
-color:rgba(255,255,255,.7);
+.formLabel {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: 500;
+  font-size: 0.95rem;
 }
 
-.login-card a{
-color:white;
-font-weight:600;
-text-decoration:none;
+.formInput,
+.formSelect {
+  width: 100%;
+  padding: 12px 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
 }
 
-.btn-light{
-border-radius:15px;
-transition:.3s;
+.formInput:focus,
+.formSelect:focus {
+  outline: none;
+  border-color: #1f4788;
+  box-shadow: 0 0 0 3px rgba(31, 71, 136, 0.1);
 }
 
-.btn-light:hover{
-transform:translateY(-3px);
+.phoneInputWrapper {
+  display: flex;
+  gap: 10px;
 }
 
-@media(max-width:768px){
-
-.login-card{
-padding:30px;
+.phonePrefix {
+  padding: 12px 15px;
+  background: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-weight: 600;
+  color: #333;
+  min-width: 80px;
+  display: flex;
+  align-items: center;
 }
 
-.login-card h1{
-font-size:2rem;
+.phoneInputWrapper .formInput {
+  flex: 1;
 }
 
+.formCheckbox {
+  margin-bottom: 20px;
 }
+
+.formCheckbox input {
+  margin-right: 10px;
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #1f4788;
+}
+
+.formCheckbox label {
+  cursor: pointer;
+  color: #333;
+  font-size: 0.95rem;
+}
+
+.registerBtn {
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+.registerBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(31, 71, 136, 0.3);
+}
+
+.registerBtn:active {
+  transform: translateY(0);
+}
+
+.loginLink {
+  text-align: center;
+  margin-top: 20px;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.loginLink a {
+  color: #1f4788;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.loginLink a:hover {
+  color: #3a5fa0;
+}
+
+.logoSection {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.logoText {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: #1f4788;
+}
+
+.logoText span {
+  color: #e74c3c;
+}
+
+.addressSection {
+  background: #f9f9f9;
+  padding: 20px;
+  border-radius: 8px;
+  border-left: 4px solid #1f4788;
+}
+
+@media (max-width: 768px) {
+  .registerCard {
+    padding: 25px;
+  }
+
+  .registerCard h1 {
+    font-size: 1.5rem;
+  }
+
+  .phoneInputWrapper {
+    flex-direction: column;
+  }
+
+  .phonePrefix {
+    min-width: 100%;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="registerContainer">
+  <div class="registerCard">
+    <div class="logoSection">
+      <div class="logoText">i<span>V</span>OTE PH</div>
+    </div>
+
+    <h1>Register</h1>
+    <p class="registerSubtitle">Create your voter account securely</p>
+
+    <form id="registerForm">
+      <!-- Personal Information Section -->
+      <div class="formSection">
+        <div class="formSectionTitle">Personal Information</div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Full Name <span style="color: #e74c3c;">*</span></label>
+              <input id="fullname" type="text" class="formInput" placeholder="Juan Dela Cruz" required>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Birthdate <span style="color: #e74c3c;">*</span></label>
+              <input id="birthdate" type="date" class="formInput" required>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Sex <span style="color: #e74c3c;">*</span></label>
+              <select id="sex" class="formSelect" required>
+                <option value="">Select Sex</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="prefer-not">Prefer not to say</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Mobile Number <span style="color: #e74c3c;">*</span></label>
+              <div class="phoneInputWrapper">
+                <div class="phonePrefix">+63</div>
+                <input id="mobile" type="tel" class="formInput" placeholder="9123456789" required>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Voter Information Section -->
+      <div class="formSection">
+        <div class="formSectionTitle">Voter Information</div>
+        <div class="formGroup">
+          <label class="formLabel">Precinct Number <span style="color: #e74c3c;">*</span></label>
+          <input id="precinct" type="text" class="formInput" placeholder="Enter Precinct Number" required>
+        </div>
+      </div>
+
+      <!-- Address Information Section -->
+      <div class="formSection addressSection">
+        <div class="formSectionTitle">Address Information</div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Region <span style="color: #e74c3c;">*</span></label>
+              <select id="region" class="formSelect" required>
+                <option value="">Select Region</option>
+                <option value="ncr">NCR - National Capital Region</option>
+                <option value="calabarzon">CALABARZON</option>
+                <option value="visayas">Central Visayas</option>
+                <option value="mindanao">Northern Mindanao</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Province <span style="color: #e74c3c;">*</span></label>
+              <select id="province" class="formSelect" required>
+                <option value="">Select Province</option>
+                <option value="metro-manila">Metro Manila</option>
+                <option value="bulacan">Bulacan</option>
+                <option value="cavite">Cavite</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">City / Municipality <span style="color: #e74c3c;">*</span></label>
+              <select id="city" class="formSelect" required>
+                <option value="">Select City/Municipality</option>
+                <option value="manila">Manila</option>
+                <option value="quezon-city">Quezon City</option>
+                <option value="caloocan">Caloocan</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="formGroup">
+              <label class="formLabel">Barangay <span style="color: #e74c3c;">*</span></label>
+              <select id="barangay" class="formSelect" required>
+                <option value="">Select Barangay</option>
+                <option value="barangay-1">Barangay 1</option>
+                <option value="barangay-2">Barangay 2</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="formGroup">
+          <label class="formLabel">Specific Address <span style="color: #e74c3c;">*</span></label>
+          <input id="address" type="text" class="formInput" placeholder="House No., Street Name" required>
+        </div>
+      </div>
+
+      <!-- Account Security Section -->
+      <div class="formSection">
+        <div class="formSectionTitle">Account Security</div>
+        <div class="formGroup">
+          <label class="formLabel">Password <span style="color: #e74c3c;">*</span></label>
+          <input id="password" type="password" class="formInput" placeholder="Min. 6 characters" required>
+        </div>
+        <div class="formGroup">
+          <label class="formLabel">Confirm Password <span style="color: #e74c3c;">*</span></label>
+          <input id="confirmPassword" type="password" class="formInput" placeholder="Confirm Password" required>
+        </div>
+      </div>
+
+      <div class="formCheckbox">
+        <input type="checkbox" id="agree" required>
+        <label for="agree">I agree to the terms and conditions and privacy policy</label>
+      </div>
+
+      <button type="submit" class="registerBtn">
+        <i class="bi bi-person-plus me-2"></i>Create Account
+      </button>
+    </form>
+
+    <div class="loginLink">
+      Already have an account? <a href="login.html">Log In</a>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+
+  const fullname = document.getElementById("fullname").value.trim();
+  const birthdate = document.getElementById("birthdate").value;
+  const sex = document.getElementById("sex").value;
+  const mobile = document.getElementById("mobile").value.trim();
+  const precinct = document.getElementById("precinct").value.trim();
+  const region = document.getElementById("region").value;
+  const province = document.getElementById("province").value;
+  const city = document.getElementById("city").value;
+  const barangay = document.getElementById("barangay").value;
+  const address = document.getElementById("address").value.trim();
+  const password = document.getElementById("password").value;
+  const confirmPassword = document.getElementById("confirmPassword").value;
+  const agree = document.getElementById("agree").checked;
+
+  if (fullname === "") {
+    alert("Please enter your full name.");
+    return;
+  }
+
+  if (birthdate === "") {
+    alert("Please select your birthdate.");
+    return;
+  }
+
+  if (sex === "") {
+    alert("Please select your sex.");
+    return;
+  }
+
+  if (mobile === "" || !/^\d{10}$/.test(mobile)) {
+    alert("Please enter a valid 10-digit mobile number.");
+    return;
+  }
+
+  if (precinct === "") {
+    alert("Please enter your precinct number.");
+    return;
+  }
+
+  if (region === "" || province === "" || city === "" || barangay === "") {
+    alert("Please complete your address information.");
+    return;
+  }
+
+  if (address === "") {
+    alert("Please enter your specific address.");
+    return;
+  }
+
+  if (password.length < 6) {
+    alert("Password must be at least 6 characters.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    alert("Passwords do not match.");
+    return;
+  }
+
+  if (!agree) {
+    alert("Please agree to the terms and conditions.");
+    return;
+  }
+
+  alert("Registration Successful!");
+  sessionStorage.setItem("isLoggedIn", "true");
+  window.location.href = "index.html";
+});
+</script>
+
+</body>
+</html>
+
+
 </style>
 
 </head>
 
-<body class="login-page">
 
-<video class="login-video-bg" autoplay muted loop playsinline>
-<source src="flag.mp4" type="video/mp4">
-</video>
 
-<div class="container-fluid vh-100 login-container">
 
-<div class="row h-100 justify-content-center align-items-center">
-
-<div class="col-lg-5 col-md-7 col-sm-10">
-
-<div class="login-card">
-
-<h1 class="text-center mb-5">
-Register
-</h1>
-
-<form id="registerForm">
-
-<div class="mb-4">
-<label class="form-label">
-Full Name
-</label>
-
-<input
-id="fullname"
-type="text"
-class="form-control custom-input"
-placeholder="Enter Full Name">
-</div>
-
-<div class="mb-4">
-<label class="form-label">
-Precinct Number
-</label>
-
-<input
-id="precinct"
-type="text"
-class="form-control custom-input"
-placeholder="Enter Precinct Number">
-</div>
-
-<div class="mb-4">
-<label class="form-label">
-Password
-</label>
-
-<input
-id="password"
-type="password"
-class="form-control custom-input"
-placeholder="Create Password">
-</div>
-
-<div class="form-check mb-4">
-
-<input
-id="agree"
-class="form-check-input"
-type="checkbox">
-
-<label class="form-check-label">
-I agree to the terms and conditions
-</label>
-
-</div>
-
-<button
-type="submit"
-class="btn btn-light w-100 btn-lg fw-bold">
-Create Account
-</button>
-
-<p class="text-center mt-4">
-Already have an account?
-<a href="login.html">Login</a>
-</p>
-
-</form>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
 
 <script>
 
@@ -214,11 +458,38 @@ e.preventDefault();
 const fullname =
 document.getElementById("fullname").value.trim();
 
+const birthdate =
+document.getElementById("birthdate").value.trim();
+
+const sex =
+document.getElementById("sex").value.trim();
+
+const mobile =
+document.getElementById("mobile").value.trim();
+
 const precinct =
 document.getElementById("precinct").value.trim();
 
+const region =
+document.getElementById("region").value.trim();
+
+const province =
+document.getElementById("province").value.trim();
+
+const city =
+document.getElementById("city").value.trim();
+
+const barangay =
+document.getElementById("barangay").value.trim();
+
+const address =
+document.getElementById("address").value.trim();
+
 const password =
 document.getElementById("password").value.trim();
+
+const confirmPassword =
+document.getElementById("confirm-password").value.trim();
 
 const agree =
 document.getElementById("agree").checked;
@@ -228,13 +499,63 @@ alert("Please enter your full name.");
 return;
 }
 
+if(birthdate===""){
+alert("Please enter your birthdate.");
+return;
+}
+
+if(sex===""){
+alert("Please select your sex.");
+return;
+}
+
+if(mobile===""){
+alert("Please enter your mobile number.");
+return;
+}
+
+if(!/^\d{10}$/.test(mobile)){
+alert("Please enter a valid 10-digit mobile number.");
+return;
+}
+
 if(precinct===""){
 alert("Please enter your precinct number.");
 return;
 }
 
+if(region===""){
+alert("Please select your region.");
+return;
+}
+
+if(province===""){
+alert("Please select your province.");
+return;
+}
+
+if(city===""){
+alert("Please select your city/municipality.");
+return;
+}
+
+if(barangay===""){
+alert("Please select your barangay.");
+return;
+}
+
+if(address===""){
+alert("Please enter your specific address.");
+return;
+}
+
 if(password.length<6){
 alert("Password must be at least 6 characters.");
+return;
+}
+
+if(password!==confirmPassword){
+alert("Passwords do not match.");
 return;
 }
 
@@ -245,7 +566,6 @@ return;
 
 alert("Registration Successful!");
 
-// Mark user session as allowed before transferring
 sessionStorage.setItem("isLoggedIn", "true");
 
 window.location.href="index.html";
@@ -253,6 +573,8 @@ window.location.href="index.html";
 });
 
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

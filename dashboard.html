@@ -30,42 +30,14 @@
 <li class="active">
 <a href="#" data-section="home">
 <i class="bi bi-house-fill"></i>
-Home
+Dashboard
 </a>
 </li>
 
 <li>
-<a href="#" data-section="voting">
-<i class="bi bi-check2-square"></i>
-Voting
-</a>
-</li>
-
-<li>
-<a href="#" data-section="ballot">
+<a href="#" data-section="voter-status">
 <i class="bi bi-file-earmark-text"></i>
-My Ballot
-</a>
-</li>
-
-<li>
-<a href="#" data-section="candidates">
-<i class="bi bi-people-fill"></i>
-Candidates
-</a>
-</li>
-
-<li>
-<a href="#" data-section="results">
-<i class="bi bi-bar-chart-fill"></i>
-Results
-</a>
-</li>
-
-<li>
-<a href="#" data-section="help">
-<i class="bi bi-question-circle-fill"></i>
-Help Center
+Voter Status
 </a>
 </li>
 
@@ -77,9 +49,9 @@ Settings
 </li>
 
 <li>
-<a href="login.html">
-<i class="bi bi-box-arrow-right"></i>
-Logout
+<a href="#" data-section="help">
+<i class="bi bi-question-circle-fill"></i>
+Help Center
 </a>
 </li>
 
@@ -91,18 +63,36 @@ Logout
 
 <header class="topbar">
 
-<div>
+<div class="topbar-left">
 <h2 class="fw-bold mb-0">Welcome to iVote PH</h2>
 <small>Secure Online Voting Platform</small>
 </div>
 
-<input
-type="text"
-class="search-box"
-placeholder="Search Candidates">
+<div class="topbar-right">
+<!-- Settings Icon -->
+<button class="topbar-icon-btn" data-section="settings" title="Settings">
+<i class="bi bi-gear"></i>
+</button>
 
-<div class="profile">
-<i class="bi bi-person-fill"></i>
+<!-- Help Center Icon -->
+<button class="topbar-icon-btn" data-section="help" title="Help Center">
+<i class="bi bi-question-circle"></i>
+</button>
+
+<!-- Profile Dropdown -->
+<div class="profile-dropdown">
+<button class="profile-btn" data-bs-toggle="dropdown" aria-expanded="false" title="Profile Menu">
+<img src="avatar.png" alt="User Avatar" class="profile-avatar">
+<span class="profile-name">John Doe</span>
+<i class="bi bi-chevron-down"></i>
+</button>
+<ul class="dropdown-menu dropdown-menu-end">
+<li><a class="dropdown-item" href="#"><i class="bi bi-person"></i> View Profile</a></li>
+<li><a class="dropdown-item" href="#"><i class="bi bi-gear"></i> Account Settings</a></li>
+<li><hr class="dropdown-divider"></li>
+<li><a class="dropdown-item logout-item" href="login.html"><i class="bi bi-box-arrow-right"></i> Log Out</a></li>
+</ul>
+</div>
 </div>
 
 </header>
@@ -151,71 +141,25 @@ and election updates in real-time.
 
 </div>
 
-<div data-section-panel="voting" style="display:none;">
-
-<div class="dashboard-card">
-<h3>Vote for President</h3>
-
-<div class="candidate-card">
-<h5>Candidate A</h5>
-<button class="btn btn-primary">
-Vote
-</button>
-</div>
-
-<div class="candidate-card">
-<h5>Candidate B</h5>
-<button class="btn btn-primary">
-Vote
-</button>
-</div>
-
-<div class="candidate-card">
-<h5>Candidate C</h5>
-<button class="btn btn-primary">
-Vote
-</button>
-</div>
-
-</div>
-
-</div>
-
-<div data-section-panel="ballot" style="display:none;">
+<div data-section-panel="voter-status" style="display:none;">
 
 <div class="dashboard-card">
 
-<h3>My Ballot</h3>
+<h3>Voter Information & Status</h3>
 
-<p>No votes submitted yet.</p>
-
+<div class="row mt-4">
+<div class="col-md-6">
+<h5>Your Information</h5>
+<p><strong>Full Name:</strong> Juan Dela Cruz</p>
+<p><strong>Precinct Number:</strong> P-00123</p>
+<p><strong>Region:</strong> NCR - National Capital Region</p>
+<p><strong>Address:</strong> 123 Mabini St., Barangay 1, Manila</p>
 </div>
-
-</div>
-
-
-<div data-section-panel="candidates" style="display:none;">
-
-<div class="row g-4">
-
-<div class="col-md-4">
-<div class="candidate-profile">
-<h4>Candidate A</h4>
-<p>Running for President</p>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="candidate-profile">
-<h4>Candidate B</h4>
-<p>Running for President</p>
-</div>
-</div>
-
-<div class="col-md-4">
-<div class="candidate-profile">
-<h4>Candidate C</h4>
-<p>Running for President</p>
+<div class="col-md-6">
+<h5>Voting Status</h5>
+<p><strong>Voter Status:</strong> <span class="badge bg-success">Registered & Verified</span></p>
+<p><strong>Voting Eligibility:</strong> <span class="badge bg-success">Eligible</span></p>
+<p><strong>Votes Submitted:</strong> 0</p>
 </div>
 </div>
 
@@ -223,44 +167,28 @@ Vote
 
 </div>
 
-
-<div data-section-panel="results" style="display:none;">
+<div data-section-panel="settings" style="display:none;">
 
 <div class="dashboard-card">
 
-<h3>Live Results</h3>
+<h3>Account Settings</h3>
 
-<div class="result-row">
-<span>Candidate A</span>
-<span>45%</span>
+<div class="settings-group mt-4">
+<h5>General Settings</h5>
+<p><a href="#">Change Password</a></p>
+<p><a href="#">Update Profile Information</a></p>
+<p><a href="#">Notification Preferences</a></p>
 </div>
 
-<div class="progress mb-3">
-<div class="progress-bar" style="width:45%"></div>
-</div>
-
-<div class="result-row">
-<span>Candidate B</span>
-<span>35%</span>
-</div>
-
-<div class="progress mb-3">
-<div class="progress-bar" style="width:35%"></div>
-</div>
-
-<div class="result-row">
-<span>Candidate C</span>
-<span>20%</span>
-</div>
-
-<div class="progress">
-<div class="progress-bar" style="width:20%"></div>
+<div class="settings-group mt-4">
+<h5>Security</h5>
+<p><a href="#">Two-Factor Authentication</a></p>
+<p><a href="#">Manage Sessions</a></p>
 </div>
 
 </div>
 
 </div>
-
 
 <div data-section-panel="help" style="display:none;">
 
@@ -268,23 +196,19 @@ Vote
 
 <h3>Help Center</h3>
 
-<p>
-Need assistance?
-Contact support or review voting instructions.
-</p>
-
+<div class="help-section mt-4">
+<h5>Frequently Asked Questions</h5>
+<p><a href="#">How do I reset my password?</a></p>
+<p><a href="#">How to verify my voter information?</a></p>
+<p><a href="#">What if I forget my precinct number?</a></p>
 </div>
 
+<div class="help-section mt-4">
+<h5>Contact Support</h5>
+<p>Email: support@ivoteph.gov.ph</p>
+<p>Phone: 1-800-IVOTE-PH</p>
+<p>Hours: Mon-Fri 8:00 AM - 5:00 PM PST</p>
 </div>
-
-
-<div data-section-panel="settings" style="display:none;">
-
-<div class="dashboard-card">
-
-<h3>Settings</h3>
-
-<p>Manage your account preferences.</p>
 
 </div>
 
@@ -295,6 +219,7 @@ Contact support or review voting instructions.
 </div>
 
 <script src="sections.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>

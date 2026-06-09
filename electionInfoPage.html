@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Election Information - iVote PH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .navBrand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f4788 !important;
+    }
+
+    .navBrand span {
+      color: #e74c3c;
+    }
+
+    .navLink {
+      color: #333 !important;
+      font-weight: 500;
+      transition: color 0.3s;
+      margin-left: 20px;
+    }
+
+    .navLink:hover {
+      color: #1f4788 !important;
+    }
+
+    .pageHeader {
+      background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .pageTitle {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .pageSubtitle {
+      font-size: 1.1rem;
+      opacity: 0.95;
+    }
+
+    .container-lg {
+      max-width: 1200px;
+    }
+
+    .section {
+      padding: 50px 20px;
+    }
+
+    .sectionTitle {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1f4788;
+      margin-bottom: 35px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid #1f4788;
+      position: relative;
+    }
+
+    .sectionTitle::before {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 80px;
+      height: 3px;
+      background: #e74c3c;
+    }
+
+    /* Election Overview Section */
+    .overviewGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .overviewCard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      border-top: 4px solid #1f4788;
+      transition: all 0.3s ease;
+    }
+
+    .overviewCard:hover {
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
+
+    .overviewIcon {
+      font-size: 2rem;
+      color: #1f4788;
+      margin-bottom: 15px;
+    }
+
+    .overviewLabel {
+      color: #666;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+
+    .overviewValue {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #1f4788;
+    }
+
+    /* Timeline Section */
+    .timeline {
+      position: relative;
+      padding: 20px 0;
+      max-width: 800px;
+    }
+
+    .timelineItem {
+      display: flex;
+      margin-bottom: 40px;
+      position: relative;
+      padding-left: 50px;
+    }
+
+    .timelineItem::before {
+      content: '';
+      position: absolute;
+      left: 8px;
+      top: 5px;
+      width: 20px;
+      height: 20px;
+      background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 0 0 2px #1f4788;
+    }
+
+    .timelineItem:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      left: 18px;
+      top: 30px;
+      width: 2px;
+      height: 40px;
+      background: #e0e0e0;
+    }
+
+    .timelineContent {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      flex-grow: 1;
+    }
+
+    .timelineDate {
+      color: #1f4788;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-bottom: 8px;
+    }
+
+    .timelineTitle {
+      color: #1f4788;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 8px;
+    }
+
+    .timelineDescription {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Important Dates */
+    .importantDatesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .dateCard {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid #e74c3c;
+    }
+
+    .dateCardTitle {
+      color: #e74c3c;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+    }
+
+    .dateCardText {
+      color: #1f4788;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    /* Candidates Section */
+    .candidatesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .candidateCard {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      transition: all 0.3s ease;
+    }
+
+    .candidateCard:hover {
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.12);
+      transform: translateY(-8px);
+    }
+
+    .candidateHeader {
+      background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+      color: white;
+      padding: 30px 20px;
+      text-align: center;
+    }
+
+    .candidateAvatar {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+
+    .candidateName {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .candidateBody {
+      padding: 20px;
+    }
+
+    .candidatePosition {
+      color: #1f4788;
+      font-weight: 600;
+      font-size: 0.95rem;
+      margin-bottom: 10px;
+    }
+
+    .candidateParty {
+      display: inline-block;
+      background: #e8f4ff;
+      color: #1f4788;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 15px;
+    }
+
+    .candidateBio {
+      color: #666;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 15px;
+    }
+
+    /* Rules and Guidelines */
+    .rulesGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+    }
+
+    .ruleCard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      border-top: 4px solid #17a2b8;
+    }
+
+    .ruleIcon {
+      font-size: 2rem;
+      color: #17a2b8;
+      margin-bottom: 15px;
+    }
+
+    .ruleTitle {
+      color: #1f4788;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 12px;
+    }
+
+    .ruleText {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    /* FAQ Section */
+    .faqContainer {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faqItem {
+      background: white;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+    }
+
+    .faqQuestion {
+      padding: 20px;
+      background: #f9f9f9;
+      font-weight: 600;
+      color: #1f4788;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.3s ease;
+    }
+
+    .faqQuestion:hover {
+      background: #e8f4ff;
+    }
+
+    .faqIcon {
+      font-size: 1.2rem;
+      transition: transform 0.3s ease;
+    }
+
+    .faqAnswer {
+      padding: 20px;
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      display: none;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    .faqAnswer.active {
+      display: block;
+    }
+
+    .faqQuestion.active {
+      background: #e8f4ff;
+    }
+
+    .faqQuestion.active .faqIcon {
+      transform: rotate(45deg);
+    }
+
+    /* Status Indicators */
+    .statusIndicatorGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+    }
+
+    .statusCard {
+      background: white;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      text-align: center;
+    }
+
+    .statusBadge {
+      display: inline-block;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      margin-bottom: 15px;
+    }
+
+    .statusBadge.pending {
+      background: #fff3cd;
+      color: #856404;
+    }
+
+    .statusBadge.ongoing {
+      background: #d4edda;
+      color: #155724;
+    }
+
+    .statusBadge.completed {
+      background: #d1ecf1;
+      color: #0c5460;
+    }
+
+    .statusLabel {
+      color: #666;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .footerText {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .pageTitle {
+        font-size: 1.8rem;
+      }
+
+      .sectionTitle {
+        font-size: 1.3rem;
+      }
+
+      .timelineItem {
+        padding-left: 35px;
+      }
+
+      .timelineItem::before {
+        width: 16px;
+        height: 16px;
+        left: 2px;
+      }
+
+      .timelineItem::after {
+        left: 11px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-lg">
+      <a class="navbar-brand navBrand" href="index.html">i<span>V</span>OTE PH</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link navLink" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="aboutPage.html">About</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="electionInfo.html">Elections</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="help.html">Help</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Header -->
+  <div class="pageHeader">
+    <div class="container-lg">
+      <h1 class="pageTitle">Election Information</h1>
+      <p class="pageSubtitle">National General Elections 2024 - Complete Details & Guidelines</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-lg">
+    <!-- Election Overview -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-info-circle me-2"></i>Election Overview</h2>
+      <div class="overviewGrid">
+        <div class="overviewCard">
+          <div class="overviewIcon"><i class="bi bi-calendar3"></i></div>
+          <div class="overviewLabel">Election Date</div>
+          <div class="overviewValue">May 15, 2024</div>
+        </div>
+
+        <div class="overviewCard">
+          <div class="overviewIcon"><i class="bi bi-clock"></i></div>
+          <div class="overviewLabel">Voting Period</div>
+          <div class="overviewValue">5 Days</div>
+        </div>
+
+        <div class="overviewCard">
+          <div class="overviewIcon"><i class="bi bi-people"></i></div>
+          <div class="overviewLabel">Registered Voters</div>
+          <div class="overviewValue">15,230</div>
+        </div>
+
+        <div class="overviewCard">
+          <div class="overviewIcon"><i class="bi bi-person-lines-fill"></i></div>
+          <div class="overviewLabel">Total Candidates</div>
+          <div class="overviewValue">12</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Election Timeline -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-diagram-3 me-2"></i>Election Timeline</h2>
+      <div class="timeline">
+        <div class="timelineItem">
+          <div class="timelineContent">
+            <div class="timelineDate">March 15, 2024</div>
+            <div class="timelineTitle">Registration Opens</div>
+            <div class="timelineDescription">Voter registration period begins. Eligible citizens can create their accounts and verify their information.</div>
+          </div>
+        </div>
+
+        <div class="timelineItem">
+          <div class="timelineContent">
+            <div class="timelineDate">May 1, 2024</div>
+            <div class="timelineTitle">Registration Closes</div>
+            <div class="timelineDescription">Final deadline for voter registration. No new registrations accepted after this date.</div>
+          </div>
+        </div>
+
+        <div class="timelineItem">
+          <div class="timelineContent">
+            <div class="timelineDate">May 10, 2024</div>
+            <div class="timelineTitle">Candidate Information Published</div>
+            <div class="timelineDescription">All candidate profiles and positions are available for voter review.</div>
+          </div>
+        </div>
+
+        <div class="timelineItem">
+          <div class="timelineContent">
+            <div class="timelineDate">May 15 - 20, 2024</div>
+            <div class="timelineTitle">Voting Period</div>
+            <div class="timelineDescription">Active voting period. Registered voters can cast their votes through the secure online portal.</div>
+          </div>
+        </div>
+
+        <div class="timelineItem">
+          <div class="timelineContent">
+            <div class="timelineDate">May 21, 2024</div>
+            <div class="timelineTitle">Results Announcement</div>
+            <div class="timelineDescription">Official results are compiled, verified, and announced to the public.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Important Dates -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-calendar-event me-2"></i>Important Dates</h2>
+      <div class="importantDatesGrid">
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-pencil-square me-2"></i>Registration Opens</div>
+          <div class="dateCardText">March 15, 2024</div>
+        </div>
+
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-check-circle me-2"></i>Registration Closes</div>
+          <div class="dateCardText">May 1, 2024</div>
+        </div>
+
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-book me-2"></i>Campaign Period Ends</div>
+          <div class="dateCardText">May 13, 2024</div>
+        </div>
+
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-ballot-check me-2"></i>Voting Begins</div>
+          <div class="dateCardText">May 15, 2024 08:00 AM</div>
+        </div>
+
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-stop-circle me-2"></i>Voting Ends</div>
+          <div class="dateCardText">May 20, 2024 11:59 PM</div>
+        </div>
+
+        <div class="dateCard">
+          <div class="dateCardTitle"><i class="bi bi-graph-up me-2"></i>Results Released</div>
+          <div class="dateCardText">May 21, 2024</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Candidates Information -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-people-fill me-2"></i>Candidates</h2>
+      <div class="candidatesGrid">
+        <div class="candidateCard">
+          <div class="candidateHeader">
+            <div class="candidateAvatar"><i class="bi bi-person-circle"></i></div>
+            <div class="candidateName">Juan Dela Cruz</div>
+          </div>
+          <div class="candidateBody">
+            <div class="candidatePosition">Presidential Candidate</div>
+            <span class="candidateParty"><i class="bi bi-flag me-2"></i>Democratic Party</span>
+            <p class="candidateBio">Experienced public servant with over 20 years in government. Advocate for economic reform and social development.</p>
+          </div>
+        </div>
+
+        <div class="candidateCard">
+          <div class="candidateHeader">
+            <div class="candidateAvatar"><i class="bi bi-person-circle"></i></div>
+            <div class="candidateName">Maria Santos</div>
+          </div>
+          <div class="candidateBody">
+            <div class="candidatePosition">Presidential Candidate</div>
+            <span class="candidateParty"><i class="bi bi-flag me-2"></i>People's Union</span>
+            <p class="candidateBio">Business leader and philanthropist focused on education and poverty alleviation programs nationwide.</p>
+          </div>
+        </div>
+
+        <div class="candidateCard">
+          <div class="candidateHeader">
+            <div class="candidateAvatar"><i class="bi bi-person-circle"></i></div>
+            <div class="candidateName">Carlos Rodriguez</div>
+          </div>
+          <div class="candidateBody">
+            <div class="candidatePosition">Vice Presidential Candidate</div>
+            <span class="candidateParty"><i class="bi bi-flag me-2"></i>Democratic Party</span>
+            <p class="candidateBio">Constitutional lawyer specializing in governance reforms and institutional strengthening initiatives.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Election Rules & Guidelines -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-shield-check me-2"></i>Election Rules & Guidelines</h2>
+      <div class="rulesGrid">
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-check-circle"></i></div>
+          <div class="ruleTitle">Voter Eligibility</div>
+          <div class="ruleText">Must be a registered Filipino citizen, 18 years or older, with valid precinct assignment and verified account.</div>
+        </div>
+
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-lock"></i></div>
+          <div class="ruleTitle">Vote Secrecy</div>
+          <div class="ruleText">All votes are completely confidential. No one can access your voting records except through authorized legal processes.</div>
+        </div>
+
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-1-circle"></i></div>
+          <div class="ruleTitle">One Vote Per Person</div>
+          <div class="ruleText">Each registered voter can only cast one vote during the election period. Duplicate voting is prevented through advanced verification.</div>
+        </div>
+
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-clock"></i></div>
+          <div class="ruleTitle">Voting Period</div>
+          <div class="ruleText">Voting is available 24/7 from May 15-20, 2024. You can vote at any time that is convenient for you.</div>
+        </div>
+
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-pencil"></i></div>
+          <div class="ruleTitle">Vote Modification</div>
+          <div class="ruleText">You can change your vote before final submission. Once submitted, votes cannot be modified or withdrawn.</div>
+        </div>
+
+        <div class="ruleCard">
+          <div class="ruleIcon"><i class="bi bi-exclamation-triangle"></i></div>
+          <div class="ruleTitle">Prohibited Activities</div>
+          <div class="ruleText">Vote selling, coercion, election fraud, and unauthorized access are strictly prohibited and legally punishable.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-question-circle me-2"></i>Frequently Asked Questions</h2>
+      <div class="faqContainer">
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>How do I register to vote online?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            To register, visit the registration page, enter your precinct number and personal information, create a secure password, and verify your email. 
+            You'll receive a verification code to complete the registration process.
+          </div>
+        </div>
+
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>Is online voting secure and private?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            Yes, all votes are encrypted end-to-end using military-grade encryption. Your vote is completely anonymous and confidential. 
+            The system uses advanced security measures to prevent fraud and ensure electoral integrity.
+          </div>
+        </div>
+
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>Can I change my vote after submission?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            You can modify your selections before final submission. However, once you click the final "Submit Vote" button, 
+            your vote is locked and cannot be changed. Review carefully before submitting.
+          </div>
+        </div>
+
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>What if I forget my password?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            Click the "Forgot Password?" link on the login page. You'll be guided through a verification process using your email and precinct number. 
+            You can then set a new password securely.
+          </div>
+        </div>
+
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>Can I vote from outside the Philippines?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            Yes, as long as you are a registered voter and have been issued a precinct number. You can vote from anywhere with an internet connection 
+            during the designated voting period.
+          </div>
+        </div>
+
+        <div class="faqItem">
+          <div class="faqQuestion" onclick="toggleFaq(this)">
+            <span>How are the election results verified?</span>
+            <span class="faqIcon">+</span>
+          </div>
+          <div class="faqAnswer">
+            Election results are verified through multiple independent audits using blockchain technology. All results are published transparently 
+            and can be verified by authorized election observers.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Status Indicators -->
+    <div class="section">
+      <h2 class="sectionTitle"><i class="bi bi-bar-chart me-2"></i>Election Status</h2>
+      <div class="statusIndicatorGrid">
+        <div class="statusCard">
+          <span class="statusBadge pending"><i class="bi bi-hourglass me-2"></i>Pending</span>
+          <div class="statusLabel">Registration</div>
+        </div>
+
+        <div class="statusCard">
+          <span class="statusBadge ongoing"><i class="bi bi-play-circle me-2"></i>Ongoing</span>
+          <div class="statusLabel">Campaign Period</div>
+        </div>
+
+        <div class="statusCard">
+          <span class="statusBadge pending"><i class="bi bi-clock me-2"></i>Pending</span>
+          <div class="statusLabel">Voting Period</div>
+        </div>
+
+        <div class="statusCard">
+          <span class="statusBadge pending"><i class="bi bi-graph-up me-2"></i>Pending</span>
+          <div class="statusLabel">Results</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="container-lg">
+      <p class="footerText">&copy; 2024 iVote PH. All rights reserved. Secure. Transparent. Democratic.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    function toggleFaq(element) {
+      const answer = element.nextElementSibling;
+      const isActive = element.classList.contains('active');
+      
+      // Close all other FAQ items
+      document.querySelectorAll('.faqQuestion').forEach(q => {
+        if (q !== element) {
+          q.classList.remove('active');
+          q.nextElementSibling.classList.remove('active');
+        }
+      });
+
+      // Toggle current item
+      element.classList.toggle('active');
+      answer.classList.toggle('active');
+    }
+  </script>
+</body>
+</html>

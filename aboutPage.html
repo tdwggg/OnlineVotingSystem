@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About iVote PH</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background: #ffffff;
+      color: #333;
+    }
+
+    .navbar {
+      background: white;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+
+    .navBrand {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #1f4788 !important;
+    }
+
+    .navBrand span {
+      color: #e74c3c;
+    }
+
+    .navLink {
+      color: #333 !important;
+      font-weight: 500;
+      transition: color 0.3s;
+      margin-left: 20px;
+    }
+
+    .navLink:hover {
+      color: #1f4788 !important;
+    }
+
+    .heroSection {
+      background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+      color: white;
+      padding: 80px 20px;
+      text-align: center;
+    }
+
+    .heroTitle {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .heroSubtitle {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .section {
+      padding: 60px 20px;
+    }
+
+    .sectionTitle {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #1f4788;
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    .missionCard {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      border-left: 6px solid #1f4788;
+      max-width: 700px;
+      margin: 0 auto 40px;
+    }
+
+    .missionIcon {
+      font-size: 3rem;
+      color: #1f4788;
+      margin-bottom: 20px;
+    }
+
+    .missionTitle {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #1f4788;
+      margin-bottom: 15px;
+    }
+
+    .missionText {
+      color: #666;
+      font-size: 1rem;
+      line-height: 1.7;
+    }
+
+    .featureGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .featureCard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s ease;
+      text-align: center;
+      border-top: 4px solid #1f4788;
+    }
+
+    .featureCard:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .featureIcon {
+      font-size: 2.5rem;
+      color: #1f4788;
+      margin-bottom: 20px;
+    }
+
+    .featureTitle {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #1f4788;
+      margin-bottom: 15px;
+    }
+
+    .featureText {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .benefitsList {
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .benefitItem {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 25px;
+    }
+
+    .benefitIcon {
+      font-size: 1.5rem;
+      color: #1f4788;
+      margin-right: 20px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    .benefitContent h4 {
+      color: #1f4788;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .benefitContent p {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .securitySection {
+      background: #f9f9f9;
+    }
+
+    .securityGrid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .securityCard {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      border-left: 4px solid #17a2b8;
+    }
+
+    .securityCard h4 {
+      color: #17a2b8;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .securityCard p {
+      color: #666;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .ctaSection {
+      background: linear-gradient(135deg, #1f4788 0%, #3a5fa0 100%);
+      color: white;
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .ctaTitle {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .ctaText {
+      font-size: 1.1rem;
+      margin-bottom: 30px;
+      opacity: 0.95;
+    }
+
+    .ctaBtn {
+      display: inline-block;
+      background: white;
+      color: #1f4788;
+      padding: 12px 35px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s;
+      margin: 0 10px;
+    }
+
+    .ctaBtn:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .footer {
+      background: #2c3e50;
+      color: white;
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .footerText {
+      opacity: 0.9;
+      font-size: 0.95rem;
+    }
+
+    @media (max-width: 768px) {
+      .heroTitle {
+        font-size: 2rem;
+      }
+
+      .heroSubtitle {
+        font-size: 1rem;
+      }
+
+      .sectionTitle {
+        font-size: 1.5rem;
+      }
+
+      .section {
+        padding: 40px 20px;
+      }
+
+      .benefitItem {
+        margin-bottom: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container-lg">
+      <a class="navbar-brand navBrand" href="index.html">i<span>V</span>OTE PH</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link navLink" href="index.html">Home</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="about.html">About</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="electionInfo.html">Elections</a></li>
+          <li class="nav-item"><a class="nav-link navLink" href="help.html">Help</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <div class="heroSection">
+    <div class="container-lg">
+      <h1 class="heroTitle">About iVote PH</h1>
+      <p class="heroSubtitle">Transforming Democratic Participation Through Technology</p>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container-lg">
+    <!-- Mission Statement -->
+    <div class="section">
+      <div class="missionCard">
+        <div class="missionIcon">
+          <i class="bi bi-target"></i>
+        </div>
+        <h2 class="missionTitle">Our Mission</h2>
+        <p class="missionText">
+          iVote PH is dedicated to revolutionizing the democratic voting process in the Philippines by leveraging secure, 
+          transparent, and accessible online voting technology. We believe every citizen deserves a convenient and reliable 
+          way to participate in elections while maintaining the highest standards of security and integrity.
+        </p>
+      </div>
+    </div>
+
+    <!-- Platform Overview -->
+    <div class="section">
+      <h2 class="sectionTitle">Platform Overview</h2>
+      <div class="featureGrid">
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-shield-check"></i>
+          </div>
+          <h3 class="featureTitle">Secure & Encrypted</h3>
+          <p class="featureText">State-of-the-art encryption protects your voting data and ensures complete anonymity throughout the voting process.</p>
+        </div>
+
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-globe"></i>
+          </div>
+          <h3 class="featureTitle">Accessible Anywhere</h3>
+          <p class="featureText">Vote from the comfort of your home or any location with an internet connection during designated voting periods.</p>
+        </div>
+
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-lightning"></i>
+          </div>
+          <h3 class="featureTitle">Real-Time Results</h3>
+          <p class="featureText">Transparent, real-time election results that can be verified and audited for complete electoral integrity.</p>
+        </div>
+
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-person-check"></i>
+          </div>
+          <h3 class="featureTitle">Voter Verification</h3>
+          <p class="featureText">Multi-level verification ensures only eligible voters can participate while preventing fraud and duplicate voting.</p>
+        </div>
+
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-laptop"></i>
+          </div>
+          <h3 class="featureTitle">User-Friendly Interface</h3>
+          <p class="featureText">Intuitive design makes voting simple and accessible for voters of all technical backgrounds.</p>
+        </div>
+
+        <div class="featureCard">
+          <div class="featureIcon">
+            <i class="bi bi-headset"></i>
+          </div>
+          <h3 class="featureTitle">24/7 Support</h3>
+          <p class="featureText">Dedicated support team available to assist voters with any questions or technical issues.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Benefits of Online Voting -->
+    <div class="section">
+      <h2 class="sectionTitle">Benefits of Online Voting</h2>
+      <div class="benefitsList">
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-clock"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Time Efficiency</h4>
+            <p>No need to travel to polling stations. Vote at your own pace during the extended voting period.</p>
+          </div>
+        </div>
+
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-accessibility"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Increased Accessibility</h4>
+            <p>Perfect for busy professionals, elderly citizens, and those with mobility challenges.</p>
+          </div>
+        </div>
+
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-graph-up"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Higher Voter Participation</h4>
+            <p>Lower barriers to voting lead to increased citizen engagement in the democratic process.</p>
+          </div>
+        </div>
+
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-speedometer"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Faster Results</h4>
+            <p>Instant vote counting and result compilation for more timely election outcomes.</p>
+          </div>
+        </div>
+
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-tree"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Environmental Impact</h4>
+            <p>Reduce paper usage and carbon footprint from transportation to physical polling locations.</p>
+          </div>
+        </div>
+
+        <div class="benefitItem">
+          <div class="benefitIcon">
+            <i class="bi bi-cash-coin"></i>
+          </div>
+          <div class="benefitContent">
+            <h4>Cost Efficient</h4>
+            <p>Lower operational costs for election management and administration.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Security & Transparency -->
+    <div class="section securitySection">
+      <h2 class="sectionTitle">Security & Transparency</h2>
+      <div class="securityGrid">
+        <div class="securityCard">
+          <h4>End-to-End Encryption</h4>
+          <p>All votes are encrypted from submission to counting, ensuring complete confidentiality and security against interception.</p>
+        </div>
+
+        <div class="securityCard">
+          <h4>Multi-Factor Authentication</h4>
+          <p>Secure login process with multiple verification layers prevents unauthorized access to voter accounts.</p>
+        </div>
+
+        <div class="securityCard">
+          <h4>Blockchain Verification</h4>
+          <p>Distributed ledger technology ensures vote integrity and prevents tampering with election results.</p>
+        </div>
+
+        <div class="securityCard">
+          <h4>Audit Trails</h4>
+          <p>Complete logging of all activities allows independent audits and verification of election integrity.</p>
+        </div>
+
+        <div class="securityCard">
+          <h4>Voter Privacy</h4>
+          <p>Advanced anonymization techniques protect voter identity while maintaining election transparency.</p>
+        </div>
+
+        <div class="securityCard">
+          <h4>Regular Security Updates</h4>
+          <p>Continuous monitoring and updates ensure protection against emerging security threats.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Call to Action -->
+  <div class="ctaSection">
+    <div class="container-lg">
+      <h2 class="ctaTitle">Ready to Vote?</h2>
+      <p class="ctaText">Join thousands of Filipinos in making their voice heard through secure online voting.</p>
+      <a href="login.html" class="ctaBtn"><i class="bi bi-box-arrow-in-right me-2"></i>Log In</a>
+      <a href="register.html" class="ctaBtn"><i class="bi bi-person-plus me-2"></i>Register</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div class="container-lg">
+      <p class="footerText">&copy; 2024 iVote PH. All rights reserved. Secure. Transparent. Democratic.</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
