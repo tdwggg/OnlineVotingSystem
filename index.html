@@ -22,6 +22,12 @@
             overflow-x: hidden;
         }
 
+        .container-fluid,
+        .row {
+            margin-left: 0;
+            margin-right: 0;
+        }
+
         .videoBg {
             position: fixed;
             top: 0;
@@ -67,41 +73,6 @@
             max-width: 100%;
         }
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 300px;
-            height: 100%;
-            padding: 20px;
-            transition: 0.3s;
-            z-index: 1050;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebarToggle {
-            margin-right: 0.65rem;
-            min-width: 42px;
-            padding: 0.65rem 0.85rem;
-        }
-
-        .navbar-brand.logoText {
-            margin-bottom: 0;
-        }
-
-        .navbar .container-fluid {
-            flex-wrap: wrap;
-        }
-
-        main {
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-        }
-
         .closeBtn {
             cursor: pointer;
             float: right;
@@ -110,6 +81,47 @@
 
         .sidebar h5 {
             color: white;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -260px;
+            /* hidden by default */
+            width: 260px;
+            height: 100%;
+            background: #0d47d9;
+            padding: 20px;
+            z-index: 999;
+            transition: 0.3s;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebarOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 998;
+        }
+
+        /* SHOW sidebar normally on desktop */
+        @media (min-width: 992px) {
+            .sidebar {
+                left: 0;
+                position: relative;
+                width: 240px;
+                height: auto;
+            }
+
+            .sidebarOverlay {
+                display: none;
+            }
         }
 
         .dashboardCard {
@@ -297,58 +309,184 @@
             transform: scale(1.1);
         }
 
-        @media(max-width:991px) {
-            .sidebar {
-                left: -320px;
-                width: 100%;
-                max-width: 320px;
+        @media (max-width: 768px) {
+
+            .topNavbar {
+                height: auto;
+                padding: 10px;
             }
 
-            .sidebar.open {
-                left: 0;
+            .shieldCircle {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+
+            .dashboardCard h2 {
+                font-size: 1.3rem;
+            }
+
+            .quickAction {
+                padding: 16px;
+                font-size: 0.85rem;
+            }
+
+            .positionCard {
+                padding: 14px;
+            }
+
+            .positionIcon {
+                width: 45px;
+                height: 45px;
+                font-size: 1.2rem;
+            }
+
+            .countdownBox h4 {
+                font-size: 1.2rem;
+            }
+        }
+
+        main {
+            padding: 15px !important;
+        }
+
+        @media (max-width: 576px) {
+            main {
+                padding: 10px !important;
+            }
+        }
+
+        .navIcon {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+        }
+
+        .navIcon i {
+            font-size: 1.2rem;
+        }
+
+        /* 🔥 MOBILE FIX */
+        @media (max-width: 768px) {
+
+            .navText {
+                display: none;
+                /* hide text */
+            }
+
+            .navIcon {
+                padding: 8px;
+                font-size: 1.3rem;
+                background: #f1f5ff;
+                border-radius: 10px;
             }
 
             .navbar-nav {
-                width: 100%;
-                justify-content: flex-start;
-                flex-wrap: wrap;
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 0.75rem;
-            }
-
-            .navbar-nav .nav-link {
-                width: 100%;
-                padding: 0.75rem 1rem;
-                border-radius: 12px;
-                background: #ffffffcc;
-            }
-
-            .flex-grow-1 {
-                width: 100%;
-                min-width: 0;
-                margin: 0.75rem 0 0;
-            }
-
-            .navbar .container-fluid {
-                align-items: flex-start;
-            }
-
-            .sidebarToggle {
-                order: 1;
-            }
-
-            .navbar-brand {
-                order: 2;
-                margin-bottom: 0.5rem;
-            }
-
-            main {
-                margin-left: 0;
+                gap: 10px !important;
             }
         }
+
+        /* 🔥 CRITICAL: NEVER WRAP */
+        .navbar .container-fluid {
+            flex-wrap: nowrap !important;
+        }
+
+        /* Prevent logo from being too big */
+        .brandLogo {
+            height: 35px;
+        }
+
+        /* Icons */
+        .navIcon {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .navIcon i {
+            font-size: 1.1rem;
+        }
+
+        /* 🔥 MOBILE FIX */
+        @media (max-width: 768px) {
+
+            .navText {
+                display: none;
+            }
+
+            .navIcon {
+                padding: 6px;
+                font-size: 1.2rem;
+            }
+
+            /* shrink logo more on small screens */
+            .brandLogo {
+                height: 28px;
+            }
+
+
+            .navbar-nav {
+                justify-content: flex-end;
+            }
+
+            /* Prevent icons from stretching weirdly */
+            .navbar-nav {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+            }
+
+            /* LOGO */
+            .brandLogo {
+                height: 32px;
+            }
+
+            /* ICON LINKS */
+            .navIcon {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                font-weight: 600;
+                padding: 6px;
+            }
+
+            /* ICON SIZE */
+            .navIcon i {
+                font-size: 1.1rem;
+            }
+
+            /* 🔥 VERY IMPORTANT FIX */
+            .navbar-nav {
+                flex-shrink: 1;
+                /* allow shrinking */
+                min-width: 0;
+                /* prevent overflow */
+            }
+
+            /* 🔥 MOBILE */
+            @media (max-width: 768px) {
+
+                .navText {
+                    display: none;
+                }
+
+                .navIcon {
+                    padding: 5px;
+                    font-size: 1.1rem;
+                }
+
+                .brandLogo {
+                    height: 26px;
+                }
+
+                .navbar-nav {
+                    gap: 4px !important;
+                }
+            }
     </style>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
@@ -357,48 +495,68 @@
     </video>
     <div class="videoOverlay"></div>
 
-    <nav class="navbar navbar-expand-lg topNavbar px-4">
-        <div class="container-fluid d-flex align-items-center gap-3">
-            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a class="navbar-brand logoText mb-0 brandLogoLink" href="index.html" aria-label="iVotePH home"><img src="FINALS 2.png" alt="iVotePH" class="brandLogo"></a>
-            <div class="flex-grow-1 mx-4">
-                <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
+    <nav class="navbar topNavbar px-2">
+        <div class="container-fluid d-flex align-items-center flex-nowrap">
+
+            <!-- LEFT -->
+            <div class="d-flex align-items-center gap-2 flex-shrink-1">
+                <button class="btn btn-light sidebarToggle p-1" type="button" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <a class="navbar-brand mb-0" href="index.html">
+                    <img src="FINALS 2.png" class="brandLogo">
+                </a>
             </div>
-            <ul class="navbar-nav align-items-center gap-3">
+
+            <!-- RIGHT -->
+            <ul class="navbar-nav d-flex flex-row align-items-center gap-1 mb-0 ms-auto">
+
                 <li class="nav-item">
-                    <a class="nav-link fw-semibold text-primary" href="index.html">
-                        <i class="fa-solid fa-house me-2"></i>Home
+                    <a class="nav-link navIcon" href="index.html">
+                        <i class="fa-solid fa-house"></i>
+                        <span class="navText">Home</span>
                     </a>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa-solid fa-user-circle me-2"></i>
-                        Juan Dela Cruz
+                    <a class="nav-link navIcon" href="about.html">
+                        <i class="fa-solid fa-circle-info"></i>
+                        <span class="navText">About</span>
                     </a>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link navIcon" href="#">
+                        <i class="fa-solid fa-user-circle"></i>
+                        <span class="navText">Profile</span>
+                    </a>
+                </li>
+
             </ul>
+
         </div>
     </nav>
+
+    <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
 
     <div class="sidebar" id="sidebar">
         <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
         <div class="d-grid gap-3 mt-4">
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='profile.html'">My Profile</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Voting</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='browsecandi.html'">Results</button>
+            <button class="btn btn-primary rounded-pill" onclick="window.location.href='profile.html'">My
+                Profile</button>
+            <button class="btn btn-primary rounded-pill"
+                onclick="window.location.href='startvoting.html'">Voting</button>
+            <button class="btn btn-primary rounded-pill"
+                onclick="window.location.href='browsecandi.html'">Results</button>
             <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">Learn More</button>
         </div>
     </div>
 
     <main class="flex-grow-1 p-4">
         <div class="row g-4">
-            <div class="col-xl-5">
+            <div class="col-12 col-lg-6 col-xl-5">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
                         <div class="d-flex gap-4 align-items-center">
@@ -418,13 +576,14 @@
                 </div>
             </div>
 
-            <div class="col-xl-3">
+            <div class="col-12 col-md-6 col-xl-3">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
                         <h4 class="fw-bold mb-4">Quick Actions</h4>
                         <div class="row g-3">
                             <div class="col-6">
-                                <div id="quickActionStartVoting" class="quickAction" role="button" onclick="window.location.href='login.html'">
+                                <div id="quickActionStartVoting" class="quickAction" role="button"
+                                    onclick="window.location.href='login.html'">
                                     <i class="fa-solid fa-box"></i>
                                     <div>Start Voting</div>
                                 </div>
@@ -436,13 +595,15 @@
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="quickAction" role="button" onclick="window.location.href='browsecandi.html'">
+                                <div class="quickAction" role="button"
+                                    onclick="window.location.href='browsecandi.html'">
                                     <i class="fa-solid fa-users"></i>
                                     <div>Browse Candidates</div>
                                 </div>
                             </div>
                             <div class="col-6">
-                                <div class="quickAction" role="button" onclick="window.location.href='electioninfo.html'">
+                                <div class="quickAction" role="button"
+                                    onclick="window.location.href='electioninfo.html'">
                                     <i class="fa-solid fa-circle-info"></i>
                                     <div>Election Info</div>
                                 </div>
@@ -452,7 +613,7 @@
                 </div>
             </div>
 
-            <div class="col-xl-4">
+            <div class="col-12 col-md-6 col-xl-4">
                 <div class="card dashboardCard h-100">
                     <div class="card-body">
                         <div id="electionDay" class="countdownBox">
@@ -466,56 +627,64 @@
         <section class="positionSection">
             <div class="positionHeader">
                 <h3 class="positionTitle">Browse Candidates by Position</h3>
-                <a href="browsecandi.html" class="viewAllLink">View All Candidates <i class="fa-solid fa-arrow-right ms-2"></i></a>
+                <a href="browsecandi.html" class="viewAllLink">View All Candidates <i
+                        class="fa-solid fa-arrow-right ms-2"></i></a>
             </div>
             <div class="row g-3">
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-landmark"></i></div>
                         <div class="positionName">President</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-user-tie"></i></div>
                         <div class="positionName">Vice President</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-users"></i></div>
                         <div class="positionName">Senator</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-people-group"></i></div>
                         <div class="positionName">Partylist</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-flag"></i></div>
                         <div class="positionName">Governor</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-building"></i></div>
                         <div class="positionName">Mayor</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
-                <div class="col-lg col-md-4 col-6">
+                <div class="col-6 col-md-4 col-lg-3">
                     <div class="positionCard" onclick="window.location.href='browsecandi.html'">
                         <div class="positionIcon"><i class="fa-solid fa-house-user"></i></div>
                         <div class="positionName">Brgy. Captain</div>
-                        <div class="positionAction"><span>View Candidates</span><i class="fa-solid fa-chevron-right"></i></div>
+                        <div class="positionAction"><span>View Candidates</span><i
+                                class="fa-solid fa-chevron-right"></i></div>
                     </div>
                 </div>
             </div>
@@ -564,10 +733,6 @@
     </main>
 
     <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("open");
-        }
-
         const startVotingButton = document.getElementById("startVotingButton");
         if (startVotingButton) {
             startVotingButton.addEventListener("click", function () {
@@ -621,10 +786,8 @@
             setInterval(updateCountdown, 1000);
         }
     </script>
+    <script src="layout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-
-
-

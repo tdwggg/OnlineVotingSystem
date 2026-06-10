@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
       const section = this.getAttribute('data-section');
       showSection(section);
       updateActiveState(this);
+      if (window.innerWidth < 992 && typeof window.closeSidebar === 'function') {
+        window.closeSidebar();
+      }
     });
   });
 

@@ -19,7 +19,9 @@
 
 <div class="wrapper">
 
-<div class="sidebar">
+<div class="sidebarOverlay" id="dashboardSidebarOverlay" hidden aria-hidden="true"></div>
+
+<div class="sidebar" id="dashboardSidebar">
 
 <div class="logo text-center">
 <img src="logo.png" alt="iVote PH">
@@ -63,7 +65,10 @@ Help Center
 
 <header class="topbar">
 
-<div class="topbar-left">
+<div class="topbar-left d-flex align-items-center gap-2">
+<button class="btn btn-light dashboardSidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()" aria-label="Toggle menu" aria-controls="dashboardSidebar" aria-expanded="false">
+<i class="bi bi-list"></i>
+</button>
 <h2 class="fw-bold mb-0">Welcome to iVote PH</h2>
 <small>Secure Online Voting Platform</small>
 </div>
@@ -218,6 +223,7 @@ and election updates in real-time.
 
 </div>
 
+<script src="layout.js"></script>
 <script src="sections.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
