@@ -4,233 +4,163 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>About - iVotePH</title>
+    <title>About iVotePH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
     <style>
-        body {
-            background: #f5f7fb;
-            font-family: Inter, Segoe UI, sans-serif;
-            position: relative;
-            overflow-x: hidden;
+        img.brandLogo {
+            width: 126px !important;
+            max-width: 126px !important;
+            height: auto !important;
+            max-height: 46px !important;
+            object-fit: contain !important;
+            display: block !important
         }
 
-        .videoBg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        .userNavList,
+        .sidebarMenuNav {
+            list-style: none !important;
+            margin: 0 !important;
+            padding: 0 !important
         }
 
-        .videoOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-            pointer-events: none;
+        .userNavList {
+            display: flex !important;
+            gap: 8px !important;
+            overflow-x: auto !important
         }
 
-        .topNavbar {
-            height: 80px;
-            background: #fff;
-            border-bottom: 1px solid #e9ecef;
+        .userNavList li,
+        .sidebarMenuNav li {
+            list-style: none !important
         }
 
-        .logoText {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0d47d9;
+        .userTopbarInner {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important
         }
 
-        .logoText span {
-            color: #ef4444;
+        .userSidebar,
+        #sidebar {
+            transform: translateX(-110%)
         }
 
-        .searchInput {
-            border-radius: 14px;
-            height: 48px;
-            border: 1px solid #dee2e6;
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 300px;
-            height: 100%;
-            padding: 20px;
-            transition: 0.3s;
-            z-index: 1050;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebarToggle {
-            margin-right: 0.65rem;
-            min-width: 42px;
-            padding: 0.65rem 0.85rem;
-        }
-
-        .navbar-brand.logoText {
-            margin-bottom: 0;
-        }
-
-        .navbar .container-fluid {
-            flex-wrap: wrap;
-        }
-
-        main {
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-        }
-
-        .closeBtn {
-            cursor: pointer;
-            float: right;
-            color: white;
-        }
-
-        .sidebar h5 {
-            color: white;
-        }
-
-        .dashboardCard {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
-        }
-
-        @media(max-width:991px) {
-            .sidebar {
-                left: -320px;
-                width: 100%;
-                max-width: 320px;
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .navbar-nav {
-                width: 100%;
-                justify-content: flex-start;
-                flex-wrap: wrap;
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 0.75rem;
-            }
-
-            .navbar-nav .nav-link {
-                width: 100%;
-                padding: 0.75rem 1rem;
-                border-radius: 12px;
-                background: #ffffffcc;
-            }
-
-            .flex-grow-1 {
-                width: 100%;
-                min-width: 0;
-                margin: 0.75rem 0 0;
-            }
-
-            .navbar .container-fluid {
-                align-items: flex-start;
-            }
-
-            .sidebarToggle {
-                order: 1;
-            }
-
-            .navbar-brand {
-                order: 2;
-                margin-bottom: 0.5rem;
-            }
-
-            main {
-                margin-left: 0;
-            }
+        .userSidebar.open,
+        #sidebar.open {
+            transform: translateX(0)
         }
     </style>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
-<body>
+<body class="userPage">
     <video class="videoBg" autoplay muted loop playsinline>
         <source src="flag.mp4" type="video/mp4">
     </video>
-    <div class="videoOverlay"></div>
-
-    <nav class="navbar navbar-expand-lg topNavbar px-4">
-        <div class="container-fluid d-flex align-items-center gap-3">
-            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-                <i class="fas fa-bars"></i>
+    <div class="appBackdrop"></div>
+    <header class="userTopbar">
+        <div class="userTopbarInner">
+            <button class="menuButton" type="button" onclick="toggleSidebar()" aria-label="Open menu"
+                aria-controls="sidebar" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
             </button>
-            <a class="navbar-brand logoText mb-0 brandLogoLink" href="index.html" aria-label="iVotePH home"><img src="FINALS 2.png" alt="iVotePH" class="brandLogo"></a>
-            <div class="flex-grow-1 mx-4">
-                <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
+            <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+                <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
+            </a>
+            <div class="topbarSearch d-none d-lg-block">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i
+                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates, voting info, or results">
+                </div>
             </div>
-            <ul class="navbar-nav align-items-center gap-3">
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-primary" href="index.html">
-                        <i class="fa-solid fa-house me-2"></i>Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa-solid fa-user-circle me-2"></i>
-                        Juan Dela Cruz
-                    </a>
-                </li>
+            <a href="profile.html" class="userChip ms-auto">
+                <span class="userAvatarCircle">JD</span>
+                <span class="userMeta">
+                    <span class="userName d-block">Juan Dela Cruz</span>
+                    <span class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</span>
+                </span>
+                <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
+            </a>
+            <div class="topbarSearch d-lg-none w-100">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i
+                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates">
+                </div>
+            </div>
+        </div>
+    </header>
+    <nav class="userNavBar">
+        <div class="userNavInner">
+            <ul class="userNavList">
+                <li><a href="index.html" class=""><i class="fa-solid fa-landmark"></i> Home</a></li>
+                <li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+                <li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+                <li><a href="startvoting.html" class=""><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+                <li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+                <li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+                <li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+
             </ul>
         </div>
     </nav>
-
-    <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
-        <hr>
-        <div class="d-grid gap-3 mt-4">
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">About</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='browsecandi.html'">Browse Candidates</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='electioninfo.html'">Election Info</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='myballot.html'">My Ballot</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='login.html'">Login</button>
+    <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
+    <aside class="userSidebar sidebar" id="sidebar">
+        <div class="sidebarHeader">
+            <a href="index.html"><img src="FINALS 2.png" class="sidebarLogo" alt="iVotePH"></a>
+            <button class="sidebarClose" type="button" onclick="closeSidebar()" aria-label="Close menu"><i
+                    class="fa-solid fa-xmark"></i></button>
         </div>
-    </div>
+        <ul class="sidebarMenuNav">
+            <li><a href="index.html" class=""><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html" class=""><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+            <li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+            <li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
 
-    <main class="flex-grow-1 p-4">
-        <div class="card dashboardCard">
-            <div class="card-body">
-                <h1>About iVotePH</h1>
-                <p class="text-muted">This page shares the same navbar and sidebar UI as the dashboard so the application has a consistent look across pages.</p>
+        </ul>
+    </aside>
+    <main class="userMain userPageMotion">
+
+        <section class="heroCard userCard mb-4">
+            <div class="heroEyebrow"><i class="fa-solid fa-circle-info"></i> About</div>
+            <h1 class="heroTitle">iVotePH</h1>
+            <p class="heroSubtitle">A secure online voting prototype designed for voter registration, schedule-based
+                voting, ballot submission, admin results, and Power BI visualization.</p>
+        </section>
+        <section class="sectionCard userCard">
+            <div class="infoGrid">
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-shield-halved"></i></div>
+                    <h4>Secure</h4>
+                    <p class="text-muted">Protects voter identity and ballot integrity.</p>
+                </div>
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-clock"></i></div>
+                    <h4>Scheduled</h4>
+                    <p class="text-muted">Follows the election schedule set by admin.</p>
+                </div>
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-chart-pie"></i></div>
+                    <h4>Data-driven</h4>
+                    <p class="text-muted">Designed to support admin charts and Power BI dashboards.</p>
+                </div>
             </div>
-        </div>
-    </main>
+        </section>
 
-    <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("open");
-        }
-    </script>
+    </main>
+    <footer class="footer">
+        <div>© 2026 iVotePH. Secure. Accessible. Transparent.</div>
+    </footer>
+    <script src="layout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
-
-
-
-

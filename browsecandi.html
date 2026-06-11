@@ -61,41 +61,6 @@
             max-width: 100%;
         }
 
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 300px;
-            height: 100%;
-            padding: 20px;
-            transition: 0.3s;
-            z-index: 1050;
-            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url("PUP.jpg") center/cover no-repeat;
-        }
-
-        .sidebar.open {
-            left: 0;
-        }
-
-        .sidebarToggle {
-            margin-right: 0.65rem;
-            min-width: 42px;
-            padding: 0.65rem 0.85rem;
-        }
-
-        .navbar-brand.logoText {
-            margin-bottom: 0;
-        }
-
-        .navbar .container-fluid {
-            flex-wrap: wrap;
-        }
-
-        main {
-            margin-left: 0;
-            transition: margin-left 0.3s ease;
-        }
-
         .closeBtn {
             cursor: pointer;
             float: right;
@@ -161,61 +126,11 @@
         }
 
         .profileLink {
-            color: #0d47d9;
+            color: #e1e3e9;
             text-decoration: none;
             font-weight: 600;
         }
 
-        @media(max-width:991px) {
-            .sidebar {
-                left: -320px;
-                width: 100%;
-                max-width: 320px;
-            }
-
-            .sidebar.open {
-                left: 0;
-            }
-
-            .navbar-nav {
-                width: 100%;
-                justify-content: flex-start;
-                flex-wrap: wrap;
-                flex-direction: column;
-                gap: 0.5rem;
-                margin-top: 0.75rem;
-            }
-
-            .navbar-nav .nav-link {
-                width: 100%;
-                padding: 0.75rem 1rem;
-                border-radius: 12px;
-                background: #ffffffcc;
-            }
-
-            .flex-grow-1 {
-                width: 100%;
-                min-width: 0;
-                margin: 0.75rem 0 0;
-            }
-
-            .navbar .container-fluid {
-                align-items: flex-start;
-            }
-
-            .sidebarToggle {
-                order: 1;
-            }
-
-            .navbar-brand {
-                order: 2;
-                margin-bottom: 0.5rem;
-            }
-
-            main {
-                margin-left: 0;
-            }
-        }
     </style>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -226,44 +141,73 @@
     </video>
     <div class="videoOverlay"></div>
 
-    <nav class="navbar navbar-expand-lg topNavbar px-4">
-        <div class="container-fluid d-flex align-items-center gap-3">
-            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()" aria-label="Toggle sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a class="navbar-brand logoText mb-0 brandLogoLink" href="index.html" aria-label="iVotePH home"><img src="FINALS 2.png" alt="iVotePH" class="brandLogo"></a>
-            <div class="flex-grow-1 mx-4">
-                <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
+    <nav class="navbar topNavbar px-3">
+        <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-light sidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()"
+                    aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html">
+                    <img src="FINALS 2.png" class="brandLogo" alt="iVote PH">
+                </a>
             </div>
-            <ul class="navbar-nav align-items-center gap-3">
-                <li class="nav-item">
-                    <a class="nav-link fw-semibold text-primary" href="index.html">
-                        <i class="fa-solid fa-house me-2"></i>Home
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="about.html">About</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">
-                        <i class="fa-solid fa-user-circle me-2"></i>
-                        Juan Dela Cruz
-                    </a>
-                </li>
-            </ul>
+
+            <div class="navbarSearchWrap d-none d-md-block">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates, positions, or topics…" aria-label="Search">
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 ms-md-auto">
+                <a href="profile.html" class="userProfileChip">
+                    <img src="avatar.png" class="userAvatar" alt="Juan Dela Cruz" onerror="this.style.display='none'">
+                    <div class="userMeta">
+                        <div class="userName">Juan Dela Cruz</div>
+                        <div class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
+                </a>
+            </div>
+
+            <div class="navbarSearchWrap d-md-none w-100">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates…" aria-label="Search">
+                </div>
+            </div>
         </div>
     </nav>
+
+    <div class="positionNavBar">
+        <ul class="positionNavList">
+            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html" class="active"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
+    </div>
+
+    <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
 
     <div class="sidebar" id="sidebar">
         <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
-        <div class="d-grid gap-3 mt-4">
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">About</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='electioninfo.html'">Election Info</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='myballot.html'">My Ballot</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Start Voting</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='login.html'">Login</button>
-        </div>
+        <ul class="sidebarMenuNav">
+            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html" class="active"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
     </div>
 
     <main class="container pb-5">
@@ -580,11 +524,7 @@
         </div>
     </main>
 
-    <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("open");
-        }
-    </script>
+    <script src="layout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
