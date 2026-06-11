@@ -43,6 +43,33 @@
             border-bottom: 1px solid #e9ecef;
         }
 
+        .positionSection {
+            margin-top: 1.5rem;
+        }
+
+        .positionTitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
+            font-weight: 700;
+            color: var(--gov-blue);
+            margin: 0;
+        }
+
+        .viewAllLink {
+            color: var(--gov-blue);
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+            white-space: nowrap;
+        }
+
+        .navIcon {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
         .logoText {
             font-size: 2rem;
             font-weight: 800;
@@ -87,39 +114,61 @@
     </video>
     <div class="videoOverlay"></div>
 
-    <nav class="navbar navbar-expand-lg topNavbar px-3 px-lg-4">
-        <div class="container-fluid">
-            <button class="btn btn-light sidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()" aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a class="navbar-brand logoText mb-0 brandLogoLink flex-shrink-0" href="index.html" aria-label="iVotePH home"><img src="FINALS 2.png" alt="iVotePH" class="brandLogo"></a>
-            <button class="navbar-toggler flex-shrink-0" type="button" data-bs-toggle="collapse" data-bs-target="#topNavbarCollapse" aria-controls="topNavbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="topNavbarCollapse">
-                <div class="navbar-search flex-grow-1 mx-lg-4 my-3 my-lg-0">
-                    <input type="text" class="form-control searchInput" placeholder="Search candidates, positions, or topics...">
+    
+    <nav class="navbar topNavbar px-3">
+        <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
+
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-light sidebarToggle d-lg-none" type="button" onclick="toggleSidebar()"
+                    aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <a href="index.html">
+                    <img src="FINALS 2.png" class="brandLogo" alt="iVote PH">
+                </a>
+            </div>
+
+            <div class="navbarSearchWrap d-none d-md-block">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates, positions, or topics…" aria-label="Search">
                 </div>
-                <ul class="navbar-nav ms-lg-auto align-items-lg-center gap-lg-2">
-                    <li class="nav-item">
-                        <a class="nav-link fw-semibold text-primary" href="index.html">
-                            <i class="fa-solid fa-house me-2"></i>Home
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">
-                            <i class="fa-solid fa-user-circle me-2"></i>
-                            Juan Dela Cruz
-                        </a>
-                    </li>
-                </ul>
+            </div>
+
+            <div class="d-flex align-items-center gap-2 ms-md-auto">
+                <a href="profile.html" class="userProfileChip">
+                    <img src="avatar.png" class="userAvatar" alt="Juan Dela Cruz" onerror="this.style.display='none'">
+                    <div class="userMeta">
+                        <div class="userName">Juan Dela Cruz</div>
+                        <div class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</div>
+                    </div>
+                    <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
+                </a>
+            </div>
+
+            <div class="navbarSearchWrap d-md-none w-100">
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <input type="search" class="form-control searchInput border-start-0"
+                        placeholder="Search candidates…" aria-label="Search">
+                </div>
             </div>
         </div>
     </nav>
 
+    <div class="positionNavBar">
+        <ul class="positionNavList">
+            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
+    </div>
+             
     <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
 
     <div class="sidebar" id="sidebar">
