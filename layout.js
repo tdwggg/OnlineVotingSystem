@@ -35,7 +35,17 @@
     setSidebarOpen(false);
   };
 
+  function logNavDebug(source) {
+    const toggleBtn = document.querySelector(".sidebarToggle, .dashboardSidebarToggle");
+    const positionNavBar = document.querySelector(".positionNavBar");
+    const style = toggleBtn ? window.getComputedStyle(toggleBtn) : null;
+    // #region agent log
+    fetch('http://127.0.0.1:7395/ingest/ed9497cf-da7d-4467-b353-51612ec7ddba',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'d12c0f'},body:JSON.stringify({sessionId:'d12c0f',location:'layout.js:logNavDebug',message:'nav visibility snapshot',data:{source,innerWidth:window.innerWidth,hasToggle:!!toggleBtn,toggleDisplay:style?style.display:null,toggleVisibility:style?style.visibility:null,toggleOpacity:style?style.opacity:null,hasD_lg_none:toggleBtn?toggleBtn.classList.contains('d-lg-none'):null,hasPositionNavBar:!!positionNavBar,page:location.pathname.split('/').pop()||'index.html'},timestamp:Date.now(),hypothesisId:'A-B-C-E'})}).catch(()=>{});
+    // #endregion
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
+    logNavDebug('DOMContentLoaded');
     const { sidebar, overlay } = getSidebarElements();
 
     if (overlay) {
@@ -45,7 +55,7 @@
     if (sidebar) {
       sidebar.addEventListener("click", function (event) {
         const menuTarget = event.target.closest("a, button");
-        if (menuTarget && window.innerWidth < 992) {
+        if (menuTarget) {
           closeSidebar();
         }
       });
@@ -58,9 +68,7 @@
     });
 
     window.addEventListener("resize", function () {
-      if (window.innerWidth >= 992 && document.getElementById("dashboardSidebar")) {
-        closeSidebar();
-      }
+      logNavDebug('resize');
     });
   });
 })();

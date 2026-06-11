@@ -172,8 +172,8 @@
         <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
 
             <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-light sidebarToggle d-lg-none" type="button" onclick="toggleSidebar()"
-                    aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="true">
+                <button class="btn btn-light sidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()"
+                    aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
                 
@@ -211,36 +211,35 @@
         </div>
     </nav>
 
+    <div class="positionNavBar">
+        <ul class="positionNavList">
+            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
+    </div>
+
     <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
 
-    <div class="dashboardLayout">
-        <aside class="dashboardSidebar d-none d-lg-block" id="sidebarDesktop" aria-label="Main navigation">
-            <ul class="sidebarNav">
-                <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="profile.html"><i class="fa-solid fa-user"></i> My Profile</a></li>
-                <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-                <li><a href="startvoting.html"><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
-                <li><a href="myballot.html"><i class="fa-solid fa-file-lines"></i> My Ballot</a></li>
-                <li><a href="electioninfo.html"><i class="fa-solid fa-chart-column"></i> Results</a></li>
-                <li><a href="help.html"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
-                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
-            </ul>
-        </aside>
+    <div class="sidebar" id="sidebar">
+        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
+        <hr>
+        <ul class="sidebarMenuNav">
+            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
+    </div>
 
-        <aside class="dashboardSidebar d-lg-none" id="sidebar" aria-label="Mobile navigation">
-            <ul class="sidebarNav">
-                <li class="active"><a href="index.html"><i class="fa-solid fa-house"></i> Home</a></li>
-                <li><a href="profile.html"><i class="fa-solid fa-user"></i> My Profile</a></li>
-                <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-                <li><a href="startvoting.html"><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
-                <li><a href="myballot.html"><i class="fa-solid fa-file-lines"></i> My Ballot</a></li>
-                <li><a href="browsecandi.html"><i class="fa-solid fa-chart-column"></i> Results</a></li>
-                <li><a href="help.html"><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
-                <li><a href="login.html"><i class="fa-solid fa-right-from-bracket"></i> Log Out</a></li>
-            </ul>
-        </aside>
-
-        <div class="dashboardPageContent">
+    <div class="dashboardPageContent">
             <main>
                 <div class="row g-3 g-lg-4 mb-3 mb-lg-4">
                     <div class="col-12 col-xl-7">
@@ -423,7 +422,6 @@
                     </div>
                 </section>
             </main>
-        </div>
     </div>
 
     <script>

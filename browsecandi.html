@@ -141,9 +141,10 @@
     </video>
     <div class="videoOverlay"></div>
 
-    <nav class="navbar navbar-expand-lg topNavbar px-3 px-lg-4">
+    <nav class="navbar topNavbar px-3">
+        <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
             <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-light sidebarToggle d-lg-none" type="button" onclick="toggleSidebar()"
+                <button class="btn btn-light sidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()"
                     aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
                     <i class="fas fa-bars"></i>
                 </button>
@@ -183,9 +184,9 @@
 
     <div class="positionNavBar">
         <ul class="positionNavList">
-            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
             <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
-            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="browsecandi.html" class="active"><i class="fa-solid fa-users"></i> Candidates</a></li>
             <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
             <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
             <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
@@ -198,13 +199,15 @@
     <div class="sidebar" id="sidebar">
         <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
         <hr>
-        <div class="d-grid gap-3 mt-4">
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='about.html'">About</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='electioninfo.html'">Election Info</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='myballot.html'">My Ballot</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='startvoting.html'">Start Voting</button>
-            <button class="btn btn-primary rounded-pill" onclick="window.location.href='login.html'">Login</button>
-        </div>
+        <ul class="sidebarMenuNav">
+            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html" class="active"><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
+            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
+            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
+        </ul>
     </div>
 
     <main class="container pb-5">
