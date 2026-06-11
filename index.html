@@ -1,503 +1,167 @@
 ﻿<!doctype html>
 <html lang="en">
-
 <head>
-    <script>
-        if (sessionStorage.getItem("isLoggedIn") !== "true") {
-            window.location.replace("login.html");
-        }
-    </script>
-
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>iVotePH- Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
-    <style>
-        .shieldCircle {
-            width: clamp(72px, 12vw, 96px);
-            height: clamp(72px, 12vw, 96px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(2rem, 5vw, 2.6rem);
-        }
-
-        .welcomeFlex {
-            flex-wrap: wrap;
-            gap: 1.25rem;
-        }
-
-        .electionCountdownCard .countdownHeader {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-weight: 700;
-            color: #1f4788;
-            font-size: 1.05rem;
-            margin-bottom: 1rem;
-        }
-
-        .electionCountdownCard .countdownHeader i {
-            color: #0d47d9;
-            font-size: 1.15rem;
-        }
-
-        .countdownDayLabel {
-            color: #64748b;
-            font-size: 0.875rem;
-            margin-bottom: 0.25rem;
-        }
-
-        .countdownDate {
-            color: #0d47d9;
-            font-size: clamp(1.35rem, 3vw, 1.75rem);
-            font-weight: 800;
-            margin-bottom: 1.25rem;
-            line-height: 1.2;
-        }
-
-        .countdownTimer {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: clamp(0.4rem, 1.5vw, 0.75rem);
-        }
-
-        .countdownUnit {
-            background: #eef4ff;
-            border-radius: 12px;
-            padding: clamp(0.65rem, 2vw, 0.875rem) 0.35rem;
-            text-align: center;
-        }
-
-        .countdownValue {
-            display: block;
-            font-size: clamp(1.25rem, 3.5vw, 1.85rem);
-            font-weight: 800;
-            color: #0d47d9;
-            line-height: 1.15;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .countdownUnitLabel {
-            display: block;
-            font-size: clamp(0.55rem, 1.5vw, 0.68rem);
-            font-weight: 600;
-            color: #6b8cce;
-            letter-spacing: 0.06em;
-            margin-top: 0.35rem;
-        }
-
-        .countdownLiveMsg {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: #0d47d9;
-            text-align: center;
-            padding: 1rem 0;
-        }
-
-        .positionSection {
-            margin-top: 1.5rem;
-        }
-
-        .positionTitle {
-            font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-            font-weight: 700;
-            color: var(--gov-blue);
-            margin: 0;
-        }
-
-        .viewAllLink {
-            color: var(--gov-blue);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9rem;
-            white-space: nowrap;
-        }
-
-        .navIcon {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.35rem;
-            font-weight: 600;
-            white-space: nowrap;
-        }
-
-        @media (max-width: 768px) {
-            .welcomeFlex {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .welcomeFlex .shieldCircle {
-                margin: 0 auto;
-            }
-
-            .statusBox {
-                text-align: left;
-            }
-
-            .navText {
-                display: none;
-            }
-        }
-
-        .card,
-        .positionCard {
-            animation: cardFade 0.5s ease forwards;
-        }
-
-        @keyframes cardFade {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>iVotePH - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+  <style>
+img.brandLogo{width:126px!important;max-width:126px!important;height:auto!important;max-height:46px!important;object-fit:contain!important;display:block!important}.userNavList,.sidebarMenuNav{list-style:none!important;margin:0!important;padding:0!important}.userNavList{display:flex!important;gap:8px!important;overflow-x:auto!important}.userNavList li,.sidebarMenuNav li{list-style:none!important}.userTopbarInner{display:flex!important;align-items:center!important;gap:14px!important}.userSidebar,#sidebar{transform:translateX(-110%)}.userSidebar.open,#sidebar.open{transform:translateX(0)}
+</style>
+  <link rel="stylesheet" href="style.css">
+  
 </head>
-
-<body class="dashboardPage">
-    <video class="videoBg" autoplay muted loop playsinline hidden>
-        <source src="flag.mp4" type="video/mp4">
-    </video>
-    <div class="videoOverlay" hidden></div>
-
-    <nav class="navbar navbar-expand-lg topNavbar px-4">
-        <div class="container-fluid d-flex align-items-center gap-3">
-            <button class="btn btn-light sidebarToggle" type="button" onclick="toggleSidebar()"
-                aria-label="Toggle sidebar">
-                <i class="fas fa-bars"></i>
-            </button>
-            <a class="navbar-brand logoText mb-0 brandLogoLink" href="index.html" aria-label="iVotePH home"><img
-                    src="FINALS 2.png" alt="iVotePH" class="brandLogo"></a>
-            <div class="flex-grow-1 mx-4">
-                <input type="text" class="form-control searchInput"
-                    placeholder="Search candidates, positions, or topics...">
-            </div>
-
-            <div class="d-flex align-items-center gap-2 ms-md-auto">
-                <a href="profile.html" class="userProfileChip">
-                    <img src="avatar.png" class="userAvatar" alt="Juan Dela Cruz" onerror="this.style.display='none'">
-                    <div class="userMeta">
-                        <div class="userName">Juan Dela Cruz</div>
-                        <div class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</div>
-                    </div>
-                    <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
-                </a>
-            </div>
-
-            <div class="navbarSearchWrap d-md-none w-100">
-                <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0"><i
-                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
-                    <input type="search" class="form-control searchInput border-start-0"
-                        placeholder="Search candidates…" aria-label="Search">
-                </div>
-            </div>
+<body class="userPage">
+  <video class="videoBg" autoplay muted loop playsinline>
+    <source src="flag.mp4" type="video/mp4">
+  </video>
+  <div class="appBackdrop"></div>
+  <header class="userTopbar">
+    <div class="userTopbarInner">
+      <button class="menuButton" type="button" onclick="toggleSidebar()" aria-label="Open menu" aria-controls="sidebar" aria-expanded="false">
+        <i class="fa-solid fa-bars"></i>
+      </button>
+      <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+        <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
+      </a>
+      <div class="topbarSearch d-none d-lg-block">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+          <input type="search" class="form-control searchInput border-start-0" placeholder="Search candidates, voting info, or results">
         </div>
-    </nav>
-
-    <div class="positionNavBar">
-        <ul class="positionNavList">
-            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
-            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
-            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
-            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
-            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
-        </ul>
+      </div>
+      <a href="profile.html" class="userChip ms-auto">
+        <span class="userAvatarCircle">JD</span>
+        <span class="userMeta">
+          <span class="userName d-block">Juan Dela Cruz</span>
+          <span class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</span>
+        </span>
+        <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
+      </a>
+      <div class="topbarSearch d-lg-none w-100">
+        <div class="input-group">
+          <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+          <input type="search" class="form-control searchInput border-start-0" placeholder="Search candidates">
+        </div>
+      </div>
     </div>
+  </header>
+  <nav class="userNavBar">
+    <div class="userNavInner">
+      <ul class="userNavList">
+        <li><a href="index.html" class=" active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+<li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+<li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+<li><a href="startvoting.html" class=""><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+<li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+<li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+<li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
 
-    <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
-
-    <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
-        <hr>
-        <ul class="sidebarMenuNav">
-            <li><a href="index.html" class="active"><i class="fa-solid fa-landmark"></i> Home</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
-            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-            <li><a href="startvoting.html"><i class="fa-solid fa-people-group"></i> Voting</a></li>
-            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
-            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
-            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
-        </ul>
+      </ul>
     </div>
-
-    <div class="dashboardPageContent">
-        <main>
-            <div class="row g-3 g-lg-4 mb-3 mb-lg-4">
-                <div class="col-12 col-xl-7">
-                    <div class="card dashboardCard welcomeCard h-100">
-                        <div class="card-body">
-                            <div class="d-flex align-items-start welcomeFlex">
-                                <div class="shieldCircle">
-                                    <i class="fa-solid fa-shield-halved"></i>
-                                </div>
-                                <div class="flex-grow-1 min-w-0">
-                                    <h2 class="fw-bold">Welcome, Juan Dela Cruz!</h2>
-                                    <p class="text-muted mb-0">Your vote is your voice. Make it count.</p>
-                                    <div class="statusBox">
-                                        <div class="fw-bold text-primary mb-1">Voter Status: Verified</div>
-                                        <small class="text-muted">You are eligible to vote in the 2025 National and
-                                            Local Elections.</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 col-xl-5">
-                    <div class="card dashboardCard h-100 electionCountdownCard">
-                        <div class="card-body d-flex flex-column">
-                            <div class="countdownHeader">
-                                <i class="fa-regular fa-calendar-days"></i>
-                                <span>Election Countdown</span>
-                            </div>
-                            <div id="electionDay" class="countdownContent flex-grow-1">
-                                <p class="countdownDayLabel">Election Day</p>
-                                <p class="countdownDate">May 12, 2028</p>
-                                <div class="countdownTimer">
-                                    <div class="countdownUnit">
-                                        <span class="countdownValue" id="cdDays">--</span>
-                                        <span class="countdownUnitLabel">DAYS</span>
-                                    </div>
-                                    <div class="countdownUnit">
-                                        <span class="countdownValue" id="cdHours">--</span>
-                                        <span class="countdownUnitLabel">HRS</span>
-                                    </div>
-                                    <div class="countdownUnit">
-                                        <span class="countdownValue" id="cdMinutes">--</span>
-                                        <span class="countdownUnitLabel">MINS</span>
-                                    </div>
-                                    <div class="countdownUnit">
-                                        <span class="countdownValue" id="cdSeconds">--</span>
-                                        <span class="countdownUnitLabel">SECS</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row g-3 g-lg-4 mb-3 mb-lg-4">
-                <div class="col-12 col-lg-8">
-                    <div class="card readyToVoteCard h-100">
-                        <div
-                            class="card-body d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-                            <div class="d-flex align-items-center gap-3">
-                                <div class="ctaIcon"><i class="fa-solid fa-box-ballot"></i></div>
-                                <div>
-                                    <h4>Ready to Vote?</h4>
-                                    <p>Cast your ballot for the 2025 National and Local Elections securely and
-                                        confidentially.</p>
-                                </div>
-                            </div>
-                            <button type="button" class="btn startVotingBtn" id="startVotingButton">
-                                Start Voting <i class="fa-solid fa-arrow-right ms-2"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-12 col-lg-4">
-                    <div class="card dashboardCard votingProgressCard h-100">
-                        <div class="card-body">
-                            <h5 class="fw-bold mb-2">Voting Progress</h5>
-                            <div class="progressRingWrap">
-                                <div class="progressRing" style="--progress: 0">
-                                    <span>0%</span>
-                                </div>
-                            </div>
-                            <p class="text-muted text-center mb-1">Not Started</p>
-                            <div class="text-center">
-                                <a href="startvoting.html" class="viewAllLink">Start now <i
-                                        class="fa-solid fa-arrow-right ms-1"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <section class="positionSection">
-                <div class="positionHeader d-flex justify-content-between align-items-center mb-3">
-                    <h3 class="positionTitle">Browse Candidates by Position</h3>
-                    <a href="browsecandi.html" class="viewAllLink">View all candidates <i
-                            class="fa-solid fa-arrow-right ms-1"></i></a>
-                </div>
-                <div class="row g-3">
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-landmark"></i></div>
-                            <div class="positionName">President</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-user-tie"></i></div>
-                            <div class="positionName">Vice President</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-users"></i></div>
-                            <div class="positionName">Senator</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-people-group"></i></div>
-                            <div class="positionName">Partylist</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-flag"></i></div>
-                            <div class="positionName">Governor</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-building"></i></div>
-                            <div class="positionName">Mayor</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                    <div class="col-6 col-md-4 col-xl-3">
-                        <div class="positionCard" onclick="window.location.href='browsecandi.html'">
-                            <div class="positionIcon"><i class="fa-solid fa-house-user"></i></div>
-                            <div class="positionName">Brgy. Captain</div>
-                            <div class="positionAction"><span>View candidates</span><i
-                                    class="fa-solid fa-chevron-right"></i></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section class="mt-4">
-                <div class="row g-3">
-                    <div class="col-12 col-md-4">
-                        <div class="card dashboardCard infoStripCard h-100">
-                            <div class="card-body">
-                                <div class="infoIcon"><i class="fa-solid fa-shield-halved"></i></div>
-                                <h6>Secure &amp; Confidential</h6>
-                                <p>Your vote is encrypted and protected throughout the entire process.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card dashboardCard infoStripCard h-100">
-                            <div class="card-body">
-                                <div class="infoIcon"><i class="fa-solid fa-scale-balanced"></i></div>
-                                <h6>Transparent Process</h6>
-                                <p>Track election updates and results in real time with full accountability.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-4">
-                        <div class="card dashboardCard infoStripCard h-100">
-                            <div class="card-body">
-                                <div class="infoIcon"><i class="fa-solid fa-headset"></i></div>
-                                <h6>Need Help?</h6>
-                                <p>Visit the Help Center or contact support for voter assistance.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+  </nav>
+  <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
+  <aside class="userSidebar sidebar" id="sidebar">
+    <div class="sidebarHeader">
+      <a href="index.html"><img src="FINALS 2.png" class="sidebarLogo" alt="iVotePH"></a>
+      <button class="sidebarClose" type="button" onclick="closeSidebar()" aria-label="Close menu"><i class="fa-solid fa-xmark"></i></button>
     </div>
+    <ul class="sidebarMenuNav">
+      <li><a href="index.html" class=" active"><i class="fa-solid fa-landmark"></i> Home</a></li>
+<li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+<li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+<li><a href="startvoting.html" class=""><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+<li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+<li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+<li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
 
+    </ul>
+  </aside>
+  <main class="userMain userPageMotion">
+
+    <section class="heroGrid">
+      <div class="heroCard userCard">
+        <div class="heroEyebrow"><i class="fa-solid fa-shield-halved"></i> Secure Online Voting Platform</div>
+        <h1 class="heroTitle">Welcome, Juan.</h1>
+        <p class="heroSubtitle">Your vote is your voice. Review candidates, follow the official voting window, and cast your ballot securely when voting opens.</p>
+        <div class="heroActions">
+          <a href="startvoting.html" class="btn btnIvLight px-4 py-3"><i class="fa-solid fa-check-to-slot me-2"></i> Start Voting</a>
+          <a href="browsecandi.html" class="btn btn-outline-light px-4 py-3"><i class="fa-solid fa-users me-2"></i> Browse Candidates</a>
+        </div>
+      </div>
+      <aside class="statusPanel userCard">
+        <div class="statusHeader">
+          <div class="statusIcon"><i class="fa-solid fa-calendar-check"></i></div>
+          <div>
+            <p class="statusLabel">Official Voting Window</p>
+            <h3 class="statusTitle">Scheduled</h3>
+          </div>
+        </div>
+        <p class="text-muted mb-0">The voting page will follow the schedule controlled by the admin panel.</p>
+        <div class="countdownGrid" aria-label="Election countdown">
+          <div class="countdownUnit"><span class="countdownValue" id="cdDays">--</span><span class="countdownUnitLabel">DAYS</span></div>
+          <div class="countdownUnit"><span class="countdownValue" id="cdHours">--</span><span class="countdownUnitLabel">HRS</span></div>
+          <div class="countdownUnit"><span class="countdownValue" id="cdMinutes">--</span><span class="countdownUnitLabel">MIN</span></div>
+          <div class="countdownUnit"><span class="countdownValue" id="cdSeconds">--</span><span class="countdownUnitLabel">SEC</span></div>
+        </div>
+        <a href="electioninfo.html" class="btn btn-primary w-100 py-3"><i class="fa-solid fa-chart-line me-2"></i> View Election Info</a>
+      </aside>
+    </section>
+
+    <section class="statGrid">
+      <div class="statCard userCard"><div class="statIcon"><i class="fa-solid fa-id-card"></i></div><span>Voter ID</span><strong>Verified</strong><small>Ready for voting access</small></div>
+      <div class="statCard userCard"><div class="statIcon"><i class="fa-solid fa-lock"></i></div><span>Ballot</span><strong>Private</strong><small>Selections are confidential</small></div>
+      <div class="statCard userCard"><div class="statIcon"><i class="fa-solid fa-clock"></i></div><span>Status</span><strong>Pending</strong><small>Vote not yet submitted</small></div>
+      <div class="statCard userCard"><div class="statIcon"><i class="fa-solid fa-chart-simple"></i></div><span>Results</span><strong>Live</strong><small>After voting closes</small></div>
+    </section>
+
+    <section class="contentGrid">
+      <div class="sectionCard userCard">
+        <div class="sectionHeader">
+          <div>
+            <h2>Browse Candidates by Position</h2>
+            <p class="mb-0 text-muted">Review candidates before you cast your ballot.</p>
+          </div>
+          <a href="browsecandi.html" class="viewAllLink">View all <i class="fa-solid fa-arrow-right ms-1"></i></a>
+        </div>
+        <div class="positionGrid">
+          <a class="positionCard" href="browsecandi.html"><div class="positionIcon"><i class="fa-solid fa-landmark"></i></div><div class="positionName">President</div><div class="positionAction"><span>View candidates</span><i class="fa-solid fa-chevron-right"></i></div></a>
+          <a class="positionCard" href="browsecandi.html"><div class="positionIcon"><i class="fa-solid fa-user-tie"></i></div><div class="positionName">Vice President</div><div class="positionAction"><span>View candidates</span><i class="fa-solid fa-chevron-right"></i></div></a>
+          <a class="positionCard" href="browsecandi.html"><div class="positionIcon"><i class="fa-solid fa-users"></i></div><div class="positionName">Senator</div><div class="positionAction"><span>View candidates</span><i class="fa-solid fa-chevron-right"></i></div></a>
+          <a class="positionCard" href="browsecandi.html"><div class="positionIcon"><i class="fa-solid fa-city"></i></div><div class="positionName">Local Officials</div><div class="positionAction"><span>View candidates</span><i class="fa-solid fa-chevron-right"></i></div></a>
+        </div>
+      </div>
+      <aside class="sectionCard userCard">
+        <div class="sectionHeader"><h3>Quick Actions</h3></div>
+        <div class="quickGrid">
+          <a href="profile.html" class="quickAction"><i class="fa-solid fa-user-check"></i> My Profile</a>
+          <a href="startvoting.html" class="quickAction"><i class="fa-solid fa-check-to-slot"></i> Voting</a>
+          <a href="myballot.html" class="quickAction"><i class="fa-solid fa-file-signature"></i> My Ballot</a>
+          <a href="help.html" class="quickAction"><i class="fa-solid fa-headset"></i> Help</a>
+        </div>
+      </aside>
+    </section>
     <script>
-        const startVotingButton = document.getElementById("startVotingButton");
-        if (startVotingButton) {
-            startVotingButton.addEventListener("click", function () {
-                window.location.href = "login.html";
-            });
-        }
-
-        const countdownElement = document.getElementById("electionDay");
-        const electionDate = new Date("2028-05-12T08:00:00");
-        const cdDays = document.getElementById("cdDays");
-        const cdHours = document.getElementById("cdHours");
-        const cdMinutes = document.getElementById("cdMinutes");
-        const cdSeconds = document.getElementById("cdSeconds");
-        const countdownDateLabel = countdownElement && countdownElement.querySelector(".countdownDate");
-
-        function formatElectionDate(date) {
-            return date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
-        }
-
-        if (countdownDateLabel) {
-            countdownDateLabel.textContent = formatElectionDate(electionDate);
-        }
-
-        function getCountdown(target) {
-            const targetMs = target instanceof Date ? target.getTime() : typeof target === "number" ? target : new Date(target).getTime();
-            const now = Date.now();
-            const distance = targetMs - now;
-            if (distance <= 0) {
-                return { days: 0, hours: 0, minutes: 0, seconds: 0, totalMs: 0, isExpired: true };
-            }
-            const seconds = Math.floor((distance / 1000) % 60);
-            const minutes = Math.floor((distance / (1000 * 60)) % 60);
-            const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            return { days, hours, minutes, seconds, totalMs: distance, isExpired: false };
-        }
-
-        function pad(value) {
-            return String(value).padStart(2, "0");
-        }
-
-        function renderCountdown(countdown) {
-            if (!countdownElement) return;
-            if (countdown.isExpired) {
-                countdownElement.innerHTML = `
-                    <p class="countdownDayLabel">Election Day</p>
-                    <p class="countdownDate">${formatElectionDate(electionDate)}</p>
-                    <p class="countdownLiveMsg">Election is live — vote today!</p>
-                `;
-                return;
-            }
-            if (cdDays) cdDays.textContent = countdown.days;
-            if (cdHours) cdHours.textContent = pad(countdown.hours);
-            if (cdMinutes) cdMinutes.textContent = pad(countdown.minutes);
-            if (cdSeconds) cdSeconds.textContent = pad(countdown.seconds);
-        }
-
-        function updateCountdown() {
-            renderCountdown(getCountdown(electionDate));
-        }
-
-        if (countdownElement) {
-            updateCountdown();
-            setInterval(updateCountdown, 1000);
-        }
+      var targetDate = new Date('2027-05-01T08:00:00+08:00');
+      function padNumber(value){ return String(value).padStart(2, '0'); }
+      function updateCountdown(){
+        var diff = Math.max(0, targetDate.getTime() - Date.now());
+        var days = Math.floor(diff / 86400000);
+        var hours = Math.floor((diff % 86400000) / 3600000);
+        var minutes = Math.floor((diff % 3600000) / 60000);
+        var seconds = Math.floor((diff % 60000) / 1000);
+        var ids = {cdDays: days, cdHours: padNumber(hours), cdMinutes: padNumber(minutes), cdSeconds: padNumber(seconds)};
+        for (var key in ids) { if (document.getElementById(key)) document.getElementById(key).textContent = ids[key]; }
+      }
+      updateCountdown(); setInterval(updateCountdown, 1000);
     </script>
-    <script src="layout.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+  </main>
+  <footer class="footer">
+    <div>© 2026 iVotePH. Secure. Accessible. Transparent.</div>
+  </footer>
+  <script src="layout.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
 </html>

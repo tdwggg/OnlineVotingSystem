@@ -1,74 +1,117 @@
 (function () {
   function getSidebarElements() {
-    const sidebar = document.getElementById("sidebar") || document.getElementById("dashboardSidebar");
-    const overlay = document.getElementById("sidebarOverlay") || document.getElementById("dashboardSidebarOverlay");
-    const toggleBtn = document.querySelector(".sidebarToggle, .dashboardSidebarToggle");
-    return { sidebar, overlay, toggleBtn };
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('sidebarOverlay');
+    var toggleBtn = document.querySelector('.menuButton, .sidebarToggle');
+    return { sidebar: sidebar, overlay: overlay, toggleBtn: toggleBtn };
   }
 
   function setSidebarOpen(open) {
-    const { sidebar, overlay, toggleBtn } = getSidebarElements();
-    if (!sidebar) return;
-
-    sidebar.classList.toggle("open", open);
-
-    if (overlay) {
-      overlay.classList.toggle("show", open);
-      overlay.hidden = !open;
-      overlay.setAttribute("aria-hidden", open ? "false" : "true");
+    var elements = getSidebarElements();
+    if (!elements.sidebar) return;
+    if (open) {
+      elements.sidebar.classList.add('open');
+      document.body.classList.add('sidebar-open');
+    } else {
+      elements.sidebar.classList.remove('open');
+      document.body.classList.remove('sidebar-open');
     }
-
-    document.body.classList.toggle("sidebar-open", open);
-
-    if (toggleBtn) {
-      toggleBtn.setAttribute("aria-expanded", open ? "true" : "false");
+    if (elements.overlay) {
+      elements.overlay.classList.toggle('show', open);
+      elements.overlay.hidden = !open;
+      elements.overlay.setAttribute('aria-hidden', open ? 'false' : 'true');
+    }
+    if (elements.toggleBtn) {
+      elements.toggleBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
     }
   }
 
   window.toggleSidebar = function () {
-    const { sidebar } = getSidebarElements();
-    if (!sidebar) return;
-    setSidebarOpen(!sidebar.classList.contains("open"));
+    var elements = getSidebarElements();
+    if (!elements.sidebar) return;
+    setSidebarOpen(!elements.sidebar.classList.contains('open'));
   };
 
   window.closeSidebar = function () {
     setSidebarOpen(false);
   };
 
-  function logNavDebug(source) {
-    const toggleBtn = document.querySelector(".sidebarToggle, .dashboardSidebarToggle");
-    const positionNavBar = document.querySelector(".positionNavBar");
-    const style = toggleBtn ? window.getComputedStyle(toggleBtn) : null;
-    // #region agent log
-    fetch('http://127.0.0.1:7395/ingest/ed9497cf-da7d-4467-b353-51612ec7ddba',{method:'POST',headers:{'Content-Type':'application/json','X-Debug-Session-Id':'d12c0f'},body:JSON.stringify({sessionId:'d12c0f',location:'layout.js:logNavDebug',message:'nav visibility snapshot',data:{source,innerWidth:window.innerWidth,hasToggle:!!toggleBtn,toggleDisplay:style?style.display:null,toggleVisibility:style?style.visibility:null,toggleOpacity:style?style.opacity:null,hasD_lg_none:toggleBtn?toggleBtn.classList.contains('d-lg-none'):null,hasPositionNavBar:!!positionNavBar,page:location.pathname.split('/').pop()||'index.html'},timestamp:Date.now(),hypothesisId:'A-B-C-E'})}).catch(()=>{});
-    // #endregion
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    logNavDebug('DOMContentLoaded');
-    const { sidebar, overlay } = getSidebarElements();
-
-    if (overlay) {
-      overlay.addEventListener("click", closeSidebar);
+  window.toggleFaq = function (element) {
+    var answer = element.nextElementSibling;
+    var isActive = element.classList.contains('active');
+    var questions = document.querySelectorAll('.faqQuestion');
+    for (var i = 0; i < questions.length; i++) {
+      questions[i].classList.remove('active');
+      if (questions[i].nextElementSibling) {
+        questions[i].nextElementSibling.classList.remove('active');
+      }
     }
+    if (!isActive) {
+      element.classList.add('active');
+      if (answer) answer.classList.add('active');
+    }
+  };
 
-    if (sidebar) {
-      sidebar.addEventListener("click", function (event) {
-        const menuTarget = event.target.closest("a, button");
-        if (menuTarget) {
-          closeSidebar();
-        }
+  document.addEventListener('DOMContentLoaded', function () {
+    var elements = getSidebarElements();
+    if (elements.overlay) {
+      elements.overlay.addEventListener('click', function () {
+        setSidebarOpen(false);
       });
     }
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeSidebar();
-      }
-    });
-
-    window.addEventListener("resize", function () {
-      logNavDebug('resize');
+    if (elements.sidebar) {
+      elements.sidebar.addEventListener('click', function (event) {
+        var target = event.target.closest('a, button');
+        if (target && window.innerWidth < 992) setSidebarOpen(false);
+      });
+    }
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') setSidebarOpen(false);
     });
   });
+})();
+
+(function () {
+  function addMaterialRipple(event) {
+    var target = event.target.closest('.btn, button, .userNavList a, .sidebarMenuNav a, .quickAction, .positionCard, .candidateCard, .userChip, .menuButton, .sidebarClose');
+    if (!target) return;
+    var rect = target.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    var ripple = document.createElement('span');
+    ripple.className = 'materialRipple';
+    ripple.style.width = size + 'px';
+    ripple.style.height = size + 'px';
+    ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+    ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+    target.appendChild(ripple);
+    window.setTimeout(function () {
+      if (ripple && ripple.parentNode) ripple.parentNode.removeChild(ripple);
+    }, 650);
+  }
+
+  function initMaterialReveal() {
+    var targets = document.querySelectorAll('.userCard, .statCard, .candidateCard, .positionCard, .quickAction, .helpCard, .overviewCard, .featureCard, .securityCard, .faqCard, .termsContent, .policyContent');
+    for (var i = 0; i < targets.length; i++) {
+      targets[i].classList.add('materialReveal');
+    }
+
+    if (!('IntersectionObserver' in window)) {
+      for (var j = 0; j < targets.length; j++) targets[j].classList.add('isVisible');
+      return;
+    }
+
+    var observer = new IntersectionObserver(function (entries) {
+      for (var k = 0; k < entries.length; k++) {
+        if (entries[k].isIntersecting) {
+          entries[k].target.classList.add('isVisible');
+          observer.unobserve(entries[k].target);
+        }
+      }
+    }, { threshold: 0.12 });
+
+    for (var m = 0; m < targets.length; m++) observer.observe(targets[m]);
+  }
+
+  document.addEventListener('pointerdown', addMaterialRipple);
+  document.addEventListener('DOMContentLoaded', initMaterialReveal);
 })();

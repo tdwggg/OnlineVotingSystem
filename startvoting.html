@@ -7,167 +7,181 @@
     <title>Start Voting - iVotePH</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
-
     <style>
-        body {
-            background: #f5f7fb;
-            font-family: Inter, Segoe UI, sans-serif;
-            position: relative;
-            overflow-x: hidden;
+        img.brandLogo {
+            width: 126px !important;
+            max-width: 126px !important;
+            height: auto !important;
+            max-height: 46px !important;
+            object-fit: contain !important;
+            display: block !important
         }
 
-        .videoBg {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
+        .userNavList,
+        .sidebarMenuNav {
+            list-style: none !important;
+            margin: 0 !important;
+            padding: 0 !important
         }
 
-        .videoOverlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.4);
-            z-index: -1;
-            pointer-events: none;
+        .userNavList {
+            display: flex !important;
+            gap: 8px !important;
+            overflow-x: auto !important
         }
 
-        .topNavbar {
-            height: 80px;
-            background: #fff;
-            border-bottom: 1px solid #e9ecef;
+        .userNavList li,
+        .sidebarMenuNav li {
+            list-style: none !important
         }
 
-        .logoText {
-            font-size: 2rem;
-            font-weight: 800;
-            color: #0d47d9;
+        .userTopbarInner {
+            display: flex !important;
+            align-items: center !important;
+            gap: 14px !important
         }
 
-        .logoText span {
-            color: #ef4444;
+        .userSidebar,
+        #sidebar {
+            transform: translateX(-110%)
         }
 
-        .searchInput {
-            border-radius: 14px;
-            height: 48px;
-            border: 1px solid #dee2e6;
-            width: 100%;
-            max-width: 100%;
+        .userSidebar.open,
+        #sidebar.open {
+            transform: translateX(0)
         }
-
-        .closeBtn {
-            cursor: pointer;
-            float: right;
-            color: white;
-        }
-
-        .sidebar h5 {
-            color: white;
-        }
-
-        .actionCard {
-            border: none;
-            border-radius: 20px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, .04);
-        }
-
     </style>
-<link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css">
+
 </head>
 
-<body>
+<body class="userPage">
     <video class="videoBg" autoplay muted loop playsinline>
         <source src="flag.mp4" type="video/mp4">
     </video>
-    <div class="videoOverlay"></div>
-
-    
-    <nav class="navbar topNavbar px-3">
-        <div class="container-fluid d-flex align-items-center flex-wrap gap-2">
-
-            <div class="d-flex align-items-center gap-2">
-                <button class="btn btn-light sidebarToggle flex-shrink-0" type="button" onclick="toggleSidebar()"
-                    aria-label="Toggle menu" aria-controls="sidebar" aria-expanded="false">
-                    <i class="fas fa-bars"></i>
-                </button>
-                <a href="index.html">
-                    <img src="FINALS 2.png" class="brandLogo" alt="iVote PH">
-                </a>
-            </div>
-
-            <div class="navbarSearchWrap d-none d-md-block">
+    <div class="appBackdrop"></div>
+    <header class="userTopbar">
+        <div class="userTopbarInner">
+            <button class="menuButton" type="button" onclick="toggleSidebar()" aria-label="Open menu"
+                aria-controls="sidebar" aria-expanded="false">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+                <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
+            </a>
+            <div class="topbarSearch d-none d-lg-block">
                 <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <span class="input-group-text bg-white border-end-0"><i
+                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
                     <input type="search" class="form-control searchInput border-start-0"
-                        placeholder="Search candidates, positions, or topics…" aria-label="Search">
+                        placeholder="Search candidates, voting info, or results">
                 </div>
             </div>
-
-            <div class="d-flex align-items-center gap-2 ms-md-auto">
-                <a href="profile.html" class="userProfileChip">
-                    <img src="avatar.png" class="userAvatar" alt="Juan Dela Cruz" onerror="this.style.display='none'">
-                    <div class="userMeta">
-                        <div class="userName">Juan Dela Cruz</div>
-                        <div class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</div>
-                    </div>
-                    <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
-                </a>
-            </div>
-
-            <div class="navbarSearchWrap d-md-none w-100">
+            <a href="profile.html" class="userChip ms-auto">
+                <span class="userAvatarCircle">JD</span>
+                <span class="userMeta">
+                    <span class="userName d-block">Juan Dela Cruz</span>
+                    <span class="verifiedBadge"><i class="fa-solid fa-circle-check"></i> Verified Voter</span>
+                </span>
+                <i class="fa-solid fa-chevron-down text-muted small d-none d-md-inline"></i>
+            </a>
+            <div class="topbarSearch d-lg-none w-100">
                 <div class="input-group">
-                    <span class="input-group-text bg-white border-end-0"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
+                    <span class="input-group-text bg-white border-end-0"><i
+                            class="fa-solid fa-magnifying-glass text-muted"></i></span>
                     <input type="search" class="form-control searchInput border-start-0"
-                        placeholder="Search candidates…" aria-label="Search">
+                        placeholder="Search candidates">
                 </div>
             </div>
+        </div>
+    </header>
+    <nav class="userNavBar">
+        <div class="userNavInner">
+            <ul class="userNavList">
+                <li><a href="index.html" class=""><i class="fa-solid fa-landmark"></i> Home</a></li>
+                <li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+                <li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+                <li><a href="startvoting.html" class=" active"><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+                <li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+                <li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+                <li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
+
+            </ul>
         </div>
     </nav>
-
-    <div class="positionNavBar">
-        <ul class="positionNavList">
-            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
-            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-            <li><a href="startvoting.html" class="active"><i class="fa-solid fa-people-group"></i> Voting</a></li>
-            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
-            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
-            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
-        </ul>
-    </div>
-
     <div class="sidebarOverlay" id="sidebarOverlay" hidden aria-hidden="true"></div>
-
-    <div class="sidebar" id="sidebar">
-        <h5>Menu <span class="closeBtn" onclick="toggleSidebar()">&times;</span></h5>
-        <hr>
-        <ul class="sidebarMenuNav">
-            <li><a href="index.html"><i class="fa-solid fa-landmark"></i> Home</a></li>
-            <li><a href="profile.html"><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
-            <li><a href="browsecandi.html"><i class="fa-solid fa-users"></i> Candidates</a></li>
-            <li><a href="startvoting.html" class="active"><i class="fa-solid fa-people-group"></i> Voting</a></li>
-            <li><a href="myballot.html"><i class="fa-solid fa-building-columns"></i> My Ballot</a></li>
-            <li><a href="electioninfo.html"><i class="fa-solid fa-flag"></i> Results</a></li>
-            <li><a href="help.html"><i class="fa-solid fa-building"></i> Help Center</a></li>
-        </ul>
-    </div>
-
-    <main class="flex-grow-1 p-4">
-        <div class="card actionCard">
-            <div class="card-body">
-                <h1>Start Voting</h1>
-                <p class="text-muted">Get ready to begin voting for your chosen candidates.</p>
-                <button class="btn btn-primary" type="button" onclick="window.location.href='login.html'">Proceed to Login</button>
-            </div>
+    <aside class="userSidebar sidebar" id="sidebar">
+        <div class="sidebarHeader">
+            <a href="index.html"><img src="FINALS 2.png" class="sidebarLogo" alt="iVotePH"></a>
+            <button class="sidebarClose" type="button" onclick="closeSidebar()" aria-label="Close menu"><i
+                    class="fa-solid fa-xmark"></i></button>
         </div>
-    </main>
+        <ul class="sidebarMenuNav">
+            <li><a href="index.html" class=""><i class="fa-solid fa-landmark"></i> Home</a></li>
+            <li><a href="profile.html" class=""><i class="fa-solid fa-user-tie"></i> My Profile</a></li>
+            <li><a href="browsecandi.html" class=""><i class="fa-solid fa-users"></i> Candidates</a></li>
+            <li><a href="startvoting.html" class=" active"><i class="fa-solid fa-check-to-slot"></i> Voting</a></li>
+            <li><a href="myballot.html" class=""><i class="fa-solid fa-file-signature"></i> My Ballot</a></li>
+            <li><a href="electioninfo.html" class=""><i class="fa-solid fa-chart-simple"></i> Results</a></li>
+            <li><a href="help.html" class=""><i class="fa-solid fa-circle-question"></i> Help Center</a></li>
 
+        </ul>
+    </aside>
+    <main class="userMain userPageMotion">
+
+        <section class="heroGrid">
+            <div class="heroCard userCard">
+                <div class="heroEyebrow"><i class="fa-solid fa-check-to-slot"></i> Voting Center</div>
+                <h1 class="heroTitle">Ready to vote?</h1>
+                <p class="heroSubtitle">Voting access will open only when the official election schedule is active.
+                    Later, this page will read the admin schedule directly from your database.</p>
+                <div class="heroActions">
+                    <a href="myballot.html" class="btn btnIvLight px-4 py-3"><i
+                            class="fa-solid fa-file-signature me-2"></i> Continue to Ballot</a>
+                    <a href="help.html" class="btn btn-outline-light px-4 py-3"><i
+                            class="fa-solid fa-circle-question me-2"></i> Need Help?</a>
+                </div>
+            </div>
+            <aside class="statusPanel userCard">
+                <div class="statusHeader">
+                    <div class="statusIcon"><i class="fa-solid fa-lock"></i></div>
+                    <div>
+                        <p class="statusLabel">Voting Access</p>
+                        <h3 class="statusTitle">Schedule Controlled</h3>
+                    </div>
+                </div>
+                <p class="text-muted">The admin can open, close, or use automatic schedule. The user side will follow
+                    that logic once converted to PHP.</p>
+                <div class="alert alert-primary mb-0"><strong>Note:</strong> One voter can submit only one ballot.</div>
+            </aside>
+        </section>
+        <section class="sectionCard userCard">
+            <div class="sectionHeader">
+                <h2>Before You Vote</h2>
+            </div>
+            <div class="infoGrid">
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-id-card"></i></div>
+                    <h4>Use your Voter ID</h4>
+                    <p class="text-muted">Login uses Voter ID and password, not username.</p>
+                </div>
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-eye-slash"></i></div>
+                    <h4>Private Ballot</h4>
+                    <p class="text-muted">Your final selected candidates should not be exposed in public results.</p>
+                </div>
+                <div class="featureCard">
+                    <div class="featureIcon"><i class="fa-solid fa-circle-check"></i></div>
+                    <h4>Final Submission</h4>
+                    <p class="text-muted">Once submitted, the ballot will be locked and counted once.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+    <footer class="footer">
+        <div>© 2026 iVotePH. Secure. Accessible. Transparent.</div>
+    </footer>
     <script src="layout.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
