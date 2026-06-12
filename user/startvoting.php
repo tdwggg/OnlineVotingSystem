@@ -1,4 +1,169 @@
-﻿<!doctype html>
+﻿<?php require_once __DIR__ . '/auth_check.php'; ?>
+
+<?php
+function ivoteph_h($value) {
+    if ($value === null || $value === '') {
+        return 'N/A';
+    }
+
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+function ivoteph_date_display($value) {
+    if ($value === null || $value == '' || $value == '0000-00-00') {
+        return 'N/A';
+    }
+
+    $timestamp = strtotime($value);
+
+    if (!$timestamp) {
+        return $value;
+    }
+
+    return date('F j, Y', $timestamp);
+}
+
+$profile_voter_id = isset($auth_voter_id) ? $auth_voter_id : $_SESSION['voter_id'];
+$profile_first_name = isset($auth_first_name) ? $auth_first_name : '';
+$profile_middle_name = '';
+$profile_last_name = isset($auth_last_name) ? $auth_last_name : '';
+$profile_birth_date = isset($auth_birth_date) ? $auth_birth_date : '';
+$profile_sex = '';
+$profile_mobile_number = '';
+$profile_email = isset($auth_email) ? $auth_email : '';
+$profile_status = 'Complete';
+$profile_registration_status = isset($auth_registration_status) ? $auth_registration_status : 'Registered';
+$profile_account_status = 'Active';
+$profile_account_access = 'Active';
+$profile_region = '';
+$profile_province = '';
+$profile_city_municipality = '';
+$profile_barangay = '';
+$profile_specific_address = '';
+$profile_country = 'Philippines';
+
+$sql_profile = "
+    SELECT
+        rv.voter_id,
+        rv.first_name,
+        rv.middle_name,
+        rv.last_name,
+        rv.birth_date,
+        rv.sex,
+        rv.mobile_number,
+        rv.email,
+        rv.profile_status,
+        rv.registration_status,
+        a.account_status,
+        a.is_active,
+        va.region,
+        va.province,
+        va.city_municipality,
+        va.barangay,
+        va.specific_address,
+        va.country
+    FROM registered_voters rv
+    LEFT JOIN accounts a ON rv.voter_id = a.voter_id
+    LEFT JOIN voter_addresses va ON rv.voter_id = va.voter_id
+    WHERE rv.voter_id = ?
+    LIMIT 1
+";
+
+$stmt_profile = mysqli_prepare($conn, $sql_profile);
+
+if ($stmt_profile) {
+    mysqli_stmt_bind_param($stmt_profile, 's', $profile_voter_id);
+    mysqli_stmt_execute($stmt_profile);
+
+    mysqli_stmt_bind_result(
+        $stmt_profile,
+        $db_profile_voter_id,
+        $db_profile_first_name,
+        $db_profile_middle_name,
+        $db_profile_last_name,
+        $db_profile_birth_date,
+        $db_profile_sex,
+        $db_profile_mobile_number,
+        $db_profile_email,
+        $db_profile_status,
+        $db_profile_registration_status,
+        $db_profile_account_status,
+        $db_profile_is_active,
+        $db_profile_region,
+        $db_profile_province,
+        $db_profile_city_municipality,
+        $db_profile_barangay,
+        $db_profile_specific_address,
+        $db_profile_country
+    );
+
+    if (mysqli_stmt_fetch($stmt_profile)) {
+        $profile_voter_id = $db_profile_voter_id;
+        $profile_first_name = $db_profile_first_name;
+        $profile_middle_name = $db_profile_middle_name;
+        $profile_last_name = $db_profile_last_name;
+        $profile_birth_date = $db_profile_birth_date;
+        $profile_sex = $db_profile_sex;
+        $profile_mobile_number = $db_profile_mobile_number;
+        $profile_email = $db_profile_email;
+        $profile_status = $db_profile_status;
+        $profile_registration_status = $db_profile_registration_status;
+        $profile_account_status = $db_profile_account_status;
+        $profile_account_access = ($db_profile_is_active == 1) ? 'Active' : 'Inactive';
+        $profile_region = $db_profile_region;
+        $profile_province = $db_profile_province;
+        $profile_city_municipality = $db_profile_city_municipality;
+        $profile_barangay = $db_profile_barangay;
+        $profile_specific_address = $db_profile_specific_address;
+        $profile_country = $db_profile_country;
+    }
+
+    mysqli_stmt_close($stmt_profile);
+}
+
+$profile_full_name = trim($profile_first_name . ' ' . $profile_middle_name . ' ' . $profile_last_name);
+
+if ($profile_full_name == '') {
+    $profile_full_name = $profile_voter_id;
+}
+
+$profile_initials = strtoupper(substr($profile_first_name, 0, 1) . substr($profile_last_name, 0, 1));
+
+if ($profile_initials == '') {
+    $profile_initials = 'V';
+}
+
+$profile_birth_date_display = ivoteph_date_display($profile_birth_date);
+
+$address_parts = array();
+
+if ($profile_specific_address != '') {
+    $address_parts[] = $profile_specific_address;
+}
+
+if ($profile_barangay != '') {
+    $address_parts[] = $profile_barangay;
+}
+
+if ($profile_city_municipality != '') {
+    $address_parts[] = $profile_city_municipality;
+}
+
+if ($profile_province != '') {
+    $address_parts[] = $profile_province;
+}
+
+if ($profile_region != '') {
+    $address_parts[] = $profile_region;
+}
+
+$profile_complete_address = '';
+
+if (count($address_parts) > 0) {
+    $profile_complete_address = implode(', ', $address_parts);
+}
+?>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -62,7 +227,6 @@
                 radial-gradient(circle at top left, rgba(6, 70, 168, 0.14), transparent 32%);
         }
 
-        /* SAME TOPBAR STYLE AS INDEX */
         .userTopbar {
             position: sticky;
             top: 0;
@@ -165,11 +329,6 @@
             box-shadow: 0 10px 22px rgba(6, 70, 168, 0.22);
         }
 
-        .userNavList a i {
-            font-size: 11px;
-            color: inherit;
-        }
-
         .topbarSearch {
             width: 100%;
             min-width: 0;
@@ -247,7 +406,6 @@
             line-height: 1.1;
         }
 
-        /* MAIN */
         .userMain {
             width: 100%;
             max-width: 1480px;
@@ -273,8 +431,7 @@
             min-height: 310px;
             padding: 34px 36px;
             background:
-                radial-gradient(circle at bottom right, rgba(255, 255, 255, 0.16), transparent 32%),
-                radial-gradient(circle at top right, rgba(247, 201, 72, 0.18), transparent 30%),
+                radial-gradient(circle at top right, rgba(247, 201, 72, 0.25), transparent 30%),
                 linear-gradient(135deg, #0646a8 0%, #0b3f91 100%);
             color: #ffffff;
             overflow: hidden;
@@ -288,12 +445,12 @@
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.16);
             font-size: 13px;
-            font-weight: 900;
+            font-weight: 800;
             margin-bottom: 18px;
         }
 
         .heroTitle {
-            font-size: clamp(2.2rem, 4vw, 4rem);
+            font-size: clamp(2.1rem, 4vw, 4rem);
             line-height: 1;
             letter-spacing: -0.05em;
             font-weight: 950;
@@ -301,11 +458,11 @@
         }
 
         .heroSubtitle {
-            max-width: 720px;
+            max-width: 680px;
             color: rgba(255, 255, 255, 0.88);
             font-size: 15px;
             line-height: 1.65;
-            margin-bottom: 24px;
+            margin-bottom: 26px;
         }
 
         .heroActions {
@@ -323,7 +480,8 @@
             box-shadow: 0 12px 22px rgba(16, 24, 40, 0.15);
         }
 
-        .statusPanel {
+        .statusPanel,
+        .sectionCard {
             padding: 24px;
         }
 
@@ -334,7 +492,8 @@
             margin-bottom: 14px;
         }
 
-        .statusIcon {
+        .statusIcon,
+        .featureIcon {
             width: 52px;
             height: 52px;
             border-radius: 16px;
@@ -357,106 +516,69 @@
 
         .statusTitle {
             margin: 0;
-            font-size: 24px;
+            font-size: 22px;
             font-weight: 950;
-            color: var(--userBlue);
-            letter-spacing: -0.04em;
+            color: var(--userInk);
         }
 
         .votingAccessBox {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
             gap: 12px;
-            margin: 18px 0;
+            margin: 20px 0;
         }
 
         .votingAccessItem {
+            border-radius: 18px;
             background: #f7f9fd;
             border: 1px solid #e1e8f3;
-            border-radius: 16px;
-            padding: 14px;
+            padding: 16px;
         }
 
         .votingAccessItem span {
             display: block;
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 900;
             color: var(--userMuted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 5px;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
         }
 
         .votingAccessItem strong {
             display: block;
-            font-size: 15px;
             color: var(--userBlue);
             font-weight: 950;
-        }
-
-        .sectionCard {
-            padding: 24px;
-        }
-
-        .sectionHeader {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 14px;
-            margin-bottom: 18px;
+            line-height: 1.25;
         }
 
         .sectionHeader h2 {
-            margin: 0;
+            margin: 0 0 18px;
             font-weight: 950;
-            color: var(--userInk);
             letter-spacing: -0.03em;
         }
 
         .infoGrid {
             display: grid;
             grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 16px;
+            gap: 14px;
         }
 
         .featureCard {
-            background: #ffffff;
-            border: 1px solid var(--userLine);
-            border-radius: 20px;
             padding: 20px;
-            transition: 0.22s ease;
-        }
-
-        .featureCard:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 16px 28px rgba(6, 70, 168, 0.12);
-            border-color: rgba(6, 70, 168, 0.35);
+            border: 1px solid var(--userLine);
+            border-radius: 18px;
+            background: #ffffff;
         }
 
         .featureIcon {
-            width: 48px;
-            height: 48px;
-            border-radius: 16px;
-            background: var(--userBlueSoft);
-            color: var(--userBlue);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 21px;
             margin-bottom: 14px;
         }
 
         .featureCard h4 {
-            font-size: 17px;
+            font-size: 18px;
             font-weight: 950;
             margin-bottom: 8px;
-            color: var(--userInk);
-        }
-
-        .featureCard p {
-            font-size: 13px;
-            line-height: 1.5;
-            margin-bottom: 0;
         }
 
         .footer {
@@ -466,7 +588,6 @@
             font-size: 13px;
         }
 
-        /* FULL RESPONSIVE PROFILE MODAL */
         #profileModal .modal-dialog {
             max-width: min(1180px, calc(100vw - 24px));
             margin: 12px auto;
@@ -530,8 +651,7 @@
             background: #ffffff;
         }
 
-        .profileReadOnlyNote,
-        .requestNotice {
+        .profileReadOnlyNote {
             margin-bottom: 18px;
             padding: 14px;
             border-radius: 16px;
@@ -624,6 +744,18 @@
             padding: 22px;
         }
 
+        .requestNotice {
+            background: #eaf2ff;
+            border: 1px solid #cfe0ff;
+            color: var(--userBlue);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
         .requestModalBody .form-label {
             font-size: 12px;
             font-weight: 900;
@@ -639,90 +771,10 @@
             box-shadow: none;
         }
 
-        .requestModalBody .form-control:focus,
-        .requestModalBody .form-select:focus {
-            border-color: #0b5ed7;
-            box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.12);
-        }
-
-        .menuButton,
-        .sidebarOverlay,
-        .userSidebar,
-        #sidebar,
-        .sidebar {
-            display: none !important;
-            visibility: hidden !important;
-            opacity: 0 !important;
-            pointer-events: none !important;
-        }
-
-        .userPageMotion,
-        .userCard,
-        .featureCard {
-            animation: userFadeUp 0.35s ease both;
-        }
-
-        @keyframes userFadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-            }
-        }
-
-        @media (max-width: 1400px) {
-            .userTopbarInner {
-                grid-template-columns: auto minmax(500px, 1fr) minmax(220px, 320px) auto;
-                gap: 7px;
-            }
-
-            .brandLogo {
-                width: 58px !important;
-                max-width: 58px !important;
-            }
-
-            .userNavList a {
-                padding: 8px 8px;
-                font-size: 10px;
-                gap: 3px;
-            }
-
-            .userNavList a i {
-                font-size: 10px;
-            }
-
-            .userName {
-                font-size: 10px;
-            }
-
-            .verifiedBadge {
-                font-size: 8px;
-            }
-
-            .profileFullGrid.threeCols {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-            }
-        }
-
         @media (max-width: 1180px) {
             .userTopbarInner {
                 grid-template-columns: auto 1fr auto;
                 grid-template-rows: auto auto auto;
-                gap: 8px;
             }
 
             .brandLink {
@@ -733,7 +785,6 @@
             .userChip {
                 grid-column: 3;
                 grid-row: 1;
-                justify-self: end;
             }
 
             .userNavBar {
@@ -741,27 +792,25 @@
                 grid-row: 2;
                 overflow-x: auto !important;
                 -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-
-            .userNavBar::-webkit-scrollbar,
-            .userNavInner::-webkit-scrollbar {
-                display: none;
-            }
-
-            .userNavInner {
-                overflow-x: auto;
-            }
-
-            .userNavList {
-                width: max-content;
-                min-width: max-content;
-                overflow: visible;
             }
 
             .topbarSearch {
                 grid-column: 1 / -1;
                 grid-row: 3;
+            }
+
+            .userNavInner {
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+
+            .userNavInner::-webkit-scrollbar {
+                display: none;
+            }
+
+            .userNavList {
+                min-width: max-content;
+                width: max-content;
             }
 
             .heroGrid {
@@ -772,35 +821,23 @@
                 grid-template-columns: 1fr;
             }
 
-            .votingAccessBox {
-                grid-template-columns: 1fr 1fr;
+            .profileFullGrid.threeCols {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
         }
 
         @media (max-width: 768px) {
             .userTopbar {
-                padding: 8px 10px;
+                padding: 10px 12px;
             }
 
             .brandLogo {
-                width: 56px !important;
-                max-width: 56px !important;
-                max-height: 30px !important;
+                width: 60px !important;
+                max-width: 60px !important;
             }
 
             .userChip {
-                width: 38px;
-                height: 38px;
-                min-height: 38px;
-                padding: 3px;
-                justify-content: center;
-            }
-
-            .userAvatarCircle {
-                width: 30px;
-                height: 30px;
-                min-width: 30px;
-                font-size: 11px;
+                padding: 6px;
             }
 
             .userMeta,
@@ -809,16 +846,11 @@
             }
 
             .userMain {
-                padding: 12px 12px 30px;
+                padding: 14px 12px 30px;
             }
 
             .heroCard {
                 padding: 26px 22px;
-                min-height: auto;
-            }
-
-            .heroTitle {
-                font-size: 2.3rem;
             }
 
             .heroActions {
@@ -877,7 +909,7 @@
 
     <header class="userTopbar">
         <div class="userTopbarInner">
-            <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+            <a href="index.php" class="brandLink" aria-label="iVotePH Home">
                 <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
             </a>
 
@@ -885,49 +917,49 @@
                 <div class="userNavInner">
                     <ul class="userNavList">
                         <li>
-                            <a href="index.html">
+                            <a href="index.php">
                                 <i class="fa-solid fa-landmark"></i>
                                 Home
                             </a>
                         </li>
 
                         <li>
-                            <a href="about.html">
+                            <a href="about.php">
                                 <i class="fa-solid fa-circle-info"></i>
                                 About
                             </a>
                         </li>
 
                         <li>
-                            <a href="browsecandi.html">
+                            <a href="browsecandi.php">
                                 <i class="fa-solid fa-users"></i>
                                 Candidates
                             </a>
                         </li>
 
                         <li>
-                            <a href="startvoting.html" class="active">
+                            <a href="startvoting.php" class="active">
                                 <i class="fa-solid fa-check-to-slot"></i>
                                 Voting
                             </a>
                         </li>
 
                         <li>
-                            <a href="myballot.html">
+                            <a href="myballot.php">
                                 <i class="fa-solid fa-file-signature"></i>
                                 My Ballot
                             </a>
                         </li>
 
                         <li>
-                            <a href="results.html">
+                            <a href="results.php">
                                 <i class="fa-solid fa-chart-simple"></i>
                                 Results
                             </a>
                         </li>
 
                         <li>
-                            <a href="help.html">
+                            <a href="help.php">
                                 <i class="fa-solid fa-circle-question"></i>
                                 Help
                             </a>
@@ -946,9 +978,9 @@
             </div>
 
             <button type="button" class="userChip border-0" data-bs-toggle="modal" data-bs-target="#profileModal">
-                <span class="userAvatarCircle">JD</span>
+                <span class="userAvatarCircle"><?php echo ivoteph_h($profile_initials); ?></span>
                 <span class="userMeta">
-                    <span class="userName d-block">Juan Dela Cruz</span>
+                    <span class="userName d-block"><?php echo ivoteph_h($profile_full_name); ?></span>
                     <span class="verifiedBadge">
                         <i class="fa-solid fa-circle-check"></i>
                         Verified Voter
@@ -975,12 +1007,12 @@
                 </p>
 
                 <div class="heroActions">
-                    <a href="myballot.html" class="btn btnIvLight px-4 py-3">
+                    <a href="myballot.php" class="btn btnIvLight px-4 py-3">
                         <i class="fa-solid fa-file-signature me-2"></i>
                         Continue to Ballot
                     </a>
 
-                    <a href="help.html" class="btn btn-outline-light px-4 py-3">
+                    <a href="help.php" class="btn btn-outline-light px-4 py-3">
                         <i class="fa-solid fa-circle-question me-2"></i>
                         Need Help?
                     </a>
@@ -1061,13 +1093,12 @@
         </section>
     </main>
 
-    <!-- FULL READ-ONLY PROFILE MODAL -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
                 <div class="profileModalHeader">
-                    <div class="profileModalAvatar">JD</div>
-                    <h5 id="profileModalLabel">Juan Dela Cruz</h5>
+                    <div class="profileModalAvatar"><?php echo ivoteph_h($profile_initials); ?></div>
+                    <h5 id="profileModalLabel"><?php echo ivoteph_h($profile_full_name); ?></h5>
                     <p>
                         <i class="fa-solid fa-circle-check me-1"></i>
                         Verified Registered Voter
@@ -1089,17 +1120,17 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Voter ID</span>
-                            <strong>VOTER-001</strong>
+                            <strong><?php echo ivoteph_h($profile_voter_id); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Registration Status</span>
-                            <strong>Registered</strong>
+                            <strong><?php echo ivoteph_h($profile_registration_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Profile Status</span>
-                            <strong>Complete</strong>
+                            <strong><?php echo ivoteph_h($profile_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1114,7 +1145,7 @@
 
                         <div class="profileFullItem">
                             <span>Account Access</span>
-                            <strong>Active</strong>
+                            <strong><?php echo ivoteph_h($profile_account_access); ?></strong>
                         </div>
                     </div>
 
@@ -1126,27 +1157,27 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>First Name</span>
-                            <strong>Juan</strong>
+                            <strong><?php echo ivoteph_h($profile_first_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Middle Name</span>
-                            <strong>Santos</strong>
+                            <strong><?php echo ivoteph_h($profile_middle_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Last Name</span>
-                            <strong>Dela Cruz</strong>
+                            <strong><?php echo ivoteph_h($profile_last_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Birth Date</span>
-                            <strong>January 15, 2001</strong>
+                            <strong><?php echo ivoteph_h($profile_birth_date_display); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Sex</span>
-                            <strong>Male</strong>
+                            <strong><?php echo ivoteph_h($profile_sex); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1163,12 +1194,12 @@
                     <div class="profileFullGrid">
                         <div class="profileFullItem">
                             <span>Email Address</span>
-                            <strong>juan@example.com</strong>
+                            <strong><?php echo ivoteph_h($profile_email); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Mobile Number</span>
-                            <strong>0917 123 4567</strong>
+                            <strong><?php echo ivoteph_h($profile_mobile_number); ?></strong>
                         </div>
                     </div>
 
@@ -1180,37 +1211,37 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Region</span>
-                            <strong>National Capital Region</strong>
+                            <strong><?php echo ivoteph_h($profile_region); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Province</span>
-                            <strong>Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_province); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>City / Municipality</span>
-                            <strong>Quezon City</strong>
+                            <strong><?php echo ivoteph_h($profile_city_municipality); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Barangay</span>
-                            <strong>Commonwealth</strong>
+                            <strong><?php echo ivoteph_h($profile_barangay); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>ZIP Code</span>
-                            <strong>1121</strong>
+                            <strong>N/A</strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Country</span>
-                            <strong>Philippines</strong>
+                            <strong><?php echo ivoteph_h($profile_country); ?></strong>
                         </div>
 
                         <div class="profileFullItem profileFullWide">
                             <span>Complete Address</span>
-                            <strong>123 Sample Street, Barangay Commonwealth, Quezon City, Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_complete_address); ?></strong>
                         </div>
                     </div>
                 </div>
@@ -1230,7 +1261,6 @@
         </div>
     </div>
 
-    <!-- ADMIN REQUEST MODAL -->
     <div class="modal fade" id="profileRequestModal" tabindex="-1" aria-labelledby="profileRequestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
@@ -1333,9 +1363,7 @@
         }
 
         function logoutUser() {
-            sessionStorage.removeItem('isLoggedIn');
-            sessionStorage.clear();
-            window.location.href = 'login.html';
+            window.location.href = 'logout.php';
         }
     </script>
 </body>

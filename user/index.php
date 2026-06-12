@@ -1,4 +1,146 @@
-﻿<!doctype html>
+﻿<?php require_once __DIR__ . '/auth_check.php'; ?>
+
+<?php
+function ivoteph_h($value) {
+    if ($value === null || $value === '') {
+        return 'N/A';
+    }
+
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+}
+
+function ivoteph_date_display($value) {
+    if ($value === null || $value == '' || $value == '0000-00-00') {
+        return 'N/A';
+    }
+
+    $timestamp = strtotime($value);
+
+    if (!$timestamp) {
+        return $value;
+    }
+
+    return date('F j, Y', $timestamp);
+}
+
+$profile_voter_id = isset($auth_voter_id) ? $auth_voter_id : $_SESSION['voter_id'];
+$profile_first_name = isset($auth_first_name) ? $auth_first_name : '';
+$profile_middle_name = '';
+$profile_last_name = isset($auth_last_name) ? $auth_last_name : '';
+$profile_birth_date = isset($auth_birth_date) ? $auth_birth_date : '';
+$profile_sex = '';
+$profile_mobile_number = '';
+$profile_email = isset($auth_email) ? $auth_email : '';
+$profile_status = 'Complete';
+$profile_registration_status = isset($auth_registration_status) ? $auth_registration_status : 'Registered';
+$profile_account_status = 'Active';
+$profile_account_access = 'Active';
+$profile_region = '';
+$profile_province = '';
+$profile_city_municipality = '';
+$profile_barangay = '';
+$profile_specific_address = '';
+$profile_country = 'Philippines';
+
+$sql_profile = "
+    SELECT
+        rv.voter_id,
+        rv.first_name,
+        rv.middle_name,
+        rv.last_name,
+        rv.birth_date,
+        rv.sex,
+        rv.mobile_number,
+        rv.email,
+        rv.profile_status,
+        rv.registration_status,
+        a.account_status,
+        a.is_active,
+        va.region,
+        va.province,
+        va.city_municipality,
+        va.barangay,
+        va.specific_address,
+        va.country
+    FROM registered_voters rv
+    LEFT JOIN accounts a ON rv.voter_id = a.voter_id
+    LEFT JOIN voter_addresses va ON rv.voter_id = va.voter_id
+    WHERE rv.voter_id = ?
+    LIMIT 1
+";
+
+$stmt_profile = mysqli_prepare($conn, $sql_profile);
+
+if ($stmt_profile) {
+    mysqli_stmt_bind_param($stmt_profile, 's', $profile_voter_id);
+    mysqli_stmt_execute($stmt_profile);
+
+    mysqli_stmt_bind_result(
+        $stmt_profile,
+        $db_profile_voter_id,
+        $db_profile_first_name,
+        $db_profile_middle_name,
+        $db_profile_last_name,
+        $db_profile_birth_date,
+        $db_profile_sex,
+        $db_profile_mobile_number,
+        $db_profile_email,
+        $db_profile_status,
+        $db_profile_registration_status,
+        $db_profile_account_status,
+        $db_profile_is_active,
+        $db_profile_region,
+        $db_profile_province,
+        $db_profile_city_municipality,
+        $db_profile_barangay,
+        $db_profile_specific_address,
+        $db_profile_country
+    );
+
+    if (mysqli_stmt_fetch($stmt_profile)) {
+        $profile_voter_id = $db_profile_voter_id;
+        $profile_first_name = $db_profile_first_name;
+        $profile_middle_name = $db_profile_middle_name;
+        $profile_last_name = $db_profile_last_name;
+        $profile_birth_date = $db_profile_birth_date;
+        $profile_sex = $db_profile_sex;
+        $profile_mobile_number = $db_profile_mobile_number;
+        $profile_email = $db_profile_email;
+        $profile_status = $db_profile_status;
+        $profile_registration_status = $db_profile_registration_status;
+        $profile_account_status = $db_profile_account_status;
+        $profile_account_access = ($db_profile_is_active == 1) ? 'Active' : 'Inactive';
+        $profile_region = $db_profile_region;
+        $profile_province = $db_profile_province;
+        $profile_city_municipality = $db_profile_city_municipality;
+        $profile_barangay = $db_profile_barangay;
+        $profile_specific_address = $db_profile_specific_address;
+        $profile_country = $db_profile_country;
+    }
+
+    mysqli_stmt_close($stmt_profile);
+}
+
+$profile_full_name = trim($profile_first_name . ' ' . $profile_middle_name . ' ' . $profile_last_name);
+
+if ($profile_full_name == '') {
+    $profile_full_name = $profile_voter_id;
+}
+
+$profile_initials = strtoupper(substr($profile_first_name, 0, 1) . substr($profile_last_name, 0, 1));
+
+if ($profile_initials == '') {
+    $profile_initials = 'V';
+}
+
+$profile_birth_date_display = ivoteph_date_display($profile_birth_date);
+$profile_complete_address = trim($profile_specific_address . ', ' . $profile_barangay . ', ' . $profile_city_municipality . ', ' . $profile_province);
+
+if ($profile_complete_address == ', , ,') {
+    $profile_complete_address = 'N/A';
+}
+?>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -559,7 +701,6 @@
             font-size: 13px;
         }
 
-        /* PROFILE MODAL FIXED RESPONSIVE LAYOUT */
         #profileModal .modal-dialog {
             max-width: min(1180px, calc(100vw - 24px));
             margin: 12px auto;
@@ -967,7 +1108,7 @@
 
     <header class="userTopbar">
         <div class="userTopbarInner">
-            <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+            <a href="index.php" class="brandLink" aria-label="iVotePH Home">
                 <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
             </a>
 
@@ -984,49 +1125,49 @@
                 <div class="userNavInner">
                     <ul class="userNavList">
                         <li>
-                            <a href="index.html" class="active">
+                            <a href="index.php" class="active">
                                 <i class="fa-solid fa-landmark"></i>
                                 Home
                             </a>
                         </li>
 
                         <li>
-                            <a href="about.html">
+                            <a href="about.php">
                                 <i class="fa-solid fa-circle-info"></i>
                                 About
                             </a>
                         </li>
 
                         <li>
-                            <a href="browsecandi.html">
+                            <a href="browsecandi.php">
                                 <i class="fa-solid fa-users"></i>
                                 Candidates
                             </a>
                         </li>
 
                         <li>
-                            <a href="startvoting.html">
+                            <a href="startvoting.php">
                                 <i class="fa-solid fa-check-to-slot"></i>
                                 Voting
                             </a>
                         </li>
 
                         <li>
-                            <a href="myballot.html">
+                            <a href="myballot.php">
                                 <i class="fa-solid fa-file-signature"></i>
                                 My Ballot
                             </a>
                         </li>
 
                         <li>
-                            <a href="results.html">
+                            <a href="results.php">
                                 <i class="fa-solid fa-chart-simple"></i>
                                 Results
                             </a>
                         </li>
 
                         <li>
-                            <a href="help.html">
+                            <a href="help.php">
                                 <i class="fa-solid fa-circle-question"></i>
                                 Help
                             </a>
@@ -1036,9 +1177,9 @@
             </nav>
 
             <button type="button" class="userChip border-0" data-bs-toggle="modal" data-bs-target="#profileModal">
-                <span class="userAvatarCircle">JD</span>
+                <span class="userAvatarCircle"><?php echo ivoteph_h($profile_initials); ?></span>
                 <span class="userMeta">
-                    <span class="userName d-block">Juan Dela Cruz</span>
+                    <span class="userName d-block"><?php echo ivoteph_h($profile_full_name); ?></span>
                     <span class="verifiedBadge">
                         <i class="fa-solid fa-circle-check"></i>
                         Verified Voter
@@ -1057,7 +1198,7 @@
                     Secure Online Voting Platform
                 </div>
 
-                <h1 class="heroTitle">Welcome, Juan.</h1>
+                <h1 class="heroTitle">Welcome, <?php echo ivoteph_h($profile_first_name); ?>.</h1>
 
                 <p class="heroSubtitle">
                     Your vote is your voice. Review candidates, follow the official voting window,
@@ -1065,12 +1206,12 @@
                 </p>
 
                 <div class="heroActions">
-                    <a href="startvoting.html" class="btn btnIvLight px-4 py-3">
+                    <a href="startvoting.php" class="btn btnIvLight px-4 py-3">
                         <i class="fa-solid fa-check-to-slot me-2"></i>
                         Start Voting
                     </a>
 
-                    <a href="browsecandi.html" class="btn btn-outline-light px-4 py-3">
+                    <a href="browsecandi.php" class="btn btn-outline-light px-4 py-3">
                         <i class="fa-solid fa-users me-2"></i>
                         Browse Candidates
                     </a>
@@ -1115,7 +1256,7 @@
                     </div>
                 </div>
 
-                <a href="results.html" class="btn btn-primary w-100 py-3">
+                <a href="results.php" class="btn btn-primary w-100 py-3">
                     <i class="fa-solid fa-chart-line me-2"></i>
                     View Results
                 </a>
@@ -1170,14 +1311,14 @@
                         </p>
                     </div>
 
-                    <a href="browsecandi.html" class="viewAllLink">
+                    <a href="browsecandi.php" class="viewAllLink">
                         View all
                         <i class="fa-solid fa-arrow-right ms-1"></i>
                     </a>
                 </div>
 
                 <div class="positionGrid">
-                    <a class="positionCard" href="browsecandi.html">
+                    <a class="positionCard" href="browsecandi.php">
                         <div class="positionIcon">
                             <i class="fa-solid fa-landmark"></i>
                         </div>
@@ -1188,7 +1329,7 @@
                         </div>
                     </a>
 
-                    <a class="positionCard" href="browsecandi.html">
+                    <a class="positionCard" href="browsecandi.php">
                         <div class="positionIcon">
                             <i class="fa-solid fa-user-tie"></i>
                         </div>
@@ -1199,7 +1340,7 @@
                         </div>
                     </a>
 
-                    <a class="positionCard" href="browsecandi.html">
+                    <a class="positionCard" href="browsecandi.php">
                         <div class="positionIcon">
                             <i class="fa-solid fa-users"></i>
                         </div>
@@ -1210,7 +1351,7 @@
                         </div>
                     </a>
 
-                    <a class="positionCard" href="browsecandi.html">
+                    <a class="positionCard" href="browsecandi.php">
                         <div class="positionIcon">
                             <i class="fa-solid fa-city"></i>
                         </div>
@@ -1239,22 +1380,22 @@
                         Request Change
                     </button>
 
-                    <a href="about.html" class="quickAction">
+                    <a href="about.php" class="quickAction">
                         <i class="fa-solid fa-circle-info"></i>
                         About
                     </a>
 
-                    <a href="startvoting.html" class="quickAction">
+                    <a href="startvoting.php" class="quickAction">
                         <i class="fa-solid fa-check-to-slot"></i>
                         Voting
                     </a>
 
-                    <a href="myballot.html" class="quickAction">
+                    <a href="myballot.php" class="quickAction">
                         <i class="fa-solid fa-file-signature"></i>
                         My Ballot
                     </a>
 
-                    <a href="help.html" class="quickAction">
+                    <a href="help.php" class="quickAction">
                         <i class="fa-solid fa-headset"></i>
                         Help
                     </a>
@@ -1263,13 +1404,12 @@
         </section>
     </main>
 
-    <!-- FULL READ-ONLY PROFILE MODAL -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
                 <div class="profileModalHeader">
-                    <div class="profileModalAvatar">JD</div>
-                    <h5 id="profileModalLabel">Juan Dela Cruz</h5>
+                    <div class="profileModalAvatar"><?php echo ivoteph_h($profile_initials); ?></div>
+                    <h5 id="profileModalLabel"><?php echo ivoteph_h($profile_full_name); ?></h5>
                     <p>
                         <i class="fa-solid fa-circle-check me-1"></i>
                         Verified Registered Voter
@@ -1291,17 +1431,17 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Voter ID</span>
-                            <strong>VOTER-001</strong>
+                            <strong><?php echo ivoteph_h($profile_voter_id); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Registration Status</span>
-                            <strong>Registered</strong>
+                            <strong><?php echo ivoteph_h($profile_registration_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Profile Status</span>
-                            <strong>Complete</strong>
+                            <strong><?php echo ivoteph_h($profile_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1316,7 +1456,7 @@
 
                         <div class="profileFullItem">
                             <span>Account Access</span>
-                            <strong>Active</strong>
+                            <strong><?php echo ivoteph_h($profile_account_access); ?></strong>
                         </div>
                     </div>
 
@@ -1328,27 +1468,27 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>First Name</span>
-                            <strong>Juan</strong>
+                            <strong><?php echo ivoteph_h($profile_first_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Middle Name</span>
-                            <strong>Santos</strong>
+                            <strong><?php echo ivoteph_h($profile_middle_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Last Name</span>
-                            <strong>Dela Cruz</strong>
+                            <strong><?php echo ivoteph_h($profile_last_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Birth Date</span>
-                            <strong>January 15, 2001</strong>
+                            <strong><?php echo ivoteph_h($profile_birth_date_display); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Sex</span>
-                            <strong>Male</strong>
+                            <strong><?php echo ivoteph_h($profile_sex); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1365,12 +1505,12 @@
                     <div class="profileFullGrid">
                         <div class="profileFullItem">
                             <span>Email Address</span>
-                            <strong>juan@example.com</strong>
+                            <strong><?php echo ivoteph_h($profile_email); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Mobile Number</span>
-                            <strong>0917 123 4567</strong>
+                            <strong><?php echo ivoteph_h($profile_mobile_number); ?></strong>
                         </div>
                     </div>
 
@@ -1382,22 +1522,22 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Region</span>
-                            <strong>National Capital Region</strong>
+                            <strong><?php echo ivoteph_h($profile_region); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Province</span>
-                            <strong>Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_province); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>City / Municipality</span>
-                            <strong>Quezon City</strong>
+                            <strong><?php echo ivoteph_h($profile_city_municipality); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Barangay</span>
-                            <strong>Commonwealth</strong>
+                            <strong><?php echo ivoteph_h($profile_barangay); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1407,12 +1547,12 @@
 
                         <div class="profileFullItem">
                             <span>Country</span>
-                            <strong>Philippines</strong>
+                            <strong><?php echo ivoteph_h($profile_country); ?></strong>
                         </div>
 
                         <div class="profileFullItem profileFullWide">
                             <span>Complete Address</span>
-                            <strong>123 Sample Street, Barangay Commonwealth, Quezon City, Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_complete_address); ?></strong>
                         </div>
                     </div>
                 </div>
@@ -1432,7 +1572,6 @@
         </div>
     </div>
 
-    <!-- ADMIN REQUEST MODAL -->
     <div class="modal fade" id="profileRequestModal" tabindex="-1" aria-labelledby="profileRequestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
@@ -1560,9 +1699,7 @@
         }
 
         function logoutUser() {
-            sessionStorage.removeItem('isLoggedIn');
-            sessionStorage.clear();
-            window.location.href = 'login.html';
+            window.location.href = 'logout.php';
         }
 
         updateCountdown();

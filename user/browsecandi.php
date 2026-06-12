@@ -1,4 +1,271 @@
-﻿<!doctype html>
+﻿<?php require_once __DIR__ . '/auth_check.php'; ?>
+
+<?php
+if (!function_exists('ivoteph_h')) {
+    function ivoteph_h($value) {
+        if ($value === null || $value === '') {
+            return 'N/A';
+        }
+
+        return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+    }
+}
+
+if (!function_exists('ivoteph_date_display')) {
+    function ivoteph_date_display($value) {
+        if ($value === null || $value == '' || $value == '0000-00-00') {
+            return 'N/A';
+        }
+
+        $timestamp = strtotime($value);
+
+        if (!$timestamp) {
+            return $value;
+        }
+
+        return date('F j, Y', $timestamp);
+    }
+}
+
+function ivoteph_initials_from_name($name) {
+    $name = trim($name);
+
+    if ($name == '') {
+        return 'C';
+    }
+
+    $parts = preg_split('/\s+/', $name);
+    $initials = '';
+
+    if (isset($parts[0]) && $parts[0] != '') {
+        $initials .= strtoupper(substr($parts[0], 0, 1));
+    }
+
+    if (count($parts) > 1) {
+        $last_part = $parts[count($parts) - 1];
+
+        if ($last_part != '') {
+            $initials .= strtoupper(substr($last_part, 0, 1));
+        }
+    }
+
+    if ($initials == '') {
+        $initials = 'C';
+    }
+
+    return $initials;
+}
+
+function ivoteph_candidate_photo($photo) {
+    $photo = trim($photo);
+
+    if ($photo == '') {
+        return '';
+    }
+
+    if (strpos($photo, 'http://') === 0 || strpos($photo, 'https://') === 0) {
+        return $photo;
+    }
+
+    if (file_exists(__DIR__ . '/../admin/assets/uploads/' . $photo)) {
+        return '../admin/assets/uploads/' . $photo;
+    }
+
+    if (file_exists(__DIR__ . '/../admin/assets/img/' . $photo)) {
+        return '../admin/assets/img/' . $photo;
+    }
+
+    if (file_exists(__DIR__ . '/' . $photo)) {
+        return $photo;
+    }
+
+    return $photo;
+}
+
+/* Logged-in voter profile data */
+$profile_voter_id = isset($auth_voter_id) ? $auth_voter_id : $_SESSION['voter_id'];
+$profile_first_name = isset($auth_first_name) ? $auth_first_name : '';
+$profile_middle_name = '';
+$profile_last_name = isset($auth_last_name) ? $auth_last_name : '';
+$profile_birth_date = isset($auth_birth_date) ? $auth_birth_date : '';
+$profile_sex = '';
+$profile_mobile_number = '';
+$profile_email = isset($auth_email) ? $auth_email : '';
+$profile_status = 'Complete';
+$profile_registration_status = isset($auth_registration_status) ? $auth_registration_status : 'Registered';
+$profile_account_status = 'Active';
+$profile_account_access = 'Active';
+$profile_region = '';
+$profile_province = '';
+$profile_city_municipality = '';
+$profile_barangay = '';
+$profile_specific_address = '';
+$profile_country = 'Philippines';
+
+$sql_profile = "
+    SELECT
+        rv.voter_id,
+        rv.first_name,
+        rv.middle_name,
+        rv.last_name,
+        rv.birth_date,
+        rv.sex,
+        rv.mobile_number,
+        rv.email,
+        rv.profile_status,
+        rv.registration_status,
+        a.account_status,
+        a.is_active,
+        va.region,
+        va.province,
+        va.city_municipality,
+        va.barangay,
+        va.specific_address,
+        va.country
+    FROM registered_voters rv
+    LEFT JOIN accounts a ON rv.voter_id = a.voter_id
+    LEFT JOIN voter_addresses va ON rv.voter_id = va.voter_id
+    WHERE rv.voter_id = ?
+    LIMIT 1
+";
+
+$stmt_profile = mysqli_prepare($conn, $sql_profile);
+
+if ($stmt_profile) {
+    mysqli_stmt_bind_param($stmt_profile, 's', $profile_voter_id);
+    mysqli_stmt_execute($stmt_profile);
+
+    mysqli_stmt_bind_result(
+        $stmt_profile,
+        $db_profile_voter_id,
+        $db_profile_first_name,
+        $db_profile_middle_name,
+        $db_profile_last_name,
+        $db_profile_birth_date,
+        $db_profile_sex,
+        $db_profile_mobile_number,
+        $db_profile_email,
+        $db_profile_status,
+        $db_profile_registration_status,
+        $db_profile_account_status,
+        $db_profile_is_active,
+        $db_profile_region,
+        $db_profile_province,
+        $db_profile_city_municipality,
+        $db_profile_barangay,
+        $db_profile_specific_address,
+        $db_profile_country
+    );
+
+    if (mysqli_stmt_fetch($stmt_profile)) {
+        $profile_voter_id = $db_profile_voter_id;
+        $profile_first_name = $db_profile_first_name;
+        $profile_middle_name = $db_profile_middle_name;
+        $profile_last_name = $db_profile_last_name;
+        $profile_birth_date = $db_profile_birth_date;
+        $profile_sex = $db_profile_sex;
+        $profile_mobile_number = $db_profile_mobile_number;
+        $profile_email = $db_profile_email;
+        $profile_status = $db_profile_status;
+        $profile_registration_status = $db_profile_registration_status;
+        $profile_account_status = $db_profile_account_status;
+        $profile_account_access = ($db_profile_is_active == 1) ? 'Active' : 'Inactive';
+        $profile_region = $db_profile_region;
+        $profile_province = $db_profile_province;
+        $profile_city_municipality = $db_profile_city_municipality;
+        $profile_barangay = $db_profile_barangay;
+        $profile_specific_address = $db_profile_specific_address;
+        $profile_country = $db_profile_country;
+    }
+
+    mysqli_stmt_close($stmt_profile);
+}
+
+$profile_full_name = trim($profile_first_name . ' ' . $profile_middle_name . ' ' . $profile_last_name);
+
+if ($profile_full_name == '') {
+    $profile_full_name = $profile_voter_id;
+}
+
+$profile_initials = strtoupper(substr($profile_first_name, 0, 1) . substr($profile_last_name, 0, 1));
+
+if ($profile_initials == '') {
+    $profile_initials = 'V';
+}
+
+$profile_birth_date_display = ivoteph_date_display($profile_birth_date);
+
+$address_parts = array();
+
+if ($profile_specific_address != '') {
+    $address_parts[] = $profile_specific_address;
+}
+
+if ($profile_barangay != '') {
+    $address_parts[] = $profile_barangay;
+}
+
+if ($profile_city_municipality != '') {
+    $address_parts[] = $profile_city_municipality;
+}
+
+if ($profile_province != '') {
+    $address_parts[] = $profile_province;
+}
+
+if ($profile_region != '') {
+    $address_parts[] = $profile_region;
+}
+
+$profile_complete_address = '';
+
+if (count($address_parts) > 0) {
+    $profile_complete_address = implode(', ', $address_parts);
+}
+
+/* Candidate data */
+$candidates = array();
+$positions = array();
+
+$sql_candidates = "
+    SELECT
+        c.candidate_id,
+        c.full_name,
+        c.political_party,
+        c.photo,
+        c.platform,
+        p.position_name,
+        p.display_order
+    FROM candidates c
+    LEFT JOIN positions p ON c.position_id = p.position_id
+    ORDER BY p.display_order ASC, p.position_name ASC, c.full_name ASC
+";
+
+$result_candidates = mysqli_query($conn, $sql_candidates);
+
+if ($result_candidates) {
+    while ($row = mysqli_fetch_assoc($result_candidates)) {
+        $position_name = $row['position_name'];
+
+        if ($position_name == '') {
+            $position_name = 'Unassigned';
+        }
+
+        $row['position_name'] = $position_name;
+        $candidates[] = $row;
+
+        if (!in_array($position_name, $positions)) {
+            $positions[] = $position_name;
+        }
+    }
+
+    mysqli_free_result($result_candidates);
+}
+
+$total_candidates = count($candidates);
+$total_positions = count($positions);
+?>
+<!doctype html>
 <html lang="en">
 
 <head>
@@ -27,18 +294,18 @@
 
         html,
         body {
-            margin: 0;
             width: 100%;
             min-height: 100%;
+            margin: 0;
             overflow-x: hidden;
         }
 
         body.userPage {
+            color: var(--userInk);
+            font-family: Inter, "Segoe UI", Arial, sans-serif;
             background:
                 linear-gradient(180deg, rgba(244, 248, 255, 0.94), rgba(247, 249, 252, 0.98)),
                 url("flag-bg.png") center top / cover fixed no-repeat;
-            color: var(--userInk);
-            font-family: Inter, "Segoe UI", Arial, sans-serif;
         }
 
         .videoBg {
@@ -55,11 +322,11 @@
         .appBackdrop {
             position: fixed;
             inset: 0;
+            z-index: -1;
+            pointer-events: none;
             background:
                 radial-gradient(circle at top right, rgba(216, 32, 42, 0.08), transparent 30%),
                 radial-gradient(circle at top left, rgba(6, 70, 168, 0.14), transparent 32%);
-            z-index: -1;
-            pointer-events: none;
         }
 
         .userTopbar {
@@ -78,9 +345,9 @@
             max-width: 1480px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: auto minmax(170px, 280px) minmax(500px, 1fr) auto;
+            grid-template-columns: auto minmax(540px, 1fr) minmax(260px, 430px) auto;
             align-items: center;
-            gap: 7px;
+            gap: 8px;
         }
 
         .brandLink {
@@ -97,40 +364,11 @@
 
         .brandLogo {
             display: block;
-            width: 62px !important;
-            max-width: 62px !important;
+            width: 66px !important;
+            max-width: 66px !important;
             height: auto !important;
             max-height: 32px !important;
             object-fit: contain !important;
-        }
-
-        .topbarSearch {
-            width: 100%;
-            min-width: 0;
-        }
-
-        .topbarSearch .input-group {
-            height: 42px;
-            border-radius: 999px;
-            overflow: hidden;
-            background: #f3f4fb;
-        }
-
-        .topbarSearch .input-group-text {
-            border: none;
-            background: #f3f4fb;
-            padding-left: 15px;
-            padding-right: 7px;
-            color: var(--userMuted);
-        }
-
-        .searchInput {
-            height: 42px !important;
-            border: none !important;
-            background: #f3f4fb !important;
-            box-shadow: none !important;
-            font-size: 12px;
-            padding-left: 4px;
         }
 
         .userNavBar {
@@ -167,11 +405,11 @@
             align-items: center;
             justify-content: center;
             gap: 4px;
-            padding: 8px 7px;
+            padding: 8px 8px;
             border-radius: 999px;
             background: #f4f6fb;
             color: #3f4350;
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 800;
             white-space: nowrap;
             text-decoration: none;
@@ -191,17 +429,42 @@
             box-shadow: 0 10px 22px rgba(6, 70, 168, 0.22);
         }
 
-        .userNavList a i {
-            font-size: 10px;
-            color: inherit;
+        .topbarSearch {
+            width: 100%;
+            min-width: 0;
+        }
+
+        .topbarSearch .input-group {
+            height: 42px;
+            border-radius: 999px;
+            overflow: hidden;
+            background: #f3f4fb;
+        }
+
+        .topbarSearch .input-group-text {
+            border: none;
+            background: #f3f4fb;
+            padding-left: 15px;
+            padding-right: 7px;
+            color: var(--userMuted);
+        }
+
+        .searchInput {
+            height: 42px !important;
+            border: none !important;
+            background: #f3f4fb !important;
+            box-shadow: none !important;
+            font-size: 12px;
+            padding-left: 4px;
         }
 
         .userChip {
             display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
             min-height: 44px;
-            padding: 6px 8px 6px 6px;
+            padding: 6px 10px 6px 6px;
             border-radius: 999px;
             background: #ffffff;
             border: 1px solid var(--userLine);
@@ -227,7 +490,7 @@
         }
 
         .userName {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 900;
             color: var(--userInk);
             line-height: 1.1;
@@ -238,7 +501,7 @@
             align-items: center;
             gap: 4px;
             color: #0b5ed7;
-            font-size: 8.5px;
+            font-size: 9px;
             font-weight: 800;
             line-height: 1.1;
         }
@@ -258,172 +521,208 @@
         }
 
         .candidateHero {
-            display: grid;
-            grid-template-columns: minmax(0, 1fr) auto;
-            gap: 18px;
-            align-items: center;
-            padding: 28px;
+            padding: 36px;
             margin-bottom: 18px;
             background:
-                radial-gradient(circle at top right, rgba(247, 201, 72, 0.22), transparent 32%),
+                radial-gradient(circle at top right, rgba(247, 201, 72, 0.25), transparent 30%),
                 linear-gradient(135deg, #0646a8 0%, #0b3f91 100%);
             color: #ffffff;
             overflow: hidden;
         }
 
-        .candidateHeroEyebrow {
+        .heroEyebrow {
             display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 8px 13px;
             border-radius: 999px;
             background: rgba(255, 255, 255, 0.16);
-            font-size: 12px;
-            font-weight: 900;
+            font-size: 13px;
+            font-weight: 800;
+            margin-bottom: 18px;
+        }
+
+        .heroTitle {
+            font-size: clamp(2.1rem, 4vw, 4rem);
+            line-height: 1;
+            letter-spacing: -0.05em;
+            font-weight: 950;
             margin-bottom: 14px;
         }
 
-        .candidateHero h1 {
-            margin: 0;
-            font-size: clamp(2rem, 4vw, 3.3rem);
-            line-height: 1;
-            font-weight: 950;
-            letter-spacing: -0.05em;
-        }
-
-        .candidateHero p {
-            margin: 12px 0 0;
-            max-width: 760px;
+        .heroSubtitle {
+            max-width: 820px;
             color: rgba(255, 255, 255, 0.88);
             font-size: 15px;
-            line-height: 1.6;
+            line-height: 1.7;
+            margin-bottom: 0;
         }
 
-        .candidateHeroPill {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            min-height: 44px;
-            padding: 10px 16px;
-            border-radius: 999px;
-            background: #ffffff;
-            color: var(--userBlue);
-            font-size: 13px;
-            font-weight: 900;
-            white-space: nowrap;
-        }
-
-        .candidateControls {
+        .summaryGrid {
             display: grid;
-            grid-template-columns: minmax(280px, 1fr) 220px 160px;
-            gap: 12px;
-            align-items: end;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+            margin-bottom: 18px;
+        }
+
+        .summaryCard {
+            padding: 20px;
+        }
+
+        .summaryCard span {
+            display: block;
+            color: var(--userMuted);
+            font-size: 12px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 6px;
+        }
+
+        .summaryCard strong {
+            display: block;
+            color: var(--userBlue);
+            font-size: 28px;
+            line-height: 1;
+            font-weight: 950;
+        }
+
+        .filterCard {
             padding: 18px;
             margin-bottom: 18px;
         }
 
-        .candidateControls .form-label {
-            font-size: 12px;
-            font-weight: 900;
-            color: var(--userInk);
-            margin-bottom: 7px;
-        }
-
-        .candidateControls .form-control,
-        .candidateControls .form-select,
-        .candidateControls .btn {
-            height: 44px;
-            border-radius: 14px;
-            font-size: 13px;
-        }
-
-        .candidateGrid {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 18px;
-        }
-
-        .candidateCard {
-            border: 1px solid var(--userLine);
-            border-radius: 24px;
-            background: #ffffff;
-            box-shadow: 0 12px 28px rgba(11, 36, 71, 0.08);
-            overflow: hidden;
-            transition: 0.22s ease;
-        }
-
-        .candidateCard:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 18px 34px rgba(6, 70, 168, 0.14);
-            border-color: rgba(6, 70, 168, 0.35);
-        }
-
-        .candidatePhoto {
-            height: 150px;
-            background:
-                radial-gradient(circle at top right, rgba(247, 201, 72, 0.24), transparent 34%),
-                linear-gradient(135deg, #eaf2ff, #ffffff);
-            color: var(--userBlue);
+        .filterHeader {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            justify-content: center;
-            font-size: 46px;
+            gap: 12px;
+            margin-bottom: 14px;
         }
 
-        .candidateCard .card-body {
-            padding: 18px;
-        }
-
-        .candidateParty {
-            display: inline-flex;
-            align-items: center;
-            width: fit-content;
-            padding: 6px 10px;
-            border-radius: 999px;
-            background: var(--userBlueSoft);
-            color: var(--userBlue);
-            font-size: 11px;
-            font-weight: 900;
-            margin-bottom: 12px;
-        }
-
-        .candidateName {
-            margin: 0 0 6px;
-            color: var(--userInk);
-            font-size: 20px;
-            line-height: 1.15;
+        .filterHeader h2 {
+            margin: 0;
             font-weight: 950;
             letter-spacing: -0.03em;
         }
 
-        .candidatePosition {
-            color: var(--userMuted);
-            font-size: 13px;
+        .positionFilters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .filterBtn {
+            border: none;
+            min-height: 38px;
+            padding: 8px 13px;
+            border-radius: 999px;
+            font-size: 12px;
             font-weight: 900;
-            margin-bottom: 10px;
+            color: #3f4350;
+            background: #f4f6fb;
+            cursor: pointer;
         }
 
-        .candidateCard p {
-            min-height: 60px;
+        .filterBtn.active {
+            color: #ffffff;
+            background: #0b5ed7;
+            box-shadow: 0 10px 22px rgba(6, 70, 168, 0.18);
+        }
+
+        .candidateGrid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .candidateCard {
+            padding: 20px;
+            transition: 0.22s ease;
+        }
+
+        .candidateCard:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 30px rgba(6, 70, 168, 0.13);
+        }
+
+        .candidateTop {
+            display: flex;
+            gap: 14px;
+            align-items: center;
+            margin-bottom: 14px;
+        }
+
+        .candidatePhoto {
+            width: 68px;
+            height: 68px;
+            min-width: 68px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--userBlueSoft);
+            color: var(--userBlue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            font-weight: 950;
+        }
+
+        .candidatePhoto img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .candidateName {
+            margin: 0 0 5px;
+            font-size: 18px;
+            font-weight: 950;
+            color: var(--userInk);
+            line-height: 1.15;
+        }
+
+        .partyName {
             color: var(--userMuted);
-            font-size: 13px;
-            line-height: 1.45;
-            margin-bottom: 16px;
+            font-size: 12px;
+            font-weight: 800;
         }
 
-        .profileLink {
+        .positionBadge {
             display: inline-flex;
             align-items: center;
             gap: 6px;
+            margin-bottom: 13px;
+            padding: 7px 11px;
+            border-radius: 999px;
+            background: var(--userBlueSoft);
             color: var(--userBlue);
-            font-size: 13px;
-            font-weight: 900;
-            text-decoration: none;
+            font-size: 11px;
+            font-weight: 950;
         }
 
-        .profileLink:hover {
-            color: var(--userBlueDark);
+        .platformText {
+            color: var(--userMuted);
+            font-size: 13px;
+            line-height: 1.65;
+            margin-bottom: 0;
+        }
+
+        .emptyState {
+            padding: 30px;
+            text-align: center;
+        }
+
+        .emptyState i {
+            font-size: 42px;
+            color: var(--userBlue);
+            margin-bottom: 12px;
+        }
+
+        .emptyState h3 {
+            font-weight: 950;
+            margin-bottom: 8px;
         }
 
         .footer {
@@ -433,7 +732,6 @@
             font-size: 13px;
         }
 
-        /* PROFILE MODAL - FIXED */
         #profileModal .modal-dialog {
             max-width: min(1180px, calc(100vw - 24px));
             margin: 12px auto;
@@ -445,16 +743,14 @@
             flex-direction: column;
         }
 
-        .profileModalContent,
-        .candidateModalContent {
+        .profileModalContent {
             border: none;
             border-radius: 26px;
             overflow: hidden;
             box-shadow: 0 24px 70px rgba(16, 24, 40, 0.22);
         }
 
-        .profileModalHeader,
-        .candidateModalHeader {
+        .profileModalHeader {
             flex: 0 0 auto;
             background:
                 radial-gradient(circle at top right, rgba(247, 201, 72, 0.28), transparent 34%),
@@ -464,8 +760,7 @@
             text-align: center;
         }
 
-        .profileModalAvatar,
-        .candidateModalAvatar {
+        .profileModalAvatar {
             width: 74px;
             height: 74px;
             border-radius: 50%;
@@ -480,15 +775,13 @@
             margin-bottom: 10px;
         }
 
-        .profileModalHeader h5,
-        .candidateModalHeader h5 {
+        .profileModalHeader h5 {
             margin: 0;
             font-size: 22px;
             font-weight: 950;
         }
 
-        .profileModalHeader p,
-        .candidateModalHeader p {
+        .profileModalHeader p {
             margin: 6px 0 0;
             font-size: 13px;
             color: rgba(255, 255, 255, 0.86);
@@ -502,8 +795,7 @@
             background: #ffffff;
         }
 
-        .profileReadOnlyNote,
-        .requestNotice {
+        .profileReadOnlyNote {
             margin-bottom: 18px;
             padding: 14px;
             border-radius: 16px;
@@ -592,9 +884,20 @@
             font-size: 13px;
         }
 
-        .requestModalBody,
-        .candidateModalBody {
+        .requestModalBody {
             padding: 22px;
+        }
+
+        .requestNotice {
+            background: #eaf2ff;
+            border: 1px solid #cfe0ff;
+            color: var(--userBlue);
+            border-radius: 16px;
+            padding: 14px;
+            font-size: 13px;
+            font-weight: 800;
+            line-height: 1.5;
+            margin-bottom: 16px;
         }
 
         .requestModalBody .form-label {
@@ -610,77 +913,6 @@
             border: 1px solid var(--userLine);
             font-size: 13px;
             box-shadow: none;
-        }
-
-        .requestModalBody .form-control:focus,
-        .requestModalBody .form-select:focus {
-            border-color: #0b5ed7;
-            box-shadow: 0 0 0 4px rgba(11, 94, 215, 0.12);
-        }
-
-        .candidateModalBody p {
-            color: var(--userMuted);
-            line-height: 1.65;
-            margin-bottom: 0;
-        }
-
-        .candidateModalMeta {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .candidateModalMetaItem {
-            background: #f7f9fd;
-            border: 1px solid #e1e8f3;
-            border-radius: 16px;
-            padding: 13px;
-        }
-
-        .candidateModalMetaItem span {
-            display: block;
-            font-size: 11px;
-            font-weight: 900;
-            color: var(--userMuted);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 5px;
-        }
-
-        .candidateModalMetaItem strong {
-            display: block;
-            font-size: 14px;
-            font-weight: 900;
-            color: var(--userInk);
-        }
-
-        .userPageMotion,
-        .userCard,
-        .candidateCard {
-            animation: userFadeUp 0.35s ease both;
-        }
-
-        @keyframes userFadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(8px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-            *,
-            *::before,
-            *::after {
-                animation: none !important;
-                transition: none !important;
-                scroll-behavior: auto !important;
-            }
         }
 
         @media (max-width: 1180px) {
@@ -699,16 +931,16 @@
                 grid-row: 1;
             }
 
-            .topbarSearch {
-                grid-column: 1 / -1;
-                grid-row: 2;
-            }
-
             .userNavBar {
                 grid-column: 1 / -1;
-                grid-row: 3;
+                grid-row: 2;
                 overflow-x: auto !important;
                 -webkit-overflow-scrolling: touch;
+            }
+
+            .topbarSearch {
+                grid-column: 1 / -1;
+                grid-row: 3;
             }
 
             .userNavInner {
@@ -725,16 +957,9 @@
                 width: max-content;
             }
 
-            .candidateHero {
-                grid-template-columns: 1fr;
-            }
-
-            .candidateGrid {
-                grid-template-columns: repeat(3, minmax(0, 1fr));
-            }
-
-            .candidateControls {
-                grid-template-columns: 1fr 200px 150px;
+            .candidateGrid,
+            .summaryGrid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
             .profileFullGrid.threeCols {
@@ -766,16 +991,20 @@
             }
 
             .candidateHero {
-                padding: 24px 20px;
+                padding: 26px 22px;
             }
 
-            .candidateControls {
+            .candidateGrid,
+            .summaryGrid,
+            .profileFullGrid,
+            .profileFullGrid.threeCols,
+            .profileModalActions {
                 grid-template-columns: 1fr;
             }
 
-            .candidateGrid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
-                gap: 12px;
+            .filterHeader {
+                align-items: flex-start;
+                flex-direction: column;
             }
 
             #profileModal .modal-dialog {
@@ -799,26 +1028,12 @@
             }
 
             .profileModalBody,
-            .requestModalBody,
-            .candidateModalBody {
+            .requestModalBody {
                 padding: 16px;
-            }
-
-            .profileFullGrid,
-            .profileFullGrid.threeCols,
-            .profileModalActions,
-            .candidateModalMeta {
-                grid-template-columns: 1fr;
             }
 
             .profileModalActions {
                 padding: 12px 16px;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .candidateGrid {
-                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -833,9 +1048,64 @@
 
     <header class="userTopbar">
         <div class="userTopbarInner">
-            <a href="index.html" class="brandLink" aria-label="iVotePH Home">
+            <a href="index.php" class="brandLink" aria-label="iVotePH Home">
                 <img src="FINALS 2.png" class="brandLogo" alt="iVotePH">
             </a>
+
+            <nav class="userNavBar" aria-label="User navigation">
+                <div class="userNavInner">
+                    <ul class="userNavList">
+                        <li>
+                            <a href="index.php">
+                                <i class="fa-solid fa-landmark"></i>
+                                Home
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="about.php">
+                                <i class="fa-solid fa-circle-info"></i>
+                                About
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="browsecandi.php" class="active">
+                                <i class="fa-solid fa-users"></i>
+                                Candidates
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="startvoting.php">
+                                <i class="fa-solid fa-check-to-slot"></i>
+                                Voting
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="myballot.php">
+                                <i class="fa-solid fa-file-signature"></i>
+                                My Ballot
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="results.php">
+                                <i class="fa-solid fa-chart-simple"></i>
+                                Results
+                            </a>
+                        </li>
+
+                        <li>
+                            <a href="help.php">
+                                <i class="fa-solid fa-circle-question"></i>
+                                Help
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
 
             <div class="topbarSearch">
                 <div class="input-group">
@@ -846,65 +1116,10 @@
                 </div>
             </div>
 
-            <nav class="userNavBar" aria-label="User navigation">
-                <div class="userNavInner">
-                    <ul class="userNavList">
-                        <li>
-                            <a href="index.html">
-                                <i class="fa-solid fa-landmark"></i>
-                                Home
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="about.html">
-                                <i class="fa-solid fa-circle-info"></i>
-                                About
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="browsecandi.html" class="active">
-                                <i class="fa-solid fa-users"></i>
-                                Candidates
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="startvoting.html">
-                                <i class="fa-solid fa-check-to-slot"></i>
-                                Voting
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="myballot.html">
-                                <i class="fa-solid fa-file-signature"></i>
-                                My Ballot
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="results.html">
-                                <i class="fa-solid fa-chart-simple"></i>
-                                Results
-                            </a>
-                        </li>
-
-                        <li>
-                            <a href="help.html">
-                                <i class="fa-solid fa-circle-question"></i>
-                                Help
-                            </a>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-
             <button type="button" class="userChip border-0" data-bs-toggle="modal" data-bs-target="#profileModal">
-                <span class="userAvatarCircle">JD</span>
+                <span class="userAvatarCircle"><?php echo ivoteph_h($profile_initials); ?></span>
                 <span class="userMeta">
-                    <span class="userName d-block">Juan Dela Cruz</span>
+                    <span class="userName d-block"><?php echo ivoteph_h($profile_full_name); ?></span>
                     <span class="verifiedBadge">
                         <i class="fa-solid fa-circle-check"></i>
                         Verified Voter
@@ -915,198 +1130,120 @@
         </div>
     </header>
 
-    <main class="userMain userPageMotion">
+    <main class="userMain">
         <section class="candidateHero userCard">
-            <div>
-                <div class="candidateHeroEyebrow">
-                    <i class="fa-solid fa-users"></i>
-                    Candidate Directory
+            <div class="heroEyebrow">
+                <i class="fa-solid fa-users"></i>
+                Candidate Directory
+            </div>
+
+            <h1 class="heroTitle">Browse Candidates</h1>
+
+            <p class="heroSubtitle">
+                Review the official list of candidates before casting your ballot. Candidate records are loaded from
+                the MySQL database managed through the admin side and MySQL Workbench.
+            </p>
+        </section>
+
+        <section class="summaryGrid">
+            <div class="summaryCard userCard">
+                <span>Total Candidates</span>
+                <strong><?php echo ivoteph_h($total_candidates); ?></strong>
+            </div>
+
+            <div class="summaryCard userCard">
+                <span>Positions</span>
+                <strong><?php echo ivoteph_h($total_positions); ?></strong>
+            </div>
+
+            <div class="summaryCard userCard">
+                <span>Access</span>
+                <strong>Verified</strong>
+            </div>
+        </section>
+
+        <section class="filterCard userCard">
+            <div class="filterHeader">
+                <div>
+                    <h2>Official Candidates</h2>
+                    <p class="mb-0 text-muted">Filter candidates by position or use the search bar.</p>
                 </div>
+            </div>
 
-                <h1>Browse Candidates</h1>
+            <div class="positionFilters">
+                <button type="button" class="filterBtn active" data-position="all">All</button>
 
-                <p>
-                    Review candidate profiles, parties, positions, and platforms before casting your official ballot.
+                <?php foreach ($positions as $position_name) { ?>
+                    <button type="button" class="filterBtn" data-position="<?php echo ivoteph_h($position_name); ?>">
+                        <?php echo ivoteph_h($position_name); ?>
+                    </button>
+                <?php } ?>
+            </div>
+        </section>
+
+        <?php if ($total_candidates < 1) { ?>
+            <section class="emptyState userCard">
+                <i class="fa-solid fa-users-slash"></i>
+                <h3>No candidates found</h3>
+                <p class="text-muted mb-0">
+                    Add candidates first in the admin side so they can appear here.
                 </p>
-            </div>
+            </section>
+        <?php } else { ?>
+            <section class="candidateGrid" id="candidateGrid">
+                <?php foreach ($candidates as $candidate) { ?>
+                    <?php
+                    $candidate_name = $candidate['full_name'];
+                    $candidate_party = $candidate['political_party'];
+                    $candidate_position = $candidate['position_name'];
+                    $candidate_platform = $candidate['platform'];
+                    $candidate_photo = ivoteph_candidate_photo($candidate['photo']);
+                    $candidate_initials = ivoteph_initials_from_name($candidate_name);
+                    ?>
 
-            <span class="candidateHeroPill">
-                <i class="fa-solid fa-circle-info"></i>
-                Sample Frontend Data
-            </span>
-        </section>
+                    <article
+                        class="candidateCard userCard"
+                        data-position="<?php echo ivoteph_h($candidate_position); ?>"
+                        data-search="<?php echo ivoteph_h(strtolower($candidate_name . ' ' . $candidate_party . ' ' . $candidate_position . ' ' . $candidate_platform)); ?>">
 
-        <section class="candidateControls userCard">
-            <div>
-                <label class="form-label" for="candidateSearchPanel">Search</label>
-                <input type="search" class="form-control" id="candidateSearchPanel" placeholder="Search candidate name, party, or platform">
-            </div>
+                        <div class="candidateTop">
+                            <div class="candidatePhoto">
+                                <?php if ($candidate_photo != '') { ?>
+                                    <img src="<?php echo ivoteph_h($candidate_photo); ?>" alt="<?php echo ivoteph_h($candidate_name); ?>">
+                                <?php } else { ?>
+                                    <?php echo ivoteph_h($candidate_initials); ?>
+                                <?php } ?>
+                            </div>
 
-            <div>
-                <label class="form-label" for="positionFilter">Position</label>
-                <select class="form-select" id="positionFilter">
-                    <option value="">All positions</option>
-                    <option value="President">President</option>
-                    <option value="Vice President">Vice President</option>
-                    <option value="Senator">Senator</option>
-                    <option value="Party List">Party List</option>
-                </select>
-            </div>
+                            <div>
+                                <h3 class="candidateName"><?php echo ivoteph_h($candidate_name); ?></h3>
+                                <div class="partyName">
+                                    <i class="fa-solid fa-flag me-1"></i>
+                                    <?php echo ivoteph_h($candidate_party); ?>
+                                </div>
+                            </div>
+                        </div>
 
-            <div>
-                <label class="form-label">&nbsp;</label>
-                <button type="button" class="btn btn-primary w-100" onclick="resetCandidateFilters()">
-                    Reset
-                </button>
-            </div>
-        </section>
+                        <div class="positionBadge">
+                            <i class="fa-solid fa-user-tie"></i>
+                            <?php echo ivoteph_h($candidate_position); ?>
+                        </div>
 
-        <section class="candidateGrid" id="candidateGrid">
-            <article class="candidateCard" data-name="Maria Clara Santos" data-party="National Progress Party" data-position="President" data-platform="Healthcare access, education support, and clean energy investment.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">National Progress Party</div>
-                    <h3 class="candidateName">Maria Clara Santos</h3>
-                    <div class="candidatePosition">President</div>
-                    <p>Healthcare access, education support, and clean energy investment.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Maria Clara Santos', 'President', 'National Progress Party', 'Healthcare access, education support, and clean energy investment.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="Arthur Pendelton" data-party="Federal Alliance" data-position="President" data-platform="Local economic growth, infrastructure, and tax reform.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">Federal Alliance</div>
-                    <h3 class="candidateName">Arthur Pendelton</h3>
-                    <div class="candidatePosition">President</div>
-                    <p>Local economic growth, infrastructure, and tax reform.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Arthur Pendelton', 'President', 'Federal Alliance', 'Local economic growth, infrastructure, and tax reform.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="Clarissa Ong-Ramos" data-party="National Progress Party" data-position="Vice President" data-platform="Community clinics, renewable energy, and social services.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">National Progress Party</div>
-                    <h3 class="candidateName">Clarissa Ong-Ramos</h3>
-                    <div class="candidatePosition">Vice President</div>
-                    <p>Community clinics, renewable energy, and social services.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Clarissa Ong-Ramos', 'Vice President', 'National Progress Party', 'Community clinics, renewable energy, and social services.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="Benjamin G. Go" data-party="Federal Alliance" data-position="Vice President" data-platform="Transport corridors and provincial infrastructure development.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">Federal Alliance</div>
-                    <h3 class="candidateName">Benjamin G. Go</h3>
-                    <div class="candidatePosition">Vice President</div>
-                    <p>Transport corridors and provincial infrastructure development.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Benjamin G. Go', 'Vice President', 'Federal Alliance', 'Transport corridors and provincial infrastructure development.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="Elena Torralba" data-party="National Progress Party" data-position="Senator" data-platform="Scholarships and public school modernization.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">National Progress Party</div>
-                    <h3 class="candidateName">Elena Torralba</h3>
-                    <div class="candidatePosition">Senator</div>
-                    <p>Scholarships and public school modernization.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Elena Torralba', 'Senator', 'National Progress Party', 'Scholarships and public school modernization.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="Rico Sison" data-party="Federal Alliance" data-position="Senator" data-platform="Cybersecurity and startup development.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-user-tie"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">Federal Alliance</div>
-                    <h3 class="candidateName">Rico Sison</h3>
-                    <div class="candidatePosition">Senator</div>
-                    <p>Cybersecurity and startup development.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('Rico Sison', 'Senator', 'Federal Alliance', 'Cybersecurity and startup development.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="BAYANIHAN" data-party="Community Service" data-position="Party List" data-platform="Medical kits and community micro-financing.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-people-group"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">Community Service</div>
-                    <h3 class="candidateName">BAYANIHAN</h3>
-                    <div class="candidatePosition">Party List</div>
-                    <p>Medical kits and community micro-financing.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('BAYANIHAN', 'Party List', 'Community Service', 'Medical kits and community micro-financing.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-
-            <article class="candidateCard" data-name="KALIKASAN" data-party="Environmental Protection" data-position="Party List" data-platform="Coastal protection and local sustainability projects.">
-                <div class="candidatePhoto">
-                    <i class="fa-solid fa-seedling"></i>
-                </div>
-
-                <div class="card-body">
-                    <div class="candidateParty">Environmental Protection</div>
-                    <h3 class="candidateName">KALIKASAN</h3>
-                    <div class="candidatePosition">Party List</div>
-                    <p>Coastal protection and local sustainability projects.</p>
-                    <button type="button" class="profileLink border-0 bg-transparent p-0" onclick="showCandidateDetails('KALIKASAN', 'Party List', 'Environmental Protection', 'Coastal protection and local sustainability projects.')">
-                        View details
-                        <i class="fa-solid fa-arrow-right ms-1"></i>
-                    </button>
-                </div>
-            </article>
-        </section>
+                        <p class="platformText">
+                            <?php echo ivoteph_h($candidate_platform); ?>
+                        </p>
+                    </article>
+                <?php } ?>
+            </section>
+        <?php } ?>
     </main>
 
-    <!-- FULL READ-ONLY PROFILE MODAL -->
     <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
                 <div class="profileModalHeader">
-                    <div class="profileModalAvatar">JD</div>
-                    <h5 id="profileModalLabel">Juan Dela Cruz</h5>
+                    <div class="profileModalAvatar"><?php echo ivoteph_h($profile_initials); ?></div>
+                    <h5 id="profileModalLabel"><?php echo ivoteph_h($profile_full_name); ?></h5>
                     <p>
                         <i class="fa-solid fa-circle-check me-1"></i>
                         Verified Registered Voter
@@ -1128,17 +1265,17 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Voter ID</span>
-                            <strong>VOTER-001</strong>
+                            <strong><?php echo ivoteph_h($profile_voter_id); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Registration Status</span>
-                            <strong>Registered</strong>
+                            <strong><?php echo ivoteph_h($profile_registration_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Profile Status</span>
-                            <strong>Complete</strong>
+                            <strong><?php echo ivoteph_h($profile_status); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1153,7 +1290,7 @@
 
                         <div class="profileFullItem">
                             <span>Account Access</span>
-                            <strong>Active</strong>
+                            <strong><?php echo ivoteph_h($profile_account_access); ?></strong>
                         </div>
                     </div>
 
@@ -1165,27 +1302,27 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>First Name</span>
-                            <strong>Juan</strong>
+                            <strong><?php echo ivoteph_h($profile_first_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Middle Name</span>
-                            <strong>Santos</strong>
+                            <strong><?php echo ivoteph_h($profile_middle_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Last Name</span>
-                            <strong>Dela Cruz</strong>
+                            <strong><?php echo ivoteph_h($profile_last_name); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Birth Date</span>
-                            <strong>January 15, 2001</strong>
+                            <strong><?php echo ivoteph_h($profile_birth_date_display); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Sex</span>
-                            <strong>Male</strong>
+                            <strong><?php echo ivoteph_h($profile_sex); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
@@ -1202,12 +1339,12 @@
                     <div class="profileFullGrid">
                         <div class="profileFullItem">
                             <span>Email Address</span>
-                            <strong>juan@example.com</strong>
+                            <strong><?php echo ivoteph_h($profile_email); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Mobile Number</span>
-                            <strong>0917 123 4567</strong>
+                            <strong><?php echo ivoteph_h($profile_mobile_number); ?></strong>
                         </div>
                     </div>
 
@@ -1219,37 +1356,37 @@
                     <div class="profileFullGrid threeCols">
                         <div class="profileFullItem">
                             <span>Region</span>
-                            <strong>National Capital Region</strong>
+                            <strong><?php echo ivoteph_h($profile_region); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Province</span>
-                            <strong>Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_province); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>City / Municipality</span>
-                            <strong>Quezon City</strong>
+                            <strong><?php echo ivoteph_h($profile_city_municipality); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Barangay</span>
-                            <strong>Commonwealth</strong>
+                            <strong><?php echo ivoteph_h($profile_barangay); ?></strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>ZIP Code</span>
-                            <strong>1121</strong>
+                            <strong>N/A</strong>
                         </div>
 
                         <div class="profileFullItem">
                             <span>Country</span>
-                            <strong>Philippines</strong>
+                            <strong><?php echo ivoteph_h($profile_country); ?></strong>
                         </div>
 
                         <div class="profileFullItem profileFullWide">
                             <span>Complete Address</span>
-                            <strong>123 Sample Street, Barangay Commonwealth, Quezon City, Metro Manila</strong>
+                            <strong><?php echo ivoteph_h($profile_complete_address); ?></strong>
                         </div>
                     </div>
                 </div>
@@ -1269,7 +1406,6 @@
         </div>
     </div>
 
-    <!-- ADMIN REQUEST MODAL -->
     <div class="modal fade" id="profileRequestModal" tabindex="-1" aria-labelledby="profileRequestModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content profileModalContent">
@@ -1325,103 +1461,11 @@
         </div>
     </div>
 
-    <div class="modal fade" id="candidateModal" tabindex="-1" aria-labelledby="candidateModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content candidateModalContent">
-                <div class="candidateModalHeader">
-                    <div class="candidateModalAvatar">
-                        <i class="fa-solid fa-user-tie"></i>
-                    </div>
-                    <h5 id="candidateModalLabel">Candidate Name</h5>
-                    <p id="candidateModalSub">Position</p>
-                </div>
-
-                <div class="candidateModalBody">
-                    <div class="candidateModalMeta">
-                        <div class="candidateModalMetaItem">
-                            <span>Position</span>
-                            <strong id="candidateModalPosition">-</strong>
-                        </div>
-
-                        <div class="candidateModalMetaItem">
-                            <span>Party</span>
-                            <strong id="candidateModalParty">-</strong>
-                        </div>
-                    </div>
-
-                    <div class="candidateModalMetaItem">
-                        <span>Platform</span>
-                        <p id="candidateModalPlatform">-</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <footer class="footer">
         <div>© 2026 iVotePH. Secure. Accessible. Transparent.</div>
     </footer>
 
     <script>
-        function normalizeText(value) {
-            return String(value || '').toLowerCase().trim();
-        }
-
-        function filterCandidates() {
-            var searchInput = document.getElementById('candidateSearch');
-            var searchPanel = document.getElementById('candidateSearchPanel');
-            var positionFilter = document.getElementById('positionFilter');
-            var query = normalizeText(searchPanel.value || searchInput.value);
-            var position = positionFilter.value;
-            var cards = document.querySelectorAll('.candidateCard');
-
-            for (var i = 0; i < cards.length; i++) {
-                var card = cards[i];
-                var combined = normalizeText(
-                    card.getAttribute('data-name') + ' ' +
-                    card.getAttribute('data-party') + ' ' +
-                    card.getAttribute('data-position') + ' ' +
-                    card.getAttribute('data-platform')
-                );
-
-                var matchesSearch = query === '' || combined.indexOf(query) !== -1;
-                var matchesPosition = position === '' || card.getAttribute('data-position') === position;
-
-                card.style.display = matchesSearch && matchesPosition ? '' : 'none';
-            }
-        }
-
-        function syncSearch(sourceId) {
-            var searchInput = document.getElementById('candidateSearch');
-            var searchPanel = document.getElementById('candidateSearchPanel');
-
-            if (sourceId === 'top') {
-                searchPanel.value = searchInput.value;
-            } else {
-                searchInput.value = searchPanel.value;
-            }
-
-            filterCandidates();
-        }
-
-        function resetCandidateFilters() {
-            document.getElementById('candidateSearch').value = '';
-            document.getElementById('candidateSearchPanel').value = '';
-            document.getElementById('positionFilter').value = '';
-            filterCandidates();
-        }
-
-        function showCandidateDetails(name, position, party, platform) {
-            document.getElementById('candidateModalLabel').textContent = name;
-            document.getElementById('candidateModalSub').textContent = position + ' • ' + party;
-            document.getElementById('candidateModalPosition').textContent = position;
-            document.getElementById('candidateModalParty').textContent = party;
-            document.getElementById('candidateModalPlatform').textContent = platform;
-
-            var modal = new bootstrap.Modal(document.getElementById('candidateModal'));
-            modal.show();
-        }
-
         function openProfileRequestModal() {
             var profileModalElement = document.getElementById('profileModal');
             var requestModalElement = document.getElementById('profileRequestModal');
@@ -1462,20 +1506,52 @@
         }
 
         function logoutUser() {
-            sessionStorage.removeItem('isLoggedIn');
-            sessionStorage.clear();
-            window.location.href = 'login.html';
+            window.location.href = 'logout.php';
         }
 
-        document.getElementById('candidateSearch').addEventListener('input', function () {
-            syncSearch('top');
-        });
+        var activePosition = 'all';
+        var searchInput = document.getElementById('candidateSearch');
+        var filterButtons = document.querySelectorAll('.filterBtn');
+        var candidateCards = document.querySelectorAll('.candidateCard');
 
-        document.getElementById('candidateSearchPanel').addEventListener('input', function () {
-            syncSearch('panel');
-        });
+        function filterCandidates() {
+            var searchTerm = '';
 
-        document.getElementById('positionFilter').addEventListener('change', filterCandidates);
+            if (searchInput) {
+                searchTerm = searchInput.value.toLowerCase().trim();
+            }
+
+            for (var i = 0; i < candidateCards.length; i++) {
+                var card = candidateCards[i];
+                var cardPosition = card.getAttribute('data-position');
+                var cardSearch = card.getAttribute('data-search');
+
+                var matchesPosition = activePosition === 'all' || cardPosition === activePosition;
+                var matchesSearch = searchTerm === '' || cardSearch.indexOf(searchTerm) !== -1;
+
+                if (matchesPosition && matchesSearch) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            }
+        }
+
+        for (var j = 0; j < filterButtons.length; j++) {
+            filterButtons[j].addEventListener('click', function () {
+                for (var k = 0; k < filterButtons.length; k++) {
+                    filterButtons[k].classList.remove('active');
+                }
+
+                this.classList.add('active');
+                activePosition = this.getAttribute('data-position');
+                filterCandidates();
+            });
+        }
+
+        if (searchInput) {
+            searchInput.addEventListener('input', filterCandidates);
+        }
     </script>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
