@@ -1,0 +1,2441 @@
+:root {
+    --ivote-blue: #0647b8;
+    --ivote-blue-dark: #033587;
+    --ivote-blue-light: #eef5ff;
+    --ivote-green: #16a34a;
+    --ivote-red: #dc2626;
+    --ivote-yellow: #facc15;
+    --ivote-purple: #7c3aed;
+    --ivote-bg: #f3f6fb;
+    --ivote-card: #ffffff;
+    --ivote-border: #dfe6f1;
+    --ivote-border-soft: #eef2f7;
+    --ivote-text: #101828;
+    --ivote-muted: #667085;
+    --ivote-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+    --ivote-shadow-soft: 0 6px 18px rgba(16, 24, 40, 0.05);
+    --ivote-radius: 18px;
+}
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    width: 100%;
+    min-height: 100%;
+    max-width: 100%;
+    margin: 0;
+    overflow-x: hidden;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--ivote-bg);
+    color: var(--ivote-text);
+}
+
+a {
+    text-decoration: none;
+}
+
+img,
+canvas {
+    max-width: 100%;
+}
+
+/* =========================================================
+   Bootstrap-friendly base
+   ========================================================= */
+
+.btn,
+.form-control,
+.form-select {
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.form-label {
+    font-size: 13px;
+    font-weight: 800;
+    color: #344054;
+}
+
+.form-control,
+.form-select {
+    border: 1px solid var(--ivote-border);
+    padding: 10px 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--ivote-blue);
+    box-shadow: 0 0 0 4px rgba(6, 71, 184, 0.10);
+}
+
+.badge {
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 900;
+}
+
+.text-bg-success {
+    background: #dcfce7 !important;
+    color: #15803d !important;
+}
+
+.text-bg-warning {
+    background: #fef9c3 !important;
+    color: #a16207 !important;
+}
+
+.text-bg-danger {
+    background: #fee2e2 !important;
+    color: #b91c1c !important;
+}
+
+.text-bg-secondary {
+    background: #e5e7eb !important;
+    color: #374151 !important;
+}
+
+.text-bg-primary {
+    background: #eef5ff !important;
+    color: var(--ivote-blue) !important;
+}
+
+/* =========================================================
+   Buttons
+   ========================================================= */
+
+.btn-ivote {
+    background: var(--ivote-blue);
+    color: #ffffff;
+    border: 1px solid var(--ivote-blue);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.btn-ivote:hover {
+    background: var(--ivote-blue-dark);
+    border-color: var(--ivote-blue-dark);
+    color: #ffffff;
+}
+
+.btn-ivote-outline {
+    background: #ffffff;
+    color: var(--ivote-blue);
+    border: 1px solid var(--ivote-blue);
+    border-radius: 12px;
+    padding: 9px 14px;
+    font-weight: 900;
+    font-size: 13px;
+}
+
+.btn-ivote-outline:hover {
+    background: var(--ivote-blue);
+    color: #ffffff;
+}
+
+.btn-ivote-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    border: 1px solid var(--ivote-border);
+    color: var(--ivote-blue);
+    background: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
+}
+
+.btn-ivote-icon:hover {
+    background: var(--ivote-blue-light);
+    border-color: var(--ivote-blue);
+}
+
+.btn-ivote-icon.danger {
+    color: var(--ivote-red);
+}
+
+.btn-ivote-icon.danger:hover {
+    background: #fee2e2;
+    border-color: var(--ivote-red);
+}
+
+/* =========================================================
+   Main shell, sidebar, top header
+   ========================================================= */
+
+.ivote-admin-shell {
+    display: block;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--ivote-bg);
+}
+
+.ivote-main {
+    width: 100%;
+    min-height: 100vh;
+    margin-left: 0;
+    padding: 18px 22px 34px;
+    overflow-x: hidden;
+}
+
+.ivote-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 3000;
+    width: 245px;
+    height: 100vh;
+    min-height: 100vh;
+    padding: 16px 14px;
+    overflow-y: auto;
+    background: #ffffff;
+    border-right: 1px solid var(--ivote-border);
+    box-shadow: 0 20px 60px rgba(16, 24, 40, 0.16);
+    transform: translateX(-110%);
+    transition: transform 0.25s ease;
+}
+
+.ivote-sidebar.show {
+    transform: translateX(0);
+}
+
+.ivote-sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 2500;
+    background: rgba(16, 24, 40, 0.42);
+}
+
+.ivote-sidebar-overlay.show {
+    display: block;
+}
+
+.ivote-sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 18px;
+}
+
+.ivote-sidebar-logo img {
+    width: 105px;
+    height: auto;
+    display: block;
+}
+
+.ivote-sidebar-close {
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 10px;
+    background: var(--ivote-blue-light);
+    color: var(--ivote-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.ivote-sidebar-nav {
+    margin-top: 14px;
+}
+
+.ivote-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 43px;
+    padding: 11px 12px;
+    border-radius: 12px;
+    color: #1e3765;
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 7px;
+    transition: 0.18s ease;
+}
+
+.ivote-sidebar-link i {
+    color: var(--ivote-blue);
+    font-size: 16px;
+}
+
+.ivote-sidebar-link:hover {
+    background: var(--ivote-blue-light);
+    color: var(--ivote-blue);
+}
+
+.ivote-sidebar-link.active {
+    background: var(--ivote-blue);
+    color: #ffffff;
+    box-shadow: 0 8px 18px rgba(6, 71, 184, 0.24);
+}
+
+.ivote-sidebar-link.active i {
+    color: #ffffff;
+}
+
+/* Hide old topbar if any old include still outputs it */
+.ivote-topbar,
+.ivote-topbar-left,
+.ivote-topbar-right,
+.ivote-search,
+.ivote-icon-btn,
+.ivote-admin-profile,
+.ivote-page-header {
+    display: none !important;
+}
+
+/* Main header card */
+.ivote-dashboard-top-card {
+    width: 100%;
+    min-height: 66px;
+    background: #ffffff;
+    border: 1px solid var(--ivote-border);
+    border-radius: 16px;
+    box-shadow: var(--ivote-shadow);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 18px;
+    margin-bottom: 16px;
+}
+
+.ivote-dashboard-top-left {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    flex: 1;
+    min-width: 0;
+}
+
+.ivote-dashboard-top-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    flex-shrink: 0;
+}
+
+.ivote-menu-clean-btn {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 10px;
+    border: 1px solid var(--ivote-border);
+    background: #ffffff;
+    color: var(--ivote-blue);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.ivote-menu-clean-btn:hover {
+    background: var(--ivote-blue-light);
+    transform: translateY(-1px);
+}
+
+.ivote-topbar-logo {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+}
+
+.ivote-topbar-logo img {
+    width: 58px;
+    max-width: 58px;
+    height: auto;
+    display: block;
+}
+
+.ivote-dashboard-title-block {
+    margin-left: 10px;
+    padding-left: 14px;
+    border-left: 1px solid var(--ivote-border);
+    text-align: left;
+    min-width: 0;
+}
+
+.ivote-dashboard-title-block h1 {
+    font-size: 22px;
+    line-height: 1.1;
+    margin: 0;
+    font-weight: 900;
+    color: var(--ivote-text);
+    letter-spacing: -0.3px;
+    text-align: left;
+}
+
+.ivote-dashboard-title-block p {
+    font-size: 12px;
+    line-height: 1.3;
+    margin: 4px 0 0;
+    color: var(--ivote-muted);
+    text-align: left;
+}
+
+.ivote-logout-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    min-height: 38px;
+    padding: 8px 15px;
+    border-radius: 11px;
+    border: 1px solid var(--ivote-blue);
+    background: var(--ivote-blue);
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 900;
+    text-decoration: none;
+    box-shadow: 0 5px 12px rgba(6, 71, 184, 0.18);
+    transition: 0.2s ease;
+    white-space: nowrap;
+}
+
+.ivote-logout-btn:hover {
+    background: var(--ivote-blue-dark);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* =========================================================
+   Layout wrappers and cards
+   ========================================================= */
+
+.ivote-dashboard-wrapper,
+.ivote-management-page,
+.ivote-election-page,
+.ivote-results-page {
+    width: 100%;
+    max-width: 1480px;
+    margin: 0 auto;
+}
+
+.ivote-card,
+.ivote-filter-card,
+.ivote-data-card,
+.ivote-dashboard-panel,
+.ivote-results-hero,
+.ivote-election-hero-card,
+.ivote-election-editor-card,
+.ivote-results-chart-card,
+.ivote-position-result-card {
+    background: var(--ivote-card);
+    border: 1px solid var(--ivote-border);
+    border-radius: var(--ivote-radius);
+    box-shadow: var(--ivote-shadow-soft);
+}
+
+.ivote-card {
+    padding: 18px;
+    margin-bottom: 18px;
+}
+
+.ivote-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-height: 42px;
+    margin-bottom: 12px;
+}
+
+.ivote-section-title {
+    font-size: 16px;
+    font-weight: 900;
+    margin: 0;
+    color: var(--ivote-text);
+}
+
+.ivote-record-count {
+    font-size: 12px;
+    color: var(--ivote-muted);
+    font-weight: 800;
+    background: #f3f6fb;
+    padding: 7px 10px;
+    border-radius: 999px;
+    white-space: nowrap;
+}
+
+/* =========================================================
+   Dashboard
+   ========================================================= */
+
+.ivote-stats-grid,
+.ivote-stats-grid-no-position {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.ivote-stats-grid .ivote-card,
+.ivote-stats-grid-no-position .ivote-card {
+    margin-bottom: 0;
+}
+
+.ivote-stat-card {
+    min-height: 158px;
+    padding: 18px;
+}
+
+.ivote-stat-icon {
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    border-radius: 50%;
+    background: var(--ivote-blue-light);
+    color: var(--ivote-blue);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 19px;
+    margin-bottom: 13px;
+}
+
+.ivote-stat-icon.green {
+    background: #dcfce7;
+    color: var(--ivote-green);
+}
+
+.ivote-stat-icon.purple {
+    background: #ede9fe;
+    color: var(--ivote-purple);
+}
+
+.ivote-stat-icon.yellow {
+    background: #fef9c3;
+    color: #ca8a04;
+}
+
+.ivote-stat-title {
+    margin: 0 0 5px;
+    font-size: 13px;
+    color: #344054;
+}
+
+.ivote-stat-value {
+    font-size: 28px;
+    line-height: 1;
+    margin: 0 0 6px;
+    font-weight: 900;
+    color: var(--ivote-blue);
+}
+
+.ivote-stat-caption {
+    font-size: 12px;
+    margin: 0;
+    color: var(--ivote-muted);
+}
+
+.ivote-dashboard-grid-main {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(320px, 0.9fr);
+    gap: 18px;
+    align-items: stretch;
+    margin-bottom: 18px;
+}
+
+.ivote-dashboard-grid-bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(320px, 0.85fr);
+    gap: 18px;
+    align-items: stretch;
+}
+
+.ivote-dashboard-panel {
+    margin-bottom: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+.ivote-clean-table {
+    min-width: 680px;
+}
+
+.ivote-election-chart-layout {
+    display: grid;
+    grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.15fr);
+    gap: 16px;
+    align-items: stretch;
+}
+
+.ivote-election-list {
+    height: 285px;
+    overflow-y: auto;
+    border: 1px solid var(--ivote-border);
+    border-radius: 12px;
+}
+
+.ivote-election-item {
+    padding: 12px;
+    border-bottom: 1px solid var(--ivote-border);
+}
+
+.ivote-election-item:last-child {
+    border-bottom: none;
+}
+
+.ivote-election-name {
+    font-size: 13px;
+    font-weight: 900;
+    color: #1e3765;
+}
+
+.ivote-election-date {
+    font-size: 12px;
+    color: var(--ivote-muted);
+}
+
+.ivote-progress {
+    height: 8px;
+    background: #edf2f7;
+    border-radius: 99px;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.ivote-progress-bar {
+    height: 100%;
+    background: var(--ivote-blue);
+    border-radius: 99px;
+}
+
+.ivote-chart-box {
+    height: 285px;
+    min-height: 285px;
+    position: relative;
+}
+
+.ivote-mini-chart-box {
+    height: 260px;
+    min-height: 260px;
+    position: relative;
+}
+
+.ivote-status-summary {
+    display: flex;
+    justify-content: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--ivote-muted);
+}
+
+.ivote-status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.ivote-status-dot.green {
+    background: var(--ivote-green);
+}
+
+.ivote-status-dot.yellow {
+    background: var(--ivote-yellow);
+}
+
+.ivote-status-dot.blue {
+    background: var(--ivote-blue);
+}
+
+.ivote-quick-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.ivote-quick-action {
+    min-height: 86px;
+    border: 1px solid var(--ivote-border);
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 14px 10px;
+    text-align: center;
+    color: var(--ivote-blue);
+    font-weight: 800;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.ivote-quick-action i {
+    display: block;
+    font-size: 22px;
+    margin-bottom: 7px;
+}
+
+.ivote-quick-action:hover {
+    background: var(--ivote-blue);
+    color: #ffffff;
+}
+
+/* =========================================================
+   Management pages: voters/candidates
+   ========================================================= */
+
+.ivote-page-control-card,
+.ivote-voter-stats-grid {
+    display: none !important;
+}
+
+.ivote-filter-card {
+    padding: 16px;
+    margin-bottom: 18px;
+}
+
+.ivote-filter-form {
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) 240px 120px 100px 155px;
+    gap: 12px;
+    align-items: end;
+}
+
+.ivote-filter-form .form-label {
+    font-size: 12px;
+    font-weight: 800;
+    color: #344054;
+    margin-bottom: 6px;
+}
+
+.ivote-filter-form .form-control,
+.ivote-filter-form .form-select,
+.ivote-filter-form .btn {
+    height: 42px;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.ivote-filter-form .btn {
+    width: 100%;
+    margin: 0;
+    font-weight: 800;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ivote-filter-form .btn-ivote {
+    font-size: 12px;
+    line-height: 1.1;
+    padding: 7px 10px;
+    gap: 5px;
+    white-space: normal;
+}
+
+.ivote-filter-form .btn-ivote i {
+    font-size: 13px;
+    margin-right: 2px;
+}
+
+.ivote-reset-btn {
+    background: #ffffff;
+}
+
+.ivote-data-card {
+    padding: 18px;
+    overflow: hidden;
+    margin-top: 0;
+}
+
+.ivote-pagination-wrap {
+    border-top: 1px solid var(--ivote-border-soft);
+    padding-top: 16px;
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.pagination .page-link {
+    border-radius: 10px;
+    margin: 0 3px;
+    color: var(--ivote-blue);
+    border: 1px solid var(--ivote-border);
+}
+
+.pagination .active .page-link {
+    background: var(--ivote-blue);
+    color: #ffffff;
+    border-color: var(--ivote-blue);
+}
+
+/* Candidate page */
+.ivote-candidate-cell {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.ivote-candidate-cell img {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    object-fit: cover;
+    border: 1px solid var(--ivote-border);
+    background: var(--ivote-blue-light);
+}
+
+.ivote-platform-preview {
+    display: inline-block;
+    max-width: 360px;
+    white-space: normal;
+    color: var(--ivote-muted);
+}
+
+.ivote-candidate-profile {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 18px;
+    align-items: start;
+}
+
+.ivote-candidate-photo-large {
+    width: 180px;
+    height: 180px;
+    border-radius: 24px;
+    overflow: hidden;
+    border: 1px solid var(--ivote-border);
+    background: var(--ivote-blue-light);
+}
+
+.ivote-candidate-photo-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* =========================================================
+   Tables
+   ========================================================= */
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table {
+    margin-bottom: 0;
+    vertical-align: middle;
+}
+
+.table thead th {
+    background: #f7f9fc;
+    color: #344054;
+    border-bottom: 1px solid var(--ivote-border);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    padding: 12px 10px;
+}
+
+.table tbody td {
+    color: var(--ivote-text);
+    font-size: 13px;
+    padding: 12px 10px;
+    border-bottom: 1px solid var(--ivote-border-soft);
+    white-space: nowrap;
+}
+
+.ivote-management-table {
+    min-width: 1250px;
+}
+
+.ivote-management-table th,
+.ivote-management-table td {
+    vertical-align: middle;
+}
+
+/* =========================================================
+   Modals and profile views
+   ========================================================= */
+
+.ivote-modal {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(16, 24, 40, 0.18);
+}
+
+.ivote-form-section {
+    border: 1px solid #e4e9f2;
+    border-radius: 16px;
+    padding: 16px;
+    margin-bottom: 16px;
+    background: #ffffff;
+}
+
+.ivote-form-section h6 {
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--ivote-blue);
+    margin-bottom: 14px;
+}
+
+.ivote-profile-view {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+}
+
+.ivote-profile-view div {
+    border: 1px solid #e4e9f2;
+    border-radius: 14px;
+    padding: 13px;
+    background: #f8fafc;
+}
+
+.ivote-profile-view div.full {
+    grid-column: 1 / -1;
+}
+
+.ivote-profile-view span {
+    display: block;
+    font-size: 12px;
+    color: var(--ivote-muted);
+    margin-bottom: 4px;
+}
+
+.ivote-profile-view strong {
+    display: block;
+    font-size: 14px;
+    color: var(--ivote-text);
+}
+
+.ivote-flash-wrap {
+    margin-bottom: 16px;
+}
+
+/* =========================================================
+   Election Schedule Control
+   ========================================================= */
+
+.ivote-election-page {
+    max-width: 1480px;
+    margin: 0 auto;
+}
+
+.ivote-election-control-shell {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.ivote-election-hero-card {
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+}
+
+.ivote-election-eyebrow {
+    font-size: 12px;
+    font-weight: 950;
+    color: var(--ivote-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.ivote-election-hero-card h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 950;
+    color: var(--ivote-text);
+    line-height: 1.2;
+}
+
+.ivote-election-hero-card p {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--ivote-muted);
+}
+
+.ivote-election-hero-right .badge {
+    border-radius: 999px;
+    padding: 10px 16px;
+    font-size: 12px;
+    font-weight: 950;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+}
+
+.ivote-election-info-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+}
+
+.ivote-election-info-card {
+    background: #ffffff;
+    border: 1px solid var(--ivote-border);
+    border-radius: 20px;
+    box-shadow: var(--ivote-shadow-soft);
+    padding: 18px;
+    min-height: 132px;
+}
+
+.ivote-election-info-card span {
+    display: block;
+    font-size: 11px;
+    font-weight: 950;
+    color: var(--ivote-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+}
+
+.ivote-election-info-card strong {
+    display: block;
+    font-size: 18px;
+    font-weight: 950;
+    color: var(--ivote-text);
+    line-height: 1.25;
+}
+
+.ivote-election-info-card small {
+    display: block;
+    margin-top: 8px;
+    color: var(--ivote-muted);
+    font-size: 12px;
+}
+
+.ivote-election-info-card .ivote-election-timer {
+    color: var(--ivote-blue);
+}
+
+.ivote-election-editor-card {
+    overflow: hidden;
+    padding: 0;
+}
+
+.ivote-election-card-title {
+    padding: 20px 22px;
+    border-bottom: 1px solid var(--ivote-border-soft);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.ivote-election-card-title span {
+    font-size: 12px;
+    font-weight: 950;
+    color: var(--ivote-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.ivote-election-card-title h3 {
+    margin: 4px 0 0;
+    font-size: 20px;
+    font-weight: 950;
+    color: var(--ivote-text);
+}
+
+.ivote-election-card-pill {
+    background: #f2f6fc;
+    color: #475467;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 900;
+    white-space: nowrap;
+}
+
+.ivote-election-editor-form {
+    padding: 22px;
+}
+
+.ivote-election-editor-form .form-label {
+    font-size: 13px;
+    font-weight: 900;
+    color: var(--ivote-text);
+    margin-bottom: 8px;
+}
+
+.ivote-election-editor-form .form-control,
+.ivote-election-editor-form .form-select {
+    height: 48px;
+    border-radius: 14px;
+    border: 1px solid var(--ivote-border);
+    font-size: 14px;
+    color: var(--ivote-text);
+}
+
+.ivote-election-save-row,
+.ivote-election-actions-row {
+    display: none !important;
+}
+
+.ivote-election-actions-row-final {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 2px minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px;
+    align-items: center;
+    width: 100%;
+    padding: 18px 22px;
+    background: #f8fafc;
+    border-top: 1px solid var(--ivote-border-soft);
+}
+
+.ivote-election-actions-row-final .ivote-election-action-form {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.ivote-election-action-divider-final {
+    width: 2px;
+    height: 46px;
+    background: #cfd8e6;
+    border-radius: 999px;
+    justify-self: center;
+}
+
+.ivote-election-actions-row-final .ivote-election-action-btn {
+    width: 100%;
+    min-width: 0;
+    height: 46px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 950;
+    line-height: 1;
+    padding: 0 10px;
+    margin: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+}
+
+.ivote-election-actions-row-final .ivote-election-action-btn i {
+    flex: 0 0 auto;
+    margin-right: 6px;
+    font-size: 13px;
+}
+
+/* Hide old election layouts if they still exist */
+.ivote-single-election-panel,
+.ivote-election-command-grid,
+.single-election-control {
+    display: none !important;
+}
+
+/* =========================================================
+   Results page
+   ========================================================= */
+
+.ivote-results-page {
+    max-width: 1480px;
+    margin: 0 auto;
+}
+
+.ivote-results-hero {
+    padding: 22px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+.ivote-results-eyebrow {
+    font-size: 12px;
+    font-weight: 950;
+    color: var(--ivote-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+}
+
+.ivote-results-hero h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 950;
+    color: var(--ivote-text);
+    line-height: 1.2;
+}
+
+.ivote-results-hero p {
+    margin: 8px 0 0;
+    font-size: 14px;
+    color: var(--ivote-muted);
+}
+
+.ivote-results-hero-meta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.ivote-results-hero-meta .badge {
+    border-radius: 999px;
+    padding: 9px 14px;
+    font-size: 12px;
+    font-weight: 950;
+}
+
+.ivote-results-hero-meta small {
+    color: var(--ivote-muted);
+    font-size: 12px;
+    text-align: right;
+}
+
+.ivote-results-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.ivote-result-stat {
+    padding: 18px;
+    border-radius: 20px;
+}
+
+.ivote-result-stat span {
+    display: block;
+    font-size: 11px;
+    font-weight: 950;
+    color: var(--ivote-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin-bottom: 10px;
+}
+
+.ivote-result-stat strong {
+    display: block;
+    font-size: 30px;
+    font-weight: 950;
+    color: var(--ivote-text);
+    line-height: 1.1;
+}
+
+.ivote-result-stat small {
+    display: block;
+    margin-top: 8px;
+    color: var(--ivote-muted);
+    font-size: 12px;
+}
+
+.ivote-results-chart-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.ivote-results-chart-card {
+    border-radius: 22px;
+    overflow: hidden;
+}
+
+.ivote-results-chart-box {
+    height: 320px;
+    padding: 18px;
+}
+
+.ivote-results-chart-box.large {
+    height: 420px;
+}
+
+.ivote-results-chart-box.medium {
+    height: 360px;
+}
+
+.ivote-results-position-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 18px;
+    margin-bottom: 18px;
+}
+
+.ivote-position-result-card {
+    border-radius: 22px;
+    padding: 18px;
+}
+
+.ivote-position-result-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 14px;
+    margin-bottom: 16px;
+}
+
+.ivote-position-result-header span {
+    font-size: 11px;
+    font-weight: 950;
+    color: var(--ivote-blue);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.ivote-position-result-header h3 {
+    margin: 4px 0 0;
+    font-size: 20px;
+    font-weight: 950;
+    color: var(--ivote-text);
+}
+
+.ivote-position-result-header > strong {
+    background: var(--ivote-blue-light);
+    color: var(--ivote-blue);
+    border-radius: 999px;
+    padding: 8px 12px;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.ivote-position-candidate-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.ivote-position-candidate-main {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.ivote-position-candidate-main strong {
+    font-size: 14px;
+    color: var(--ivote-text);
+}
+
+.ivote-position-candidate-main small {
+    display: block;
+    margin-top: 2px;
+    color: var(--ivote-muted);
+    font-size: 12px;
+}
+
+.ivote-position-candidate-votes {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.ivote-position-candidate-votes strong {
+    color: var(--ivote-blue);
+    font-weight: 950;
+}
+
+.ivote-position-candidate-votes small {
+    color: var(--ivote-muted);
+}
+
+.ivote-result-progress {
+    width: 100%;
+    height: 9px;
+    background: var(--ivote-border-soft);
+    border-radius: 999px;
+    overflow: hidden;
+}
+
+.ivote-result-progress div {
+    height: 100%;
+    background: linear-gradient(90deg, var(--ivote-blue), #1677ff);
+    border-radius: 999px;
+}
+
+.ivote-results-bottom-grid {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 16px;
+}
+
+/* =========================================================
+   Login page
+   ========================================================= */
+
+.ivote-login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: var(--ivote-bg);
+}
+
+.ivote-login-card {
+    width: 100%;
+    max-width: 430px;
+    background: #ffffff;
+    border: 1px solid var(--ivote-border);
+    border-radius: 22px;
+    box-shadow: 0 8px 28px rgba(16, 24, 40, 0.08);
+    padding: 30px;
+}
+
+.ivote-login-logo {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.ivote-login-logo img {
+    width: 130px;
+    height: auto;
+}
+
+.ivote-login-title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 900;
+    color: var(--ivote-blue);
+    margin-bottom: 4px;
+}
+
+.ivote-login-subtitle {
+    text-align: center;
+    color: var(--ivote-muted);
+    font-size: 13px;
+    margin-bottom: 22px;
+}
+
+/* =========================================================
+   Remove position panel/page from visible admin UI
+   ========================================================= */
+
+a[href="../admin/positions.php"],
+a[href="positions.php"],
+.positions-panel,
+.position-panel,
+.ivote-position-panel {
+    display: none !important;
+}
+
+/* =========================================================
+   Responsive: laptops and tablets
+   ========================================================= */
+
+@media (max-width: 1400px) {
+    .ivote-stats-grid,
+    .ivote-stats-grid-no-position {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .ivote-dashboard-grid-main,
+    .ivote-dashboard-grid-bottom {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 1200px) {
+    .ivote-main {
+        padding-left: 18px;
+        padding-right: 18px;
+    }
+
+    .ivote-results-stat-grid,
+    .ivote-results-position-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ivote-results-chart-grid,
+    .ivote-results-bottom-grid,
+    .ivote-election-info-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ivote-results-chart-box,
+    .ivote-results-chart-box.large,
+    .ivote-results-chart-box.medium {
+        height: 340px;
+    }
+}
+
+@media (max-width: 992px) {
+    .ivote-stats-grid,
+    .ivote-stats-grid-no-position {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .ivote-election-chart-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .ivote-election-list {
+        height: auto;
+        max-height: 260px;
+    }
+
+    .ivote-filter-form {
+        grid-template-columns: 1fr 220px 110px 90px 130px;
+    }
+}
+
+/* =========================================================
+   Responsive: mobile
+   ========================================================= */
+
+@media (max-width: 768px) {
+    html,
+    body {
+        width: 100%;
+        max-width: 100%;
+        overflow-x: hidden;
+        background: var(--ivote-bg);
+    }
+
+    .ivote-main {
+        width: 100%;
+        max-width: 100%;
+        padding: 10px;
+        overflow-x: hidden;
+    }
+
+    .ivote-dashboard-wrapper,
+    .ivote-management-page,
+    .ivote-election-page,
+    .ivote-results-page {
+        width: 100%;
+        max-width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Header */
+    .ivote-dashboard-top-card {
+        width: 100%;
+        min-height: 64px;
+        height: auto;
+        padding: 10px 12px;
+        border-radius: 18px;
+        gap: 10px;
+        margin-bottom: 12px;
+        position: sticky;
+        top: 8px;
+        z-index: 100;
+        background: #ffffff;
+    }
+
+    .ivote-dashboard-top-left {
+        gap: 8px;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .ivote-menu-clean-btn {
+        width: 40px;
+        height: 40px;
+        min-width: 40px;
+        border-radius: 13px;
+        padding: 0;
+    }
+
+    .ivote-topbar-logo img {
+        width: 48px;
+        max-width: 48px;
+        height: auto;
+        object-fit: contain;
+    }
+
+    .ivote-dashboard-title-block {
+        display: block;
+        margin-left: 6px;
+        padding-left: 10px;
+        border-left: 1px solid var(--ivote-border);
+        min-width: 0;
+        flex: 1;
+    }
+
+    .ivote-dashboard-title-block h1 {
+        display: block;
+        font-size: 15px;
+        font-weight: 950;
+        line-height: 1.15;
+        color: var(--ivote-text);
+        margin: 0;
+        max-width: 185px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ivote-dashboard-title-block p {
+        display: block;
+        font-size: 10px;
+        line-height: 1.2;
+        color: var(--ivote-muted);
+        margin: 2px 0 0;
+        max-width: 185px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .ivote-logout-btn {
+        width: 42px;
+        height: 42px;
+        min-width: 42px;
+        padding: 0;
+        border-radius: 14px;
+    }
+
+    .ivote-logout-btn span {
+        display: none;
+    }
+
+    .ivote-logout-btn i {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    /* Sidebar */
+    .ivote-sidebar {
+        width: 84vw;
+        max-width: 310px;
+        border-radius: 0 24px 24px 0;
+    }
+
+    .ivote-sidebar-link {
+        min-height: 46px;
+        font-size: 14px;
+        border-radius: 14px;
+    }
+
+    /* Stats compact 2 columns */
+    .ivote-stats-grid,
+    .ivote-stats-grid-no-position,
+    .ivote-results-stat-grid,
+    .ivote-voter-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        margin-bottom: 12px;
+    }
+
+    .ivote-stat-card,
+    .ivote-result-stat {
+        min-height: 128px;
+        height: auto;
+        padding: 14px;
+        border-radius: 18px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .ivote-stat-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        border-radius: 14px;
+        margin-bottom: 8px;
+    }
+
+    .ivote-stat-icon i {
+        font-size: 17px;
+    }
+
+    .ivote-stat-title,
+    .ivote-result-stat span {
+        font-size: 12px;
+        line-height: 1.25;
+        margin: 0 0 4px;
+        color: var(--ivote-text);
+        font-weight: 700;
+        letter-spacing: 0;
+        text-transform: none;
+    }
+
+    .ivote-stat-value,
+    .ivote-result-stat strong {
+        font-size: 28px;
+        line-height: 1;
+        margin: 0;
+        color: var(--ivote-blue);
+        font-weight: 950;
+    }
+
+    .ivote-stat-caption,
+    .ivote-result-stat small {
+        font-size: 11px;
+        line-height: 1.25;
+        margin-top: 5px;
+        color: #475467;
+    }
+
+    /* Grids */
+    .ivote-dashboard-grid-main,
+    .ivote-dashboard-grid-bottom,
+    .ivote-results-chart-grid,
+    .ivote-results-bottom-grid,
+    .ivote-results-position-grid,
+    .ivote-election-info-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .ivote-card,
+    .ivote-dashboard-panel,
+    .ivote-data-card,
+    .ivote-filter-card,
+    .ivote-results-hero,
+    .ivote-election-hero-card,
+    .ivote-election-editor-card,
+    .ivote-results-chart-card,
+    .ivote-position-result-card {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 18px;
+        overflow: hidden;
+    }
+
+    .ivote-card-header,
+    .ivote-election-card-title,
+    .ivote-results-hero,
+    .ivote-election-hero-card {
+        padding: 14px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .ivote-section-title,
+    .ivote-election-card-title h3,
+    .ivote-results-hero h2,
+    .ivote-election-hero-card h2 {
+        font-size: 16px;
+        line-height: 1.25;
+        margin: 0;
+    }
+
+    .ivote-results-hero-meta {
+        align-items: flex-start;
+    }
+
+    /* Forms */
+    .ivote-filter-form,
+    .ivote-election-filter-form,
+    .ivote-position-filter-form {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .ivote-filter-card {
+        padding: 14px;
+        margin-bottom: 12px;
+    }
+
+    .form-label {
+        font-size: 12px;
+        margin-bottom: 6px;
+    }
+
+    .form-control,
+    .form-select,
+    .btn {
+        min-height: 44px;
+        font-size: 13px;
+        border-radius: 13px;
+    }
+
+    .ivote-filter-form .btn,
+    .ivote-election-filter-form .btn,
+    .ivote-position-filter-form .btn {
+        width: 100%;
+    }
+
+    /* Tables */
+    .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        border-radius: 0 0 18px 18px;
+    }
+
+    .ivote-management-table,
+    .ivote-clean-table {
+        min-width: 760px;
+        font-size: 12px;
+        margin-bottom: 0;
+    }
+
+    .ivote-management-table th,
+    .ivote-management-table td,
+    .ivote-clean-table th,
+    .ivote-clean-table td {
+        padding: 10px;
+        vertical-align: middle;
+    }
+
+    /* Charts */
+    .ivote-results-chart-box,
+    .ivote-results-chart-box.large,
+    .ivote-results-chart-box.medium,
+    .ivote-chart-box,
+    .ivote-mini-chart-box {
+        height: 280px;
+        padding: 12px;
+    }
+
+    /* Election buttons */
+    .ivote-election-actions-row-final {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 14px;
+    }
+
+    .ivote-election-action-divider-final {
+        width: 100%;
+        height: 2px;
+        margin: 2px 0;
+    }
+
+    .ivote-election-actions-row-final .ivote-election-action-btn {
+        width: 100%;
+        height: 44px;
+    }
+
+    /* Results candidate cards */
+    .ivote-position-result-header,
+    .ivote-position-candidate-main {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ivote-position-candidate-votes {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    /* Candidate profile */
+    .ivote-candidate-profile {
+        grid-template-columns: 1fr;
+    }
+
+    .ivote-candidate-photo-large {
+        width: 130px;
+        height: 130px;
+    }
+
+    .ivote-candidate-cell {
+        min-width: 220px;
+    }
+
+    /* Profile view */
+    .ivote-profile-view {
+        grid-template-columns: 1fr;
+    }
+
+    /* Pagination */
+    .ivote-pagination-wrap {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .pagination {
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+
+    .page-link {
+        min-width: 38px;
+        text-align: center;
+    }
+
+    /* Modals */
+    .modal-dialog,
+    .modal-dialog.modal-lg,
+    .modal-dialog.modal-xl {
+        width: calc(100% - 20px);
+        max-width: calc(100% - 20px);
+        margin: 10px auto;
+    }
+
+    .modal-content {
+        border-radius: 20px;
+    }
+
+    .modal-header,
+    .modal-body,
+    .modal-footer {
+        padding: 14px;
+    }
+
+    .modal-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .modal-footer .btn {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+/* =========================================================
+   Very small phones
+   ========================================================= */
+
+@media (max-width: 420px) {
+    .ivote-main {
+        padding: 8px;
+    }
+
+    .ivote-dashboard-top-card {
+        min-height: 58px;
+        border-radius: 16px;
+        padding: 8px 10px;
+    }
+
+    .ivote-menu-clean-btn,
+    .ivote-logout-btn {
+        width: 36px;
+        height: 36px;
+        min-width: 36px;
+        border-radius: 12px;
+    }
+
+    .ivote-topbar-logo img {
+        width: 42px;
+        max-width: 42px;
+    }
+
+    .ivote-dashboard-title-block h1 {
+        font-size: 13px;
+        max-width: 145px;
+    }
+
+    .ivote-dashboard-title-block p {
+        font-size: 9px;
+        max-width: 145px;
+    }
+
+    .ivote-stats-grid,
+    .ivote-stats-grid-no-position,
+    .ivote-results-stat-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+
+    .ivote-stat-card,
+    .ivote-result-stat {
+        min-height: 118px;
+        padding: 12px;
+        border-radius: 16px;
+    }
+
+    .ivote-stat-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+        border-radius: 12px;
+        margin-bottom: 6px;
+    }
+
+    .ivote-stat-icon i {
+        font-size: 15px;
+    }
+
+    .ivote-stat-title,
+    .ivote-result-stat span {
+        font-size: 11px;
+    }
+
+    .ivote-stat-value,
+    .ivote-result-stat strong {
+        font-size: 24px;
+    }
+
+    .ivote-stat-caption,
+    .ivote-result-stat small {
+        font-size: 10px;
+    }
+
+    .ivote-section-title {
+        font-size: 15px;
+    }
+
+    .ivote-results-chart-box,
+    .ivote-results-chart-box.large,
+    .ivote-results-chart-box.medium,
+    .ivote-chart-box,
+    .ivote-mini-chart-box {
+        height: 250px;
+    }
+}
+/* =========================================================
+   iVotePH Minimal Animation Touch
+   Soft hover, fade-in, and page polish
+   ========================================================= */
+
+/* Respect users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Smooth page entrance */
+.ivote-dashboard-wrapper,
+.ivote-management-page,
+.ivote-election-page,
+.ivote-results-page {
+    animation: ivoteFadeUp 0.35s ease both;
+}
+
+@keyframes ivoteFadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Cards: very subtle lift */
+.ivote-card,
+.ivote-filter-card,
+.ivote-data-card,
+.ivote-dashboard-panel,
+.ivote-results-hero,
+.ivote-election-hero-card,
+.ivote-election-editor-card,
+.ivote-results-chart-card,
+.ivote-position-result-card,
+.ivote-result-stat,
+.ivote-stat-card {
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.ivote-card:hover,
+.ivote-filter-card:hover,
+.ivote-data-card:hover,
+.ivote-dashboard-panel:hover,
+.ivote-results-chart-card:hover,
+.ivote-position-result-card:hover,
+.ivote-result-stat:hover,
+.ivote-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 26px rgba(16, 24, 40, 0.08);
+    border-color: #cfd8e6;
+}
+
+/* Header stays calm, no big movement */
+.ivote-dashboard-top-card {
+    animation: ivoteSoftDrop 0.3s ease both;
+}
+
+@keyframes ivoteSoftDrop {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Buttons */
+.btn,
+.btn-ivote,
+.btn-ivote-outline,
+.ivote-logout-btn,
+.ivote-menu-clean-btn,
+.ivote-quick-action,
+.btn-ivote-icon {
+    transition:
+        transform 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        color 0.18s ease;
+}
+
+.btn:hover,
+.btn-ivote:hover,
+.btn-ivote-outline:hover,
+.ivote-logout-btn:hover,
+.ivote-menu-clean-btn:hover,
+.ivote-quick-action:hover,
+.btn-ivote-icon:hover {
+    transform: translateY(-1px);
+}
+
+.btn:active,
+.btn-ivote:active,
+.btn-ivote-outline:active,
+.ivote-logout-btn:active,
+.ivote-menu-clean-btn:active,
+.ivote-quick-action:active,
+.btn-ivote-icon:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Sidebar slide and links */
+.ivote-sidebar {
+    transition: transform 0.26s ease, box-shadow 0.26s ease;
+}
+
+.ivote-sidebar-link {
+    transition:
+        background-color 0.18s ease,
+        color 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+}
+
+.ivote-sidebar-link:hover {
+    transform: translateX(3px);
+}
+
+/* Table rows */
+.ivote-management-table tbody tr,
+.ivote-clean-table tbody tr {
+    transition: background-color 0.16s ease;
+}
+
+.ivote-management-table tbody tr:hover,
+.ivote-clean-table tbody tr:hover {
+    background: #f8fbff;
+}
+
+/* Form focus polish */
+.form-control,
+.form-select {
+    transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background-color 0.18s ease;
+}
+
+/* Status/progress bars */
+.ivote-progress-bar,
+.ivote-result-progress div {
+    animation: ivoteGrowWidth 0.7s ease both;
+    transform-origin: left center;
+}
+
+@keyframes ivoteGrowWidth {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+/* Stat number subtle pop */
+.ivote-stat-value,
+.ivote-result-stat strong {
+    animation: ivoteNumberPop 0.35s ease both;
+}
+
+@keyframes ivoteNumberPop {
+    from {
+        opacity: 0;
+        transform: scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Modal entrance refinement */
+.modal.fade .modal-dialog {
+    transition: transform 0.22s ease-out, opacity 0.22s ease-out;
+    transform: translateY(8px) scale(0.98);
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0) scale(1);
+}
+
+/* Mobile: reduce hover movement to avoid jumpy feel */
+@media (max-width: 768px) {
+    .ivote-card:hover,
+    .ivote-filter-card:hover,
+    .ivote-data-card:hover,
+    .ivote-dashboard-panel:hover,
+    .ivote-results-chart-card:hover,
+    .ivote-position-result-card:hover,
+    .ivote-result-stat:hover,
+    .ivote-stat-card:hover {
+        transform: none;
+    }
+
+    .ivote-sidebar-link:hover {
+        transform: none;
+    }
+}
+/* =========================================================
+   Sidebar X Button Smaller + Top Right Fix
+   ========================================================= */
+
+.ivote-sidebar {
+    position: fixed !important;
+}
+
+.ivote-sidebar-header {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    padding: 22px 46px 18px 18px !important;
+    min-height: 105px !important;
+}
+
+.ivote-sidebar-logo-wrap {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.ivote-sidebar-logo-img {
+    width: 96px !important;
+    max-width: 96px !important;
+    height: auto !important;
+    display: block !important;
+}
+
+.ivote-sidebar-close {
+    position: absolute !important;
+    top: 14px !important;
+    right: 14px !important;
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    border-radius: 10px !important;
+    padding: 0 !important;
+    background: #eef5ff !important;
+    color: #0647b8 !important;
+    border: 1px solid #dfe6f1 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    box-shadow: none !important;
+}
+
+.ivote-sidebar-close i {
+    font-size: 14px !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+}
+
+.ivote-sidebar-close:hover {
+    background: #dceaff !important;
+    color: #033587 !important;
+}
+
+/* Extra-small mobile */
+@media (max-width: 420px) {
+    .ivote-sidebar-close {
+        top: 12px !important;
+        right: 12px !important;
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        border-radius: 9px !important;
+    }
+
+    .ivote-sidebar-close i {
+        font-size: 13px !important;
+    }
+
+    .ivote-sidebar-logo-img {
+        width: 90px !important;
+        max-width: 90px !important;
+    }
+}
+/* =========================================================
+   Logout Confirmation Modal
+   ========================================================= */
+
+.ivote-logout-btn {
+    border: 1px solid var(--ivote-blue);
+    cursor: pointer;
+}
+
+.ivote-logout-modal {
+    border: none;
+    border-radius: 24px;
+    box-shadow: 0 24px 70px rgba(16, 24, 40, 0.22);
+    overflow: hidden;
+}
+
+.ivote-logout-modal .modal-body {
+    padding: 28px;
+    text-align: center;
+}
+
+.ivote-logout-modal-icon {
+    width: 62px;
+    height: 62px;
+    border-radius: 20px;
+    background: #fee2e2;
+    color: #dc2626;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    margin-bottom: 16px;
+}
+
+.ivote-logout-modal h5 {
+    font-size: 22px;
+    font-weight: 950;
+    color: var(--ivote-text);
+    margin: 0 0 8px;
+}
+
+.ivote-logout-modal p {
+    font-size: 14px;
+    color: var(--ivote-muted);
+    margin: 0 0 22px;
+}
+
+.ivote-logout-modal-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.ivote-logout-modal-actions .btn {
+    height: 44px;
+    border-radius: 14px;
+    font-size: 13px;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .ivote-logout-modal .modal-body {
+        padding: 22px;
+    }
+
+    .ivote-logout-modal-actions {
+        grid-template-columns: 1fr;
+    }
+}
+/* =========================================================
+   Audit Logs Page
+   ========================================================= */
+
+.ivote-audit-filter-form {
+    display: grid;
+    grid-template-columns: minmax(360px, 1fr) 120px 100px;
+    gap: 12px;
+    align-items: end;
+}
+
+.ivote-audit-filter-form .form-control,
+.ivote-audit-filter-form .btn {
+    height: 42px;
+    border-radius: 12px;
+    font-size: 13px;
+}
+
+.ivote-audit-filter-form .btn {
+    width: 100%;
+    font-weight: 900;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ivote-audit-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    white-space: normal;
+    min-width: 280px;
+}
+
+.ivote-audit-action i {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 10px;
+    background: #eef5ff;
+    color: #0647b8;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 768px) {
+    .ivote-audit-filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .ivote-audit-filter-form .btn {
+        width: 100%;
+    }
+}
+.ivote-stats-grid-dashboard-four {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+}
+
+@media (max-width: 1200px) {
+    .ivote-stats-grid-dashboard-four {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .ivote-stats-grid-dashboard-four {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+}

@@ -2014,3 +2014,506 @@ body:has(.registerContainer) {
     scroll-behavior: auto !important;
   }
 }
+/* =========================================================
+   iVotePH User Topbar Compact Responsive Fix
+   Removes double-card logo container + tightens spacing
+   ========================================================= */
+
+.userTopbar {
+    padding: 8px 14px !important;
+    background: rgba(255, 255, 255, 0.96) !important;
+    border-bottom: 1px solid rgba(210, 219, 235, 0.85) !important;
+    box-shadow: 0 6px 18px rgba(16, 24, 40, 0.06) !important;
+    border-radius: 0 !important;
+}
+
+.userTopbarInner {
+    max-width: 1480px !important;
+    width: 100% !important;
+    min-height: 58px !important;
+    margin: 0 auto !important;
+    display: grid !important;
+    grid-template-columns: auto minmax(220px, 360px) minmax(420px, 1fr) auto !important;
+    align-items: center !important;
+    gap: 8px !important;
+}
+
+/* Remove the card/container around the logo */
+.brandLink {
+    min-height: auto !important;
+    padding: 0 !important;
+    border: none !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.brandLogo {
+    width: 70px !important;
+    max-width: 70px !important;
+    height: auto !important;
+    max-height: 34px !important;
+    object-fit: contain !important;
+    display: block !important;
+}
+
+/* Compact search */
+.topbarSearch {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.topbarSearch .input-group {
+    height: 40px !important;
+    border-radius: 999px !important;
+    background: #f4f6fb !important;
+    overflow: hidden !important;
+}
+
+.topbarSearch .input-group-text {
+    border: none !important;
+    background: #f4f6fb !important;
+    padding-left: 14px !important;
+    padding-right: 6px !important;
+    font-size: 13px !important;
+}
+
+.searchInput,
+.form-control.searchInput {
+    height: 40px !important;
+    min-height: 40px !important;
+    border: none !important;
+    background: #f4f6fb !important;
+    box-shadow: none !important;
+    font-size: 12px !important;
+    padding-left: 4px !important;
+}
+
+/* Compact nav buttons */
+.userNavBar {
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    overflow: hidden !important;
+}
+
+.userNavInner {
+    width: 100% !important;
+    overflow: hidden !important;
+}
+
+.userNavList {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 5px !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    list-style: none !important;
+    overflow: hidden !important;
+    min-width: 0 !important;
+    width: 100% !important;
+}
+
+.userNavList li {
+    list-style: none !important;
+    flex: 0 0 auto !important;
+}
+
+.userNavList a {
+    min-height: 38px !important;
+    height: 38px !important;
+    padding: 7px 10px !important;
+    border-radius: 999px !important;
+    background: #f4f6fb !important;
+    color: #3f4350 !important;
+    font-size: 11px !important;
+    font-weight: 850 !important;
+    line-height: 1 !important;
+    white-space: nowrap !important;
+    text-decoration: none !important;
+    box-shadow: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 5px !important;
+}
+
+.userNavList a i {
+    font-size: 11px !important;
+}
+
+.userNavList a:hover {
+    background: #e9f1ff !important;
+    color: #0646a8 !important;
+    transform: translateY(-1px) !important;
+}
+
+.userNavList a.active {
+    background: #0b5ed7 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 18px rgba(6, 70, 168, 0.18) !important;
+}
+
+/* Compact profile chip */
+.userChip {
+    min-height: 42px !important;
+    height: 42px !important;
+    padding: 5px 9px 5px 5px !important;
+    border-radius: 999px !important;
+    background: #ffffff !important;
+    border: 1px solid #dce5f2 !important;
+    box-shadow: none !important;
+    gap: 7px !important;
+    white-space: nowrap !important;
+}
+
+.userAvatarCircle {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    font-size: 12px !important;
+}
+
+.userName {
+    font-size: 11px !important;
+    line-height: 1.05 !important;
+}
+
+.verifiedBadge {
+    font-size: 9px !important;
+    line-height: 1.05 !important;
+}
+
+.userChip .fa-chevron-down {
+    font-size: 10px !important;
+}
+
+/* Remove old sidebar/menu completely */
+.menuButton,
+.sidebarOverlay,
+.userSidebar,
+#sidebar,
+.sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Lessen space below topbar */
+.userMain {
+    padding-top: 16px !important;
+}
+
+/* Large laptop adjustment */
+@media (max-width: 1400px) {
+    .userTopbarInner {
+        grid-template-columns: auto minmax(190px, 300px) minmax(360px, 1fr) auto !important;
+        gap: 7px !important;
+    }
+
+    .brandLogo {
+        width: 64px !important;
+        max-width: 64px !important;
+    }
+
+    .userNavList a {
+        padding: 7px 8px !important;
+        font-size: 10.5px !important;
+        gap: 4px !important;
+    }
+
+    .userNavList a i {
+        font-size: 10.5px !important;
+    }
+
+    .userName {
+        font-size: 10.5px !important;
+    }
+
+    .verifiedBadge {
+        font-size: 8.5px !important;
+    }
+}
+
+/* Tablet: make search/nav move below logo/profile cleanly */
+@media (max-width: 1180px) {
+    .userTopbarInner {
+        grid-template-columns: auto 1fr auto !important;
+        grid-template-rows: auto auto auto !important;
+        gap: 8px !important;
+    }
+
+    .brandLink {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+
+    .userChip {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        justify-self: end !important;
+    }
+
+    .topbarSearch {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+    }
+
+    .userNavBar {
+        grid-column: 1 / -1 !important;
+        grid-row: 3 !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+
+    .userNavBar::-webkit-scrollbar,
+    .userNavInner::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .userNavInner {
+        overflow-x: auto !important;
+    }
+
+    .userNavList {
+        width: max-content !important;
+        min-width: max-content !important;
+        overflow: visible !important;
+    }
+
+    .userNavList a {
+        min-height: 36px !important;
+        height: 36px !important;
+        padding: 7px 11px !important;
+        font-size: 11px !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .userTopbar {
+        padding: 8px 10px !important;
+    }
+
+    .userTopbarInner {
+        gap: 7px !important;
+    }
+
+    .brandLogo {
+        width: 58px !important;
+        max-width: 58px !important;
+        max-height: 30px !important;
+    }
+
+    .userChip {
+        width: 38px !important;
+        height: 38px !important;
+        min-height: 38px !important;
+        padding: 3px !important;
+        justify-content: center !important;
+    }
+
+    .userAvatarCircle {
+        width: 30px !important;
+        height: 30px !important;
+        min-width: 30px !important;
+        font-size: 11px !important;
+    }
+
+    .userMeta,
+    .userChip .fa-chevron-down {
+        display: none !important;
+    }
+
+    .topbarSearch .input-group,
+    .searchInput,
+    .form-control.searchInput {
+        height: 38px !important;
+        min-height: 38px !important;
+    }
+
+    .userNavList a {
+        height: 35px !important;
+        min-height: 35px !important;
+        padding: 7px 10px !important;
+        font-size: 10.5px !important;
+    }
+
+    .userMain {
+        padding-top: 12px !important;
+    }
+}
+/* =========================================================
+   Remove Big Oval Topbar Background Container
+   Keep logo, search, nav buttons, and profile only
+   ========================================================= */
+
+.userTopbar {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    border-radius: 0 !important;
+    padding: 10px 18px !important;
+}
+
+.userTopbarInner {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+}
+
+/* Remove possible pseudo oval background */
+.userTopbar::before,
+.userTopbar::after,
+.userTopbarInner::before,
+.userTopbarInner::after {
+    display: none !important;
+    content: none !important;
+}
+
+/* Keep individual elements visible and clean */
+.brandLink {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.topbarSearch .input-group {
+    background: #f4f6fb !important;
+    box-shadow: none !important;
+}
+
+.userNavList a {
+    box-shadow: none !important;
+}
+
+.userChip {
+    background: #ffffff !important;
+    border: 1px solid #dce5f2 !important;
+    box-shadow: none !important;
+}
+
+/* Remove any older header wrapper/card style if still active */
+.topbarWrapper,
+.topHeader,
+.headerBar,
+.userHeaderCard,
+.userTopbarCard,
+.userHeader,
+.navbarCard {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+/* =========================================================
+   Switch Search and Navigation Placement
+   Order: Logo | Nav Buttons | Search | Profile
+   ========================================================= */
+
+.userTopbarInner {
+    display: grid !important;
+    grid-template-columns: auto minmax(520px, 1fr) minmax(260px, 420px) auto !important;
+    align-items: center !important;
+    gap: 10px !important;
+}
+
+.brandLink {
+    grid-column: 1 !important;
+}
+
+.userNavBar {
+    grid-column: 2 !important;
+    grid-row: 1 !important;
+}
+
+.topbarSearch {
+    grid-column: 3 !important;
+    grid-row: 1 !important;
+}
+
+.userChip {
+    grid-column: 4 !important;
+    grid-row: 1 !important;
+}
+
+/* Keep nav compact so it fits before search */
+.userNavList {
+    justify-content: flex-start !important;
+    gap: 6px !important;
+}
+
+.userNavList a {
+    height: 38px !important;
+    min-height: 38px !important;
+    padding: 7px 10px !important;
+    font-size: 11px !important;
+}
+
+/* Search stays compact */
+.topbarSearch .input-group,
+.searchInput,
+.form-control.searchInput {
+    height: 40px !important;
+    min-height: 40px !important;
+}
+
+/* Profile stays right */
+.userChip {
+    justify-self: end !important;
+}
+
+/* Responsive: tablet/mobile stacks cleanly */
+@media (max-width: 1180px) {
+    .userTopbarInner {
+        grid-template-columns: auto 1fr auto !important;
+        grid-template-rows: auto auto auto !important;
+        gap: 8px !important;
+    }
+
+    .brandLink {
+        grid-column: 1 !important;
+        grid-row: 1 !important;
+    }
+
+    .userChip {
+        grid-column: 3 !important;
+        grid-row: 1 !important;
+        justify-self: end !important;
+    }
+
+    .userNavBar {
+        grid-column: 1 / -1 !important;
+        grid-row: 2 !important;
+        overflow-x: auto !important;
+        -webkit-overflow-scrolling: touch !important;
+        scrollbar-width: none !important;
+    }
+
+    .userNavBar::-webkit-scrollbar,
+    .userNavInner::-webkit-scrollbar {
+        display: none !important;
+    }
+
+    .userNavInner {
+        overflow-x: auto !important;
+    }
+
+    .userNavList {
+        width: max-content !important;
+        min-width: max-content !important;
+        overflow: visible !important;
+    }
+
+    .topbarSearch {
+        grid-column: 1 / -1 !important;
+        grid-row: 3 !important;
+    }
+}
